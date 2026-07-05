@@ -5,9 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/techwebcode/backend/config"
-	"github.com/techwebcode/backend/database"
-	"github.com/techwebcode/backend/routes"
+	"github.com/techwebcode/techwebcode/backend/config"
+	"github.com/techwebcode/techwebcode/backend/database"
+	"github.com/techwebcode/techwebcode/backend/routes"
 )
 
 func main() {
