@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rajat/techwebcode/controller"
+	"github.com/techwebcode/backend/controller"
 )
 
 func Setup(r *gin.Engine) {
