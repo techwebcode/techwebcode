@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/techwebcode/techwebcode/backendconfig"
+	"github.com/techwebcode/techwebcode/backend/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

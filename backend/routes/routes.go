@@ -2,14 +2,44 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/techwebcode/techwebcode/backend/controller"
+	"github.com/techwebcode/techwebcode/backend/bootstrap"
 )
 
-func Setup(r *gin.Engine) {
+func Setup(
+	router *gin.Engine,
+	boot *bootstrap.Bootstrap,
+) {
 
-	api := r.Group("/api")
+	public := router.Group("/api/v1")
 
-	{
-		api.GET("/health", controller.Health)
-	}
+	RegisterPublicRoutes(public)
+
+	RegisterCategoryPublicRoutes(
+		public,
+		boot.CategoryController,
+	)
+
+	RegisterArticlePublicRoutes(
+		public,
+		boot.ArticleController,
+	)
+
+	admin := router.Group("/api/v1/admin")
+
+	RegisterAdminRoutes(admin)
+
+	RegisterCategoryAdminRoutes(
+		admin,
+		boot.CategoryController,
+	)
+
+	RegisterArticleAdminRoutes(
+		admin,
+		boot.ArticleController,
+	)
+
+	RegisterUploadRoutes(
+		admin,
+		boot.UploadController,
+	)
 }
