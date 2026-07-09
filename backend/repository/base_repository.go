@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/techwebcode/techwebcode/backend/models"
 	"gorm.io/gorm"
 )
 
@@ -18,8 +19,18 @@ func (r *BaseRepository[T]) Create(entity *T) error {
 	return r.db.Create(entity).Error
 }
 
-func (r *BaseRepository[T]) Update(entity *T) error {
-	return r.db.Save(entity).Error
+func (r *CategoryRepository) UpdateCategory(category *models.Category) error {
+
+	return r.db.
+		Model(&models.Category{}).
+		Where("id = ?", category.ID).
+		Updates(map[string]interface{}{
+			"name":        category.Name,
+			"slug":        category.Slug,
+			"description": category.Description,
+			"status":      category.Status,
+			"sort_order":  category.SortOrder,
+		}).Error
 }
 
 func (r *BaseRepository[T]) Delete(id uint) error {

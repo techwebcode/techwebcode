@@ -30,7 +30,7 @@ func (s *CategoryService) GetByID(id uint) (*models.Category, error) {
 }
 
 func (s *CategoryService) Update(category *models.Category) error {
-	return s.repo.Update(category)
+	return s.repo.UpdateCategory(category)
 }
 
 func (s *CategoryService) Delete(id uint) error {

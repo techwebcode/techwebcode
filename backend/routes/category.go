@@ -17,5 +17,7 @@ func RegisterCategoryAdminRoutes(router *gin.RouterGroup, controller *controller
 
 	router.POST("/categories", controller.CreateCategory)
 
+	router.PUT("/categories/:id", controller.UpdateCategory)
+
 	router.DELETE("/categories/:id", controller.DeleteCategory)
 }

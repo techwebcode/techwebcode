@@ -9,12 +9,16 @@ import (
 type Article struct {
 	ID uint `gorm:"primaryKey" json:"id"`
 
+	// Relations
 	CategoryID uint     `gorm:"not null;index" json:"category_id"`
-	Category   Category `gorm:"foreignKey:CategoryID"`
-	Tags       []Tag    `gorm:"many2many:article_tags;" json:"tags"`
+	Category   Category `gorm:"foreignKey:CategoryID" json:"category"`
 
-	Title string `gorm:"type:varchar(255);not null" json:"title"`
-	Slug  string `gorm:"type:varchar(255);uniqueIndex;not null" json:"slug"`
+	Tags []Tag `gorm:"many2many:article_tags;" json:"tags"`
+
+	// Content
+	Title string `gorm:"size:255;not null" json:"title"`
+
+	Slug string `gorm:"size:255;uniqueIndex;not null" json:"slug"`
 
 	Excerpt string `gorm:"type:text" json:"excerpt"`
 
@@ -22,27 +26,35 @@ type Article struct {
 
 	ContentHTML string `gorm:"type:longtext" json:"content_html"`
 
-	FeaturedImage string `gorm:"type:varchar(255)" json:"featured_image"`
+	FeaturedImage string `gorm:"size:500" json:"featured_image"`
 
-	SeoTitle string `gorm:"type:varchar(255)" json:"seo_title"`
+	// SEO
+	SeoTitle string `gorm:"size:70" json:"seo_title"`
 
-	SeoDescription string `gorm:"type:text" json:"seo_description"`
+	SeoDescription string `gorm:"size:160" json:"seo_description"`
 
-	CanonicalURL string `gorm:"type:varchar(500)" json:"canonical_url"`
+	CanonicalURL string `gorm:"size:500" json:"canonical_url"`
 
-	ReadingTime int `gorm:"default:1" json:"reading_time"`
+	MetaKeywords string `gorm:"size:255" json:"meta_keywords"`
 
-	ViewCount int64 `gorm:"default:0" json:"view_count"`
+	Robots string `gorm:"size:30;default:index,follow" json:"robots"`
+
+	// Publish
+	Status string `gorm:"type:enum('draft','published','scheduled');default:'draft'" json:"status"`
 
 	IsFeatured bool `gorm:"default:false" json:"is_featured"`
 
-	Status string `gorm:"type:enum('draft','published');default:'draft'" json:"status"`
-
 	PublishedAt *time.Time `json:"published_at"`
 
-	CreatedAt time.Time
+	// Analytics
+	ViewCount int64 `gorm:"default:0" json:"view_count"`
 
-	UpdatedAt time.Time
+	ReadingTime int `gorm:"default:1" json:"reading_time"`
 
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	// Audit
+	CreatedAt time.Time `json:"created_at"`
+
+	UpdatedAt time.Time `json:"updated_at"`
+
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
