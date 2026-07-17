@@ -1,12 +1,11 @@
 "use client";
 
-import ArticleTable from "@/components/category/ArticleTable";
+import ArticleTable from "@/components/article/ArticleTable";
 import PageToolbar from "@/components/common/PageToolbar";
 import { AppCard } from "@/components/ui";
 import { useArticles } from "@/hooks/useArticles";
 import { useState } from "react";
 import { Article } from "@/types/article";
-import CategoryModal from "@/components/category/CategoryModal";
 import ArticleModal from "@/components/article/ArticleModal";
 
 export default function ArticlesPage() {

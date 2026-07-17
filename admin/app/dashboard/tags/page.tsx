@@ -4,17 +4,15 @@ import { useState } from "react";
 
 import PageToolbar from "@/components/common/PageToolbar";
 
-import CategoryModal from "@/components/category/CategoryModal";
-import DeleteCategoryDialog from "@/components/category/DeleteCategoryDialog";
-
+import TagModal from "@/components/tag/TagModal";
 import AppCard from "@/components/ui/AppCard";
 import DataTable from "@/components/ui/DataTable";
 
-import { categoryColumns } from "@/components/category/columns";
+import { TagColumns } from "@/components/tag/Columns";
 
-import { useCategories } from "@/hooks/useCategories";
+import { useTags } from "@/hooks/useTags";
 
-import { Category } from "@/types/category";
+import { Tag } from "@/types/tag";
 
 export default function CategoriesPage() {
 
@@ -26,15 +24,15 @@ export default function CategoriesPage() {
 
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const [selectedCategory, setSelectedCategory] =
-        useState<Category | null>(null);
+    const [selectedTag, setSelectedTag] =
+        useState<Tag | null>(null);
 
     const {
         data,
         isLoading,
         isFetching,
         refetch,
-    } = useCategories(
+    } = useTags(
         page,
         20,
         search
@@ -45,14 +43,14 @@ export default function CategoriesPage() {
         <div className="space-y-6 p-6">
 
             <PageToolbar
-                title="Categories"
+                title="Tags"
                 search={search}
-                searchPlaceholder="Search categories..."
+                searchPlaceholder="Search tag..."
                 onSearchChange={setSearch}
-                addLabel="Add Category"
+                addLabel="Add Tag"
                 onAdd={() => {
 
-                    setSelectedCategory(null);
+                    setSelectedTag(null);
 
                     setOpen(true);
 
@@ -61,39 +59,39 @@ export default function CategoriesPage() {
                 loading={isFetching}
             />
 
-            <CategoryModal
+            <TagModal
                 open={open}
-                category={selectedCategory}
+                tag={selectedTag}
                 onClose={() => {
 
                     setOpen(false);
 
-                    setSelectedCategory(null);
+                    setSelectedTag(null);
 
                 }}
             />
 
-            <DeleteCategoryDialog
+            {/* <DeleteCategoryDialog
                 open={deleteOpen}
-                category={selectedCategory}
+                category={selectedTag}
                 onClose={() => {
 
                     setDeleteOpen(false);
 
-                    setSelectedCategory(null);
+                    setSelectedTag(null);
 
                 }}
-            />
+            /> */}
 
             <AppCard>
 
-                <DataTable<Category>
+                <DataTable<Tag>
 
-                    columns={categoryColumns({
+                    columns={TagColumns({
 
                         onEdit(category) {
 
-                            setSelectedCategory(category);
+                            setSelectedTag(category);
 
                             setOpen(true);
 
@@ -101,7 +99,7 @@ export default function CategoriesPage() {
 
                         onDelete(category) {
 
-                            setSelectedCategory(category);
+                            setSelectedTag(category);
 
                             setDeleteOpen(true);
 

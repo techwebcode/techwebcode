@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
+
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+
+    --primary: 37 99 235;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 241 245 249;
+    --secondary-foreground: 15 23 42;
+
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+
+    --accent: 241 245 249;
+    --accent-foreground: 15 23 42;
+
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 37 99 235;
+
+    --radius: 0.9rem;
+}
+
+.dark {
+
+    --background: 2 6 23;
+    --foreground: 248 250 252;
+
+    --card: 15 23 42;
+    --card-foreground: 248 250 252;
+
+    --popover: 15 23 42;
+    --popover-foreground: 248 250 252;
+
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 30 41 59;
+    --secondary-foreground: 248 250 252;
+
+    --muted: 30 41 59;
+    --muted-foreground: 148 163 184;
+
+    --accent: 30 41 59;
+    --accent-foreground: 248 250 252;
+
+    --destructive: 220 38 38;
+    --destructive-foreground: 255 255 255;
+
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 59 130 246;
+}
+
+* {
+    border-color: rgb(var(--border));
+}
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+body {
+
+    background: rgb(var(--background));
+
+    color: rgb(var(--foreground));
+
+    font-family: var(--font-geist-sans);
+
+    min-height: 100vh;
+
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
+
+}
+
+code,
+pre {
+
+    font-family: var(--font-geist-mono);
+
+}
+
+::selection {
+
+    background: rgb(var(--primary));
+
+    color: white;
+
+}
+
+img {
+
+    display: block;
+
+    max-width: 100%;
+
+    height: auto;
+
+}
+
+a {
+
+    text-decoration: none;
+
+    transition: all .25s ease;
+
+}
+
+button {
+
+    cursor: pointer;
+
+}
+
+::-webkit-scrollbar {
+
+    width: 10px;
+
+    height: 10px;
+
+}
+
+::-webkit-scrollbar-track {
+
+    background: rgb(var(--muted));
+
+}
+
+::-webkit-scrollbar-thumb {
+
+    background: rgb(var(--border));
+
+    border-radius: 999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+    background: rgb(var(--muted-foreground));
+
+}
+
+/* ---------- Container ---------- */
+
+.container {
+
+    width: 100%;
+
+    max-width: 1280px;
+
+    margin-inline: auto;
+
+    padding-inline: 1.5rem;
+
+}
+
+/* ---------- Prose ---------- */
+
+.prose {
+
+    max-width: none;
+
+}
+
+.prose h1 {
+
+    font-size: 2.5rem;
+
+    font-weight: 700;
+
+    margin-top: 2rem;
+
+    margin-bottom: 1rem;
+
+}
+
+.prose h2 {
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin-top: 2rem;
+
+    margin-bottom: 1rem;
+
+}
+
+.prose h3 {
+
+    font-size: 1.5rem;
+
+    font-weight: 600;
+
+    margin-top: 1.5rem;
+
+    margin-bottom: .75rem;
+
+}
+
+.prose p {
+
+    line-height: 1.9;
+
+    margin-bottom: 1.2rem;
+
+}
+
+.prose img {
+
+    border-radius: 1rem;
+
+    margin: 2rem auto;
+
+}
+
+.prose pre {
+
+    overflow-x: auto;
+
+    border-radius: 1rem;
+
+    padding: 1rem;
+
+    background: rgb(15 23 42);
+
+    color: white;
+
+}
+
+.prose blockquote {
+
+    border-left: 4px solid rgb(var(--primary));
+
+    padding-left: 1rem;
+
+    color: rgb(var(--muted-foreground));
+
+    margin: 2rem 0;
+
+}
+
+.prose table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.prose table th,
+.prose table td {
+
+    border: 1px solid rgb(var(--border));
+
+    padding: .75rem;
+
+}
+
+/* ---------- Animations ---------- */
+
+.fade-in {
+
+    animation: fade .35s ease;
+
+}
+
+@keyframes fade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}

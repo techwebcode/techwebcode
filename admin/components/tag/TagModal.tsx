@@ -1,28 +1,36 @@
 "use client";
 
-import { Article } from "@/types/article";
+import { Tag } from "@/types/tag";
 
 import AppModal from "@/components/ui/AppModal";
-import ArticleForm from "./ArticleForm";
 
-import { useCreateArticle } from "@/hooks/useCreateArticle";
-import { useUpdateArticle } from "@/hooks/useUpdateArticle";
+import TagForm from "../tag/TagForm";
 
-interface ArticleModalProps {
+import { useCreateTag, useUpdateTag } from "@/hooks/useTags";
+
+interface Props {
+
     open: boolean;
-    article?: Article | null;
+
+    tag?: Tag | null;
+
     onClose: () => void;
+
 }
 
-export default function ArticleModal({
+export default function TagModal({
+
     open,
-    article,
+
+    tag,
+
     onClose,
-}: ArticleModalProps) {
 
-    const createMutation = useCreateArticle();
+}: Props) {
 
-    const updateMutation = useUpdateArticle();
+    const createMutation = useCreateTag();
+
+    const updateMutation = useUpdateTag();
 
     const loading =
         createMutation.isPending ||
@@ -30,11 +38,11 @@ export default function ArticleModal({
 
     const handleSubmit = (values: any) => {
 
-        if (article) {
+        if (tag) {
 
             updateMutation.mutate(
                 {
-                    id: article.id,
+                    id: tag.id,
                     ...values,
                 },
                 {
@@ -62,16 +70,15 @@ export default function ArticleModal({
         <AppModal
             open={open}
             title={
-                article
-                    ? "Edit Article"
-                    : "Create Article"
+                tag
+                    ? "Edit Tag"
+                    : "Create Tag"
             }
             onClose={onClose}
-            maxWidth="5xl"
         >
 
-            <ArticleForm
-                article={article}
+            <TagForm
+                tag={tag}
                 loading={loading}
                 onSubmit={handleSubmit}
             />
