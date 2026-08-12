@@ -1,210 +1,64 @@
-import Link from "next/link";
+import HeroActions from "./HeroActions";
+import HeroSearch from "./HeroSearch";
+import HeroStats from "./HeroStats";
+import HeroTopics from "./HeroTopics";
 
-import { ArrowRight, BookOpen } from "lucide-react";
+const topics = [
+  "Go",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Docker",
+  "Flutter",
+  "Kubernetes",
+  "AI",
+];
 
-import Container from "@/components/layout/Container";
-
-import { Button } from "@/components/ui/button";
+const stats = [
+  { value: "Free Tools", title: "100% Client-Side" },
+  { value: "Practical Guides", title: "Engineering Solutions" },
+  { value: "Zero Latency", title: "Privacy First" },
+  { value: "No Signup", title: "Instant Execution" },
+];
 
 export default function HeroSection() {
+  return (
+    <section className="py-12 lg:py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <span className="inline-flex rounded-full border bg-muted px-4 py-1 text-xs font-semibold">
+              ⚡ Learn • Solve • Build
+            </span>
 
-    return (
+            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              Build Better Software
+              <span className="block text-primary">
+                with Confidence.
+              </span>
+            </h1>
 
-        <section className="relative overflow-hidden py-24">
+            <p className="mt-5 max-w-xl text-base text-muted-foreground leading-relaxed">
+              Master modern software development with practical tutorials,
+              developer tools, troubleshooting guides, and curated learning resources.
+            </p>
 
-            {/* Background */}
-
-            <div className="absolute inset-0 -z-10">
-
-                <div className="absolute left-1/2 top-0 h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
-
+            <div className="mt-8">
+              <HeroSearch placeholder="Search tutorials, tools, technologies..." />
             </div>
 
-            <Container>
-
-                <div className="mx-auto max-w-4xl text-center">
-
-                    <div
-                        className="
-                            inline-flex
-                            items-center
-                            gap-2
-                            rounded-full
-                            border
-                            bg-muted
-                            px-4
-                            py-2
-                            text-sm
-                            font-medium
-                        "
-                    >
-
-                        <BookOpen className="h-4 w-4 text-primary" />
-
-                        Learn Programming the Right Way
-
-                    </div>
-
-                    <h1
-                        className="
-                            mt-8
-                            text-5xl
-                            font-extrabold
-                            tracking-tight
-                            md:text-7xl
-                        "
-                    >
-
-                        Build Better Software
-
-                        <span className="block text-primary">
-
-                            With Practical Tutorials
-
-                        </span>
-
-                    </h1>
-
-                    <p
-                        className="
-                            mx-auto
-                            mt-8
-                            max-w-2xl
-                            text-lg
-                            leading-8
-                            text-muted-foreground
-                        "
-                    >
-
-                        Learn Backend, Frontend, DevOps,
-                        Cloud, AI and Software Engineering
-                        through production-ready examples,
-                        real-world projects and in-depth
-                        guides.
-
-                    </p>
-
-                    <div
-                        className="
-                            mt-10
-                            flex
-                            flex-wrap
-                            justify-center
-                            gap-4
-                        "
-                    >
-
-                        <Button
-                            size="lg"
-                        >
-
-                            <Link href="/articles">
-
-                                Explore Articles
-
-                                <ArrowRight className="ml-2 h-4 w-4" />
-
-                            </Link>
-
-                        </Button>
-
-                        <Button
-                            size="lg"
-                            variant="outline"
-                        >
-
-                            <Link href="/categories">
-
-                                Browse Categories
-
-                            </Link>
-
-                        </Button>
-
-                    </div>
-
-                    <div
-                        className="
-                            mt-16
-                            grid
-                            grid-cols-2
-                            gap-8
-                            md:grid-cols-4
-                        "
-                    >
-
-                        <div>
-
-                            <h3 className="text-3xl font-bold">
-
-                                500+
-
-                            </h3>
-
-                            <p className="mt-2 text-sm text-muted-foreground">
-
-                                Tutorials
-
-                            </p>
-
-                        </div>
-
-                        <div>
-
-                            <h3 className="text-3xl font-bold">
-
-                                30+
-
-                            </h3>
-
-                            <p className="mt-2 text-sm text-muted-foreground">
-
-                                Categories
-
-                            </p>
-
-                        </div>
-
-                        <div>
-
-                            <h3 className="text-3xl font-bold">
-
-                                100K+
-
-                            </h3>
-
-                            <p className="mt-2 text-sm text-muted-foreground">
-
-                                Readers
-
-                            </p>
-
-                        </div>
-
-                        <div>
-
-                            <h3 className="text-3xl font-bold">
-
-                                24/7
-
-                            </h3>
-
-                            <p className="mt-2 text-sm text-muted-foreground">
-
-                                Learning
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </Container>
-
-        </section>
-
-    );
-
+            <div className="mt-6">
+              <HeroActions />
+            </div>
+
+            <div className="mt-8">
+              <HeroTopics topics={topics} />
+            </div>
+          </div>
+
+          <HeroStats stats={stats} />
+        </div>
+      </div>
+    </section>
+  );
 }

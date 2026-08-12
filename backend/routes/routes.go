@@ -24,6 +24,11 @@ func Setup(
 		boot.ArticleController,
 	)
 
+	RegisterToolPublicRoutes(
+		public,
+		boot.ToolController,
+	)
+
 	admin := router.Group("/api/v1/admin")
 
 	RegisterAdminRoutes(admin)
@@ -36,6 +41,11 @@ func Setup(
 	RegisterArticleAdminRoutes(
 		admin,
 		boot.ArticleController,
+	)
+
+	RegisterToolAdminRoutes(
+		admin,
+		boot.ToolController,
 	)
 
 	RegisterUploadRoutes(

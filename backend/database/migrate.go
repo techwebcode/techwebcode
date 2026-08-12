@@ -13,6 +13,8 @@ func Migrate() {
 		&models.Article{},
 		&models.Tag{},
 		&models.Media{},
+		&models.ToolCategory{},
+		&models.Tool{},
 	)
 
 	if err != nil {

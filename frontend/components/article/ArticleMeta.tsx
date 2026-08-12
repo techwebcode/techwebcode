@@ -7,67 +7,42 @@ import {
 import { formatDate } from "@/lib/utils";
 
 interface Props {
-
     readonly publishedAt?: string | null;
-
-    readonly createdAt: string;
-
-    readonly readingTime: number;
-
-    readonly viewCount: number;
-
+    readonly createdAt?: string;
+    readonly readingTime?: number;
+    readonly viewCount?: number;
     readonly className?: string;
-
 }
 
 export default function ArticleMeta({
-
     publishedAt,
-
     createdAt,
-
-    readingTime,
-
-    viewCount,
-
+    readingTime = 5,
+    viewCount = 0,
     className,
-
 }: Readonly<Props>) {
+    const dateStr = publishedAt || createdAt || new Date().toISOString();
+    const count = typeof viewCount === "number" ? viewCount : 0;
+    const time = typeof readingTime === "number" ? readingTime : 5;
 
     return (
-
         <div
             className={`flex flex-wrap items-center gap-5 text-sm text-muted-foreground ${className ?? ""}`}
         >
-
             <div className="flex items-center gap-2">
-
                 <Calendar className="h-4 w-4" />
-
-                {formatDate(
-                    publishedAt ?? createdAt
-                )}
-
+                {formatDate(dateStr)}
             </div>
 
             <div className="flex items-center gap-2">
-
                 <Clock3 className="h-4 w-4" />
-
-                {readingTime} min read
-
+                {time} min read
             </div>
 
             <div className="flex items-center gap-2">
-
                 <Eye className="h-4 w-4" />
-
-                {viewCount.toLocaleString()}
-
+                {count.toLocaleString()}
             </div>
-
         </div>
-
     );
-
 }

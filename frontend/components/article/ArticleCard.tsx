@@ -1,12 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-
-import { Clock3, Eye, Calendar } from "lucide-react";
-
 import { Article } from "@/types/article";
-
-import { formatDate } from "@/lib/utils";
-
 import {
     Card,
     CardContent,
@@ -21,9 +15,13 @@ interface Props {
 export default function ArticleCard({
     article,
 }: Readonly<Props>) {
+    if (!article) return null;
+
+    const categoryName = article.category?.name || "General";
+    const categorySlug = article.category?.slug || "general";
+
     return (
         <Link href={`/articles/${article.slug}`}>
-
             <Card
                 className="
                     group
@@ -35,15 +33,13 @@ export default function ArticleCard({
                     hover:shadow-xl
                 "
             >
-
-                <div className="relative aspect-[16/9] overflow-hidden">
-
+                <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                     <Image
                         src={
                             article.featured_image ||
                             "/images/article-placeholder.jpg"
                         }
-                        alt={article.title}
+                        alt={article.title || "Article Image"}
                         fill
                         className="
                             object-cover
@@ -52,15 +48,13 @@ export default function ArticleCard({
                             group-hover:scale-105
                         "
                     />
-
                 </div>
 
                 <CardContent className="space-y-4 p-5">
-
-                <CategoryBadge
-                    name={article.category.name}
-                    slug={article.category.slug}
-                />
+                    <CategoryBadge
+                        name={categoryName}
+                        slug={categorySlug}
+                    />
                     <h2
                         className="
                             line-clamp-2
@@ -84,21 +78,13 @@ export default function ArticleCard({
                         {article.excerpt}
                     </p>
                     <ArticleMeta
-
                         publishedAt={article.published_at}
-
                         createdAt={article.created_at}
-
                         readingTime={article.reading_time}
-
                         viewCount={article.view_count}
-
                     />
-
                 </CardContent>
-
             </Card>
-
         </Link>
     );
 }

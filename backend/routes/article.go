@@ -14,6 +14,16 @@ func RegisterArticlePublicRoutes(router *gin.RouterGroup, controller *controller
 	)
 
 	router.GET(
+		"/articles/featured",
+		controller.GetFeaturedArticles,
+	)
+
+	router.GET(
+		"/articles/trending",
+		controller.GetTrendingArticles,
+	)
+
+	router.GET(
 		"/articles/:slug",
 		controller.GetArticle,
 	)

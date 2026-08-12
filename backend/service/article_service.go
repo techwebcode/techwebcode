@@ -120,6 +120,20 @@ func (s *ArticleService) GetAll(
 	)
 }
 
+func (s *ArticleService) GetFeatured(limit int) ([]models.Article, error) {
+	if limit <= 0 {
+		limit = 5
+	}
+	return s.articleRepo.GetFeatured(limit)
+}
+
+func (s *ArticleService) GetTrending(limit int) ([]models.Article, error) {
+	if limit <= 0 {
+		limit = 5
+	}
+	return s.articleRepo.GetTrending(limit)
+}
+
 func (s *ArticleService) GetBySlug(slug string) (*models.Article, error) {
 
 	return s.articleRepo.GetBySlug(slug)

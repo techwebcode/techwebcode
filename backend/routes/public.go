@@ -8,9 +8,4 @@ import (
 func RegisterPublicRoutes(api *gin.RouterGroup) {
 
 	api.GET("/health", controller.Health)
-
-	// Future routes
-	// api.GET("/articles", controller.GetArticles)
-	// api.GET("/categories", controller.GetCategories)
-	// api.GET("/search", controller.Search)
 }

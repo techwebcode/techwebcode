@@ -80,6 +80,32 @@ func (a *ArticleController) GetArticles(c *gin.Context) {
 	)
 }
 
+func (a *ArticleController) GetFeaturedArticles(c *gin.Context) {
+	limitStr := c.DefaultQuery("limit", "5")
+	limit, _ := strconv.Atoi(limitStr)
+
+	articles, err := a.service.GetFeatured(limit)
+	if err != nil {
+		utils.InternalServerError(c, err)
+		return
+	}
+
+	utils.Success(c, "Featured articles fetched successfully", articles)
+}
+
+func (a *ArticleController) GetTrendingArticles(c *gin.Context) {
+	limitStr := c.DefaultQuery("limit", "5")
+	limit, _ := strconv.Atoi(limitStr)
+
+	articles, err := a.service.GetTrending(limit)
+	if err != nil {
+		utils.InternalServerError(c, err)
+		return
+	}
+
+	utils.Success(c, "Trending articles fetched successfully", articles)
+}
+
 func (a *ArticleController) GetArticle(c *gin.Context) {
 
 	slug := c.Param("slug")

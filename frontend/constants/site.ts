@@ -1,82 +1,61 @@
 export const SITE = {
+  name: "TechWebCode",
 
+  shortName: "TWC",
+
+  title: "TechWebCode — Developer Tools, Tutorials & Programming Guides",
+
+  description:
+    "Free developer tools, practical programming tutorials, troubleshooting guides, and curated learning roadmaps for developers.",
+
+  url: "https://techwebcode.com",
+
+  logo: "/logo.svg",
+
+  favicon: "/favicon.ico",
+
+  defaultImage: "/images/og-image.jpg",
+
+  locale: "en_US",
+
+  language: "en",
+
+  keywords: [
+    "Developer Tools",
+    "JSON Formatter",
+    "JWT Decoder",
+    "Base64 Encoder",
+    "UUID Generator",
+    "Timestamp Converter",
+    "Regex Tester",
+    "SQL Formatter",
+    "Programming",
+    "Go",
+    "Java",
+    "Python",
+    "Node.js",
+    "Next.js",
+    "React",
+    "Flutter",
+    "Docker",
+    "Kubernetes",
+    "MySQL",
+    "PostgreSQL",
+    "Software Engineering",
+    "TechWebCode",
+  ],
+
+  author: {
     name: "TechWebCode",
 
-    shortName: "TWC",
-
-    title: "TechWebCode",
-
-    description:
-        "Learn Programming, Backend, Frontend, DevOps, Cloud, AI and Software Engineering with practical tutorials.",
+    email: "contact@techwebcode.com",
 
     url: "https://techwebcode.com",
+  },
 
-    logo: "/logo.svg",
+  company: {
+    name: "TechWebCode",
 
-    favicon: "/favicon.ico",
-
-    defaultImage: "/images/og-image.jpg",
-
-    locale: "en_US",
-
-    language: "en",
-
-    keywords: [
-
-        "Programming",
-
-        "Go",
-
-        "Java",
-
-        "PHP",
-
-        "Python",
-
-        "Node.js",
-
-        "Next.js",
-
-        "React",
-
-        "Flutter",
-
-        "Docker",
-
-        "Kubernetes",
-
-        "MySQL",
-
-        "Redis",
-
-        "MongoDB",
-
-        "PostgreSQL",
-
-        "ElasticSearch",
-
-        "Software Engineering",
-
-        "TechWebCode",
-
-    ],
-
-    author: {
-
-        name: "TechWebCode",
-
-        email: "contact@techwebcode.com",
-
-        url: "https://techwebcode.com",
-
-    },
-
-    company: {
-
-        name: "TechWebCode",
-
-        founded: 2026,
-
-    },
-
+    founded: 2026,
+  },
 } as const;

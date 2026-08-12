@@ -2,6 +2,7 @@ import {
     Home,
     Newspaper,
     FolderOpen,
+    Wrench,
     Info,
     Mail,
 } from "lucide-react";
@@ -16,6 +17,11 @@ export const NAVIGATION = [
         title: "Articles",
         href: "/articles",
         icon: Newspaper,
+    },
+    {
+        title: "Tools",
+        href: "/tools",
+        icon: Wrench,
     },
     {
         title: "Categories",

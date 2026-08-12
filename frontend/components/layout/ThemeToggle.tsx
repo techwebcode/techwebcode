@@ -52,13 +52,13 @@ export default function ThemeToggle() {
 
         <DropdownMenu>
 
-            <DropdownMenuTrigger>
-
+            <DropdownMenuTrigger
+                render={
                 <Button variant="ghost" size="icon">
                     <Icon />
                 </Button>
-
-            </DropdownMenuTrigger>
+                } 
+            />
 
             <DropdownMenuContent
                 align="end"

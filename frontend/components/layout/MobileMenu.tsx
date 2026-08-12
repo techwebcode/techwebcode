@@ -32,6 +32,14 @@ const menus = [
 
     {
 
+        title: "tools",
+
+        href: "/",
+
+    },
+
+    {
+
         title: "Articles",
 
         href: "/articles",
@@ -62,17 +70,8 @@ export default function MobileMenu() {
 
         <Sheet>
 
-            <SheetTrigger>
-
-                <Button
-                    variant="ghost"
-                    size="icon"
-                >
-
-                    <Menu className="h-5 w-5" />
-
-                </Button>
-
+            <SheetTrigger className="inline-flex items-center justify-center rounded-md">
+                <Menu className="h-5 w-5" />
             </SheetTrigger>
 
             <SheetContent side="left">

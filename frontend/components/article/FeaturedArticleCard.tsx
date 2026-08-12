@@ -1,123 +1,69 @@
 import Image from "next/image";
 import Link from "next/link";
-
-import {
-    ArrowRight,
-    Calendar,
-    Clock3,
-    Eye,
-} from "lucide-react";
-
+import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
 import { Article } from "@/types/article";
-import { formatDate } from "@/lib/utils";
 import ArticleMeta from "./ArticleMeta";
 import CategoryBadge from "./CategoryBadge";
 
 interface Props {
-    article: Article;
+  article: Article;
 }
 
 export default function FeaturedArticleCard({
-    article,
+  article,
 }: Readonly<Props>) {
-    return (
-        <Card
-            className="
-                group
-                overflow-hidden
-                border-0
-                shadow-lg
-                transition-all
-                duration-300
-                hover:shadow-2xl
-            "
-        >
-            <Link href={`/articles/${article.slug}`}>
+  if (!article) return null;
 
-                <div className="relative aspect-[16/9] overflow-hidden">
+  const categoryName = article.category?.name || "Featured";
+  const categorySlug = article.category?.slug || "featured";
 
-                    <Image
-                        src={
-                            article.featured_image ||
-                            "/images/article-placeholder.jpg"
-                        }
-                        alt={article.title}
-                        fill
-                        className="
-                            object-cover
-                            transition-transform
-                            duration-500
-                            group-hover:scale-105
-                        "
-                    />
+  return (
+    <Card className="group overflow-hidden border-0 shadow-lg transition-all duration-300 hover:shadow-2xl">
+      <Link href={`/articles/${article.slug}`}>
+        <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+          <Image
+            src={
+              article.featured_image ||
+              "/images/article-placeholder.jpg"
+            }
+            alt={article.title || "Featured Article"}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-                    <div className="absolute bottom-0 left-0 w-full p-8">
+          <div className="absolute bottom-0 left-0 w-full p-6 md:p-8">
+            <CategoryBadge
+              name={categoryName}
+              slug={categorySlug}
+              clickable={false}
+            />
 
-                        <CategoryBadge
-                            name={article.category.name}
-                            slug={article.category.slug}
-                        />
+            <h2 className="mt-3 text-2xl font-bold leading-tight text-white md:text-3xl lg:text-4xl">
+              {article.title}
+            </h2>
 
-                        <h2
-                            className="
-                                mt-4
-                                text-4xl
-                                font-bold
-                                leading-tight
-                                text-white
-                            "
-                        >
-                            {article.title}
-                        </h2>
+            <p className="mt-3 line-clamp-2 max-w-2xl text-xs md:text-sm text-white/80 leading-relaxed">
+              {article.excerpt}
+            </p>
 
-                        <p
-                            className="
-                                mt-4
-                                line-clamp-2
-                                max-w-2xl
-                                text-white/80
-                            "
-                        >
-                            {article.excerpt}
-                        </p>
+            <ArticleMeta
+              className="mt-4 text-white/80"
+              publishedAt={article.published_at}
+              createdAt={article.created_at}
+              readingTime={article.reading_time}
+              viewCount={article.view_count}
+            />
 
-                        <ArticleMeta
-
-                            className="mt-6 text-white/80"
-
-                            publishedAt={article.published_at}
-
-                            createdAt={article.created_at}
-
-                            readingTime={article.reading_time}
-
-                            viewCount={article.view_count}
-
-                        />
-
-                        <Button
-                            className="mt-8"
-                            size="lg"
-                        >
-
-                            Read Article
-
-                            <ArrowRight className="ml-2 h-4 w-4" />
-
-                        </Button>
-
-                    </div>
-
-                </div>
-
-            </Link>
-
-        </Card>
-    );
+            <span className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow transition hover:opacity-90">
+              <span>Read Article</span>
+              <ArrowRight className="h-4 w-4" />
+            </span>
+          </div>
+        </div>
+      </Link>
+    </Card>
+  );
 }

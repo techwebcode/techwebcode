@@ -12,10 +12,16 @@ func NewArticleRepository() *ArticleRepository {
 }
 
 func (r *ArticleRepository) Create(article *models.Article) error {
+	if database.DB == nil {
+		return ErrDatabaseNil
+	}
 	return database.DB.Create(article).Error
 }
 
 func (r *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
+	if database.DB == nil {
+		return nil, ErrDatabaseNil
+	}
 	var article models.Article
 
 	err := database.DB.
@@ -31,6 +37,9 @@ func (r *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 }
 
 func (r *ArticleRepository) GetByID(id uint) (*models.Article, error) {
+	if database.DB == nil {
+		return nil, ErrDatabaseNil
+	}
 	var article models.Article
 
 	err := database.DB.First(&article, id).Error
@@ -43,11 +52,16 @@ func (r *ArticleRepository) GetByID(id uint) (*models.Article, error) {
 }
 
 func (r *ArticleRepository) Delete(id uint) error {
+	if database.DB == nil {
+		return ErrDatabaseNil
+	}
 	return database.DB.Delete(&models.Article{}, id).Error
 }
 
 func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID uint) ([]models.Article, int64, error) {
-
+	if database.DB == nil {
+		return nil, 0, ErrDatabaseNil
+	}
 	var articles []models.Article
 	var total int64
 
@@ -65,10 +79,42 @@ func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID ui
 
 	err := query.
 		Preload("Category").
-		Order("published_at DESC").
+		Order("published_at DESC, id DESC").
 		Limit(limit).
 		Offset((page - 1) * limit).
 		Find(&articles).Error
 
 	return articles, total, err
+}
+
+func (r *ArticleRepository) GetFeatured(limit int) ([]models.Article, error) {
+	if database.DB == nil {
+		return nil, ErrDatabaseNil
+	}
+	var articles []models.Article
+
+	err := database.DB.
+		Preload("Category").
+		Where("is_featured = ? AND status = ?", 1, "published").
+		Order("published_at DESC, id DESC").
+		Limit(limit).
+		Find(&articles).Error
+
+	return articles, err
+}
+
+func (r *ArticleRepository) GetTrending(limit int) ([]models.Article, error) {
+	if database.DB == nil {
+		return nil, ErrDatabaseNil
+	}
+	var articles []models.Article
+
+	err := database.DB.
+		Preload("Category").
+		Where("status = ?", "published").
+		Order("view_count DESC, id DESC").
+		Limit(limit).
+		Find(&articles).Error
+
+	return articles, err
 }
