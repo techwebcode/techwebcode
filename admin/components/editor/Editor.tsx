@@ -21,7 +21,7 @@ export default function Editor({
 }: Readonly<Props>) {
 
     const editor = useEditor({
-        extensions,
+        extensions: extensions as any,
 
         content: value || "",
 

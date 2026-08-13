@@ -180,12 +180,12 @@ func (r *ToolRepository) FindCategories(onlyActive bool) ([]models.ToolCategory,
 		return nil, ErrDatabaseNil
 	}
 	var categories []models.ToolCategory
-	query := database.DB.Model(&models.ToolCategory{})
+	db := database.DB.Table("tool_categories")
 	if onlyActive {
-		query = query.Where("status = ?", true)
+		db = db.Where("status = ?", 1)
 	}
 
-	err := query.Order("sort_order ASC, id DESC").Find(&categories).Error
+	err := db.Order("sort_order ASC, id DESC").Find(&categories).Error
 	return categories, err
 }
 

@@ -14,3 +14,7 @@ type ToolCategory struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
+
+func (ToolCategory) TableName() string {
+	return "tool_categories"
+}

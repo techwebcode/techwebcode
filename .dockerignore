@@ -1,0 +1,25 @@
+# Dependencies & local build artifacts
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/build
+**/out
+
+# Compiled local Go binaries (exact names)
+/backend/server
+/backend/server_app
+
+# Local environment secrets
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# OS & IDE temporary files
+**/.DS_Store
+**/.git
+**/.vscode
+**/.idea
+**/*.log

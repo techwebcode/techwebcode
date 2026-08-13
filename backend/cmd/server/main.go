@@ -10,6 +10,7 @@ import (
 	"github.com/techwebcode/techwebcode/backend/config"
 	"github.com/techwebcode/techwebcode/backend/database"
 	"github.com/techwebcode/techwebcode/backend/routes"
+	"github.com/techwebcode/techwebcode/backend/seeders"
 )
 
 func main() {
@@ -19,37 +20,59 @@ func main() {
 	database.Connect()
 	database.Migrate()
 
+	if err := seeders.Seed(database.DB); err != nil {
+		log.Printf("[Warning] Automatic database seeding failed: %v", err)
+	}
+
 	boot := bootstrap.New()
 
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{
-			config.Get("FRONTEND_URL"),
-		},
-		AllowMethods: []string{
-			"GET",
-			"POST",
-			"PUT",
-			"DELETE",
-			"OPTIONS",
-		},
-		AllowHeaders: []string{
-			"Origin",
-			"Content-Type",
-			"Accept",
-			"Authorization",
-			"X-Admin-Secret",
-		},
-		ExposeHeaders: []string{
-			"Content-Length",
-		},
-		AllowCredentials: true,
-	}))
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowHeaders = []string{
+		"Origin",
+		"Content-Type",
+		"Accept",
+		"Authorization",
+		"X-Admin-Secret",
+		"X-Requested-With",
+	}
+	corsConfig.AllowMethods = []string{
+		"GET",
+		"POST",
+		"PUT",
+		"PATCH",
+		"DELETE",
+		"OPTIONS",
+	}
+
+	router.Use(cors.New(corsConfig))
+
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "online",
+			"service": "TechWebCode Go Backend API",
+			"version": "1.0.0",
+			"endpoints": gin.H{
+				"health":           "/api/v1/health",
+				"tools":            "/api/v1/tools",
+				"tool_categories": "/api/v1/tools/categories",
+			},
+		})
+	})
 
 	routes.Setup(router, boot)
 	router.Static("/uploads", "./uploads")
 
-	log.Println("Server Started")
+	port := config.Get("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	router.Run(":" + config.Get("PORT"))
+	log.Printf("Server starting on 0.0.0.0:%s...\n", port)
+
+	if err := router.Run("0.0.0.0:" + port); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }

@@ -7,12 +7,17 @@ import (
 )
 
 // Seed is the central entry point for database seeders.
-// Categories are seeded first because tools depend on category IDs.
+// Categories are seeded first because tools and articles depend on category IDs.
 func Seed(db *gorm.DB) error {
 	log.Println("[Seeder] Starting database seeding process...")
 
 	if err := SeedToolCategories(db); err != nil {
 		log.Printf("[Seeder Error] ToolCategories seeding failed: %v", err)
+		return err
+	}
+
+	if err := SeedArticleCategories(db); err != nil {
+		log.Printf("[Seeder Error] ArticleCategories seeding failed: %v", err)
 		return err
 	}
 

@@ -69,15 +69,7 @@ func SeedToolCategories(db *gorm.DB) error {
 
 	for _, cat := range categories {
 		var existing models.ToolCategory
-		err := db.Where("slug = ?", cat.Slug).
-			Assign(models.ToolCategory{
-				Name:        cat.Name,
-				Icon:        cat.Icon,
-				Description: cat.Description,
-				SortOrder:   cat.SortOrder,
-				Status:      cat.Status,
-			}).
-			FirstOrCreate(&existing, models.ToolCategory{Slug: cat.Slug}).Error
+		err := db.Where("slug = ?", cat.Slug).Assign(cat).FirstOrCreate(&existing, models.ToolCategory{Slug: cat.Slug}).Error
 
 		if err != nil {
 			log.Printf("[Seeder Error] Failed to seed category %s: %v", cat.Slug, err)

@@ -37,9 +37,7 @@ export default function EditorToolbar({
 
         if (!url) return;
 
-        editor
-            .chain()
-            .focus()
+        (editor.chain().focus() as any)
             .setImage({ src: url })
             .run();
     };
@@ -58,18 +56,14 @@ export default function EditorToolbar({
 
         if (url === "") {
 
-            editor
-                .chain()
-                .focus()
+            (editor.chain().focus() as any)
                 .unsetLink()
                 .run();
 
             return;
         }
 
-        editor
-            .chain()
-            .focus()
+        (editor.chain().focus() as any)
             .setLink({
                 href: url,
                 target: "_blank",
@@ -87,7 +81,7 @@ export default function EditorToolbar({
                 size="icon"
                 variant="ghost"
                 onClick={() =>
-                    editor.chain().focus().undo().run()
+                    (editor.chain().focus() as any).undo().run()
                 }
             >
                 <Undo2 className="h-4 w-4" />
@@ -99,7 +93,7 @@ export default function EditorToolbar({
                 size="icon"
                 variant="ghost"
                 onClick={() =>
-                    editor.chain().focus().redo().run()
+                    (editor.chain().focus() as any).redo().run()
                 }
             >
                 <Redo2 className="h-4 w-4" />
@@ -119,9 +113,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleHeading({
                             level: 1,
                         })
@@ -143,9 +135,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleHeading({
                             level: 2,
                         })
@@ -167,9 +157,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleBold()
                         .run()
                 }
@@ -187,9 +175,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleItalic()
                         .run()
                 }
@@ -207,9 +193,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleUnderline()
                         .run()
                 }
@@ -227,9 +211,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleStrike()
                         .run()
                 }
@@ -247,9 +229,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleCodeBlock()
                         .run()
                 }
@@ -269,9 +249,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleBulletList()
                         .run()
                 }
@@ -289,9 +267,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleOrderedList()
                         .run()
                 }
@@ -309,9 +285,7 @@ export default function EditorToolbar({
                         : "ghost"
                 }
                 onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
+                    (editor.chain().focus() as any)
                         .toggleBlockquote()
                         .run()
                 }
