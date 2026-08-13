@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://techwebcode.com";
+  const baseUrl = "https://techwebcode.in";
   const now = new Date().toISOString();
 
   // Static Routes

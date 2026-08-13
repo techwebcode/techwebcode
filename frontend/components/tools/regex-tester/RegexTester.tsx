@@ -10,10 +10,10 @@ interface Props {
   tool: Tool;
 }
 
-const SAMPLE_TEXT = `John Doe (john.doe@techwebcode.com)
+const SAMPLE_TEXT = `John Doe (john.doe@techwebcode.in)
 Alice Smith <alice@example.org>
 Invalid Email: user@domain@com
-Support: support@techwebcode.com`;
+Support: support@techwebcode.in`;
 
 interface MatchItem {
   index: number;

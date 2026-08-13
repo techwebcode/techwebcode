@@ -12,24 +12,24 @@ func SeedToolCategories(db *gorm.DB) error {
 		{
 			Name:        "JSON",
 			Slug:        "json",
-			Icon:        "Code2",
+			Icon:        "FileCode",
 			Description: "Free online tools for formatting, validating, beautifying, and minifying JSON data structures.",
 			SortOrder:   1,
-			Status:      true,
-		},
-		{
-			Name:        "Encoding",
-			Slug:        "encoding",
-			Icon:        "ArrowLeftRight",
-			Description: "Data encoding and decoding utilities for Base64, URL percent-encoding, and string conversion.",
-			SortOrder:   2,
 			Status:      true,
 		},
 		{
 			Name:        "Security",
 			Slug:        "security",
 			Icon:        "ShieldCheck",
-			Description: "Security utilities including JWT decoding, hash inspection, and token verification.",
+			Description: "Security utilities including JWT decoding, header inspection, and claim analysis.",
+			SortOrder:   2,
+			Status:      true,
+		},
+		{
+			Name:        "Encoding",
+			Slug:        "encoding",
+			Icon:        "ArrowLeftRight",
+			Description: "Data encoding and decoding utilities for Base64 and text conversions.",
 			SortOrder:   3,
 			Status:      true,
 		},
@@ -45,7 +45,7 @@ func SeedToolCategories(db *gorm.DB) error {
 			Name:        "Date & Time",
 			Slug:        "date-and-time",
 			Icon:        "Clock",
-			Description: "Unix Epoch timestamp conversion, ISO 8601 date parsing, and timezone tools.",
+			Description: "Unix Epoch timestamp conversion, ISO 8601 date parsing, and time conversion tools.",
 			SortOrder:   5,
 			Status:      true,
 		},
@@ -53,7 +53,7 @@ func SeedToolCategories(db *gorm.DB) error {
 			Name:        "Web",
 			Slug:        "web",
 			Icon:        "Globe",
-			Description: "Web development utilities including Regex pattern testing and URL parameter parsing.",
+			Description: "Web development utilities including URL percent-encoding and Regex pattern testing.",
 			SortOrder:   6,
 			Status:      true,
 		},
@@ -61,16 +61,8 @@ func SeedToolCategories(db *gorm.DB) error {
 			Name:        "Database",
 			Slug:        "database",
 			Icon:        "Database",
-			Description: "Database utilities for SQL query formatting, beautification, and schema inspection.",
+			Description: "Database utilities for SQL query formatting, beautification, and query cleanup.",
 			SortOrder:   7,
-			Status:      true,
-		},
-		{
-			Name:        "DevOps",
-			Slug:        "devops",
-			Icon:        "Terminal",
-			Description: "Configuration tools for YAML formatting, Kubernetes secrets, and cloud infrastructure.",
-			SortOrder:   8,
 			Status:      true,
 		},
 	}
@@ -93,6 +85,6 @@ func SeedToolCategories(db *gorm.DB) error {
 		}
 	}
 
-	log.Println("[Seeder] Successfully seeded tool categories")
+	log.Println("[Seeder] Successfully seeded initial 7 tool categories")
 	return nil
 }

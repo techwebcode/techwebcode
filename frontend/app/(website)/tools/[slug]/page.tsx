@@ -122,7 +122,7 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const { slug } = await params;
   const canonicalSlug = slug.includes("yaml") || slug.includes("k8s") ? "yaml-formatter" : slug.includes("json") ? "json-formatter" : slug;
-  const canonicalUrl = `https://techwebcode.com/tools/${canonicalSlug}`;
+  const canonicalUrl = `https://techwebcode.in/tools/${canonicalSlug}`;
 
   let tool: Tool | undefined;
 
@@ -199,7 +199,7 @@ export default async function ToolPage({
       priceCurrency: "USD",
     },
     description: tool.description || tool.shortDescription,
-    url: `https://techwebcode.com/tools/${tool.slug}`,
+    url: `https://techwebcode.in/tools/${tool.slug}`,
   };
 
   const breadcrumbItems = [
@@ -214,7 +214,7 @@ export default async function ToolPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      
+
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={breadcrumbItems} />
 

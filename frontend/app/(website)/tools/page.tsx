@@ -30,17 +30,18 @@ export default function ToolsPage() {
 
   return (
     <>
-      <ToolHero />
+      {/* Hero Section with Search & Reduced Spacing */}
+      <ToolHero onSearch={setSearch} />
 
-      <Container className="py-12 space-y-10">
+      <Container className="py-8 lg:py-10 space-y-8">
         <SectionHeading
           title="Free Developer Tools Suite"
-          description="Instant, privacy-first developer utilities running 100% in your browser memory."
+          description="Fast, privacy-first developer tools that run directly in your browser."
         />
 
-        {/* Search & Category Filter Controls */}
+        {/* Filter Controls & Categories */}
         <div className="space-y-4">
-          <ToolSearch onSearch={setSearch} />
+          <ToolSearch value={search} onSearch={setSearch} />
           <ToolCategories
             categories={categories}
             activeCategory={selectedCategory}
@@ -79,11 +80,11 @@ export default function ToolsPage() {
                 <p className="text-xs">Try adjusting your search query or category filter.</p>
               </div>
             ) : (
-              <div className="space-y-12">
-                {/* Featured / Popular Tools Section */}
+              <div className="space-y-10">
+                {/* Featured & Popular Tools Section */}
                 {featuredTools.length > 0 && !selectedCategory && !search && (
                   <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-amber-400" />
                       <span>Featured & Popular Tools</span>
                     </h3>
@@ -91,11 +92,11 @@ export default function ToolsPage() {
                   </div>
                 )}
 
-                {/* All Tools Section */}
+                {/* All Developer Tools Section */}
                 <div className="space-y-4">
                   {featuredTools.length > 0 && !selectedCategory && !search && (
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
-                      All Utility Tools
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      All Developer Tools
                     </h3>
                   )}
                   <ToolGrid tools={regularTools.length > 0 ? regularTools : tools} />

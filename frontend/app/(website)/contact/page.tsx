@@ -80,7 +80,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold">Email Support</h4>
-                    <p className="text-xs text-muted-foreground">support@techwebcode.com</p>
+                    <p className="text-xs text-muted-foreground">support@techwebcode.in</p>
                   </div>
                 </CardContent>
               </Card>

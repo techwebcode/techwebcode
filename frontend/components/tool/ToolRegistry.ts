@@ -16,13 +16,13 @@ export type ToolComponent = React.ComponentType<{ tool: Tool }>;
 
 export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "json-formatter": JsonFormatter,
-  "json-formatter-and-validator": JsonFormatter,
   "json-validator": JsonValidator,
   "json-minifier": JsonMinifier,
   "jwt-decoder": JwtDecoder,
   "base64": Base64Tool,
   "base64-encoder": Base64Tool,
   "base64-decoder": Base64Tool,
+  "base64-encoder-decoder": Base64Tool,
   "base64-encoder-and-decoder": Base64Tool,
   "uuid-generator": UuidGenerator,
   "uuid-guid-generator": UuidGenerator,
@@ -30,6 +30,7 @@ export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "unix-timestamp-converter": TimestampConverter,
   "url-encoder": UrlEncoder,
   "url-decoder": UrlEncoder,
+  "url-encoder-decoder": UrlEncoder,
   "url-encoder-and-decoder": UrlEncoder,
   "regex-tester": RegexTester,
   "regex-pattern-tester": RegexTester,

@@ -148,7 +148,7 @@ export async function generateMetadata({
 
   const title = article ? `${article.title} | TechWebCode` : "Developer Tutorial | TechWebCode";
   const description = article?.summary || "Practical developer tutorials and troubleshooting guides.";
-  const canonicalUrl = `https://techwebcode.com/articles/${slug}`;
+  const canonicalUrl = `https://techwebcode.in/articles/${slug}`;
 
   return {
     title,
@@ -238,7 +238,7 @@ export default async function ArticlePage({
         </div>
 
         <ArticleSidebar
-          url={`https://techwebcode.com/articles/${article.slug}`}
+          url={`https://techwebcode.in/articles/${article.slug}`}
           title={article.title}
         />
       </div>

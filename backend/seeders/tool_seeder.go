@@ -35,12 +35,25 @@ func SeedTools(db *gorm.DB) error {
 		categoryMap[c.Slug] = c.ID
 	}
 
+	approvedSlugs := []string{
+		"json-formatter",
+		"json-validator",
+		"json-minifier",
+		"jwt-decoder",
+		"base64-encoder-decoder",
+		"uuid-generator",
+		"timestamp-converter",
+		"url-encoder-decoder",
+		"regex-tester",
+		"sql-formatter",
+	}
+
 	toolsData := []ToolSeedData{
 		{
 			Name:             "JSON Formatter",
 			Slug:             "json-formatter",
 			CategorySlug:     "json",
-			ShortDescription: "Format, beautify, and inspect JSON payloads with 2, 4, or 8 space indentations.",
+			ShortDescription: "Format, beautify, and inspect JSON data instantly.",
 			Description:      "Free online JSON Formatter and Beautifier. Format, validate, and inspect JSON structure instantly in your browser with 100% client-side data privacy.",
 			Icon:             "FileCode",
 			Featured:         true,
@@ -55,11 +68,11 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "JSON Validator",
 			Slug:             "json-validator",
 			CategorySlug:     "json",
-			ShortDescription: "Validate JSON syntax against RFC 8259 specifications and pinpoint parse error locations.",
-			Description:      "Free online JSON Syntax Validator. Validate JSON payloads and identify syntax errors with line numbers and character positions.",
+			ShortDescription: "Validate JSON syntax and identify formatting errors.",
+			Description:      "Free online JSON Syntax Validator. Validate JSON payloads against RFC 8259 specs and identify syntax errors with exact line numbers.",
 			Icon:             "CheckCircle2",
 			Featured:         true,
-			Popular:          true,
+			Popular:          false,
 			IsNew:            false,
 			SortOrder:        2,
 			Status:           true,
@@ -70,12 +83,12 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "JSON Minifier",
 			Slug:             "json-minifier",
 			CategorySlug:     "json",
-			ShortDescription: "Compress and minify JSON payloads by stripping whitespace and newlines for API optimization.",
-			Description:      "Free online JSON Minifier and Compressor. Compress JSON into a single line string to reduce bandwidth and speed up API response times.",
+			ShortDescription: "Minify JSON by removing unnecessary whitespace.",
+			Description:      "Free online JSON Minifier and Payload Compressor. Compress JSON into a single line string to reduce bandwidth and speed up API response times.",
 			Icon:             "Minimize2",
-			Featured:         true,
-			Popular:          true,
-			IsNew:            false,
+			Featured:         false,
+			Popular:          false,
+			IsNew:            true,
 			SortOrder:        3,
 			Status:           true,
 			SeoTitle:         "Free Online JSON Minifier & Payload Compressor | TechWebCode",
@@ -85,12 +98,12 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "JWT Decoder",
 			Slug:             "jwt-decoder",
 			CategorySlug:     "security",
-			ShortDescription: "Decode Base64 JSON Web Tokens (JWT) to inspect Header, Payload claims, and expiration date.",
+			ShortDescription: "Decode and inspect JWT headers and payloads locally.",
 			Description:      "Free online JWT Decoder & Inspector. Inspect JSON Web Token headers, payload claims, and token expiration status client-side in your browser.",
 			Icon:             "Key",
 			Featured:         true,
-			Popular:          true,
-			IsNew:            true,
+			Popular:          false,
+			IsNew:            false,
 			SortOrder:        4,
 			Status:           true,
 			SeoTitle:         "Free Online JWT Decoder & Inspector | TechWebCode",
@@ -100,11 +113,11 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "Base64 Encoder / Decoder",
 			Slug:             "base64-encoder-decoder",
 			CategorySlug:     "encoding",
-			ShortDescription: "Encode text strings into Base64 format or decode Base64 back to plain UTF-8 text.",
-			Description:      "Free online Base64 Encoder and Decoder with UTF-8 support. Encode and decode text, HTTP authorization headers, and data URLs.",
+			ShortDescription: "Encode and decode Base64 text directly in your browser.",
+			Description:      "Free online Base64 Encoder and Decoder with UTF-8 support. Encode and decode text, HTTP authorization headers, and data URLs directly in your browser.",
 			Icon:             "ArrowLeftRight",
 			Featured:         true,
-			Popular:          true,
+			Popular:          false,
 			IsNew:            false,
 			SortOrder:        5,
 			Status:           true,
@@ -115,10 +128,10 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "UUID Generator",
 			Slug:             "uuid-generator",
 			CategorySlug:     "generators",
-			ShortDescription: "Generate cryptographically secure RFC 4122 Version 4 UUIDs (GUIDs) individually or in bulk.",
+			ShortDescription: "Generate unique UUID v4 identifiers instantly.",
 			Description:      "Free online UUID / GUID v4 Generator. Generate cryptographically secure v4 UUIDs individually or in bulk batches with custom formatting.",
 			Icon:             "RefreshCw",
-			Featured:         true,
+			Featured:         false,
 			Popular:          true,
 			IsNew:            false,
 			SortOrder:        6,
@@ -130,11 +143,11 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "Timestamp Converter",
 			Slug:             "timestamp-converter",
 			CategorySlug:     "date-and-time",
-			ShortDescription: "Convert Unix Epoch timestamps (seconds & milliseconds) to readable local dates, UTC, and ISO 8601 strings.",
+			ShortDescription: "Convert Unix timestamps to readable dates and back.",
 			Description:      "Free online Unix Timestamp Converter. Convert Epoch seconds and milliseconds to human-readable dates, ISO 8601 strings, and GMT/UTC.",
 			Icon:             "Clock",
 			Featured:         true,
-			Popular:          true,
+			Popular:          false,
 			IsNew:            false,
 			SortOrder:        7,
 			Status:           true,
@@ -145,10 +158,10 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "URL Encoder / Decoder",
 			Slug:             "url-encoder-decoder",
 			CategorySlug:     "web",
-			ShortDescription: "Encode query parameters into percent-encoded URL format, or decode percent-encoded strings.",
+			ShortDescription: "Encode and decode URLs and URL components safely.",
 			Description:      "Free online URL Encoder and Decoder. Convert string query parameters into percent-encoded URL format or decode encoded URLs.",
 			Icon:             "Link",
-			Featured:         false,
+			Featured:         true,
 			Popular:          false,
 			IsNew:            false,
 			SortOrder:        8,
@@ -160,12 +173,12 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "Regex Tester",
 			Slug:             "regex-tester",
 			CategorySlug:     "web",
-			ShortDescription: "Test regular expression patterns in real-time with match highlighting and group extraction.",
+			ShortDescription: "Test regular expressions against text with instant results.",
 			Description:      "Free online Regex Pattern Tester. Test JavaScript and PCRE regular expressions with real-time match highlighting and capture group extraction.",
 			Icon:             "Code2",
-			Featured:         true,
+			Featured:         false,
 			Popular:          true,
-			IsNew:            true,
+			IsNew:            false,
 			SortOrder:        9,
 			Status:           true,
 			SeoTitle:         "Free Online Regex Pattern Tester | TechWebCode",
@@ -175,12 +188,12 @@ func SeedTools(db *gorm.DB) error {
 			Name:             "SQL Formatter",
 			Slug:             "sql-formatter",
 			CategorySlug:     "database",
-			ShortDescription: "Beautify and format complex SQL queries with proper clause indentations and capitalized keywords.",
-			Description:      "Free online SQL Formatter & Query Beautifier. Format raw SQL queries for MySQL, PostgreSQL, SQLite, and SQL Server.",
+			ShortDescription: "Format and beautify SQL queries for better readability.",
+			Description:      "Free online SQL Formatter & Query Beautifier. Format raw SQL queries for MySQL, PostgreSQL, SQLite, and SQL Server with capitalized keywords.",
 			Icon:             "Database",
-			Featured:         true,
-			Popular:          true,
-			IsNew:            false,
+			Featured:         false,
+			Popular:          false,
+			IsNew:            true,
 			SortOrder:        10,
 			Status:           true,
 			SeoTitle:         "Free Online SQL Query Formatter & Beautifier | TechWebCode",
@@ -188,10 +201,14 @@ func SeedTools(db *gorm.DB) error {
 		},
 	}
 
+	// Deactivate any unapproved or legacy tools in the DB safely
+	if err := db.Model(&models.Tool{}).Where("slug NOT IN ?", approvedSlugs).Update("status", false).Error; err != nil {
+		log.Printf("[Seeder Warning] Failed to deactivate legacy unapproved tools: %v", err)
+	}
+
 	for _, item := range toolsData {
 		catID, ok := categoryMap[item.CategorySlug]
 		if !ok || catID == 0 {
-			// Fallback to Category 1 if category slug not found
 			catID = 1
 		}
 
@@ -219,6 +236,6 @@ func SeedTools(db *gorm.DB) error {
 		}
 	}
 
-	log.Println("[Seeder] Successfully seeded initial developer tools")
+	log.Println("[Seeder] Successfully seeded exact 10 approved initial developer tools")
 	return nil
 }

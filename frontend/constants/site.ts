@@ -8,7 +8,7 @@ export const SITE = {
   description:
     "Free developer tools, practical programming tutorials, troubleshooting guides, and curated learning roadmaps for developers.",
 
-  url: "https://techwebcode.com",
+  url: "https://techwebcode.in",
 
   logo: "/logo.svg",
 
@@ -48,9 +48,9 @@ export const SITE = {
   author: {
     name: "TechWebCode",
 
-    email: "contact@techwebcode.com",
+    email: "contact@techwebcode.in",
 
-    url: "https://techwebcode.com",
+    url: "https://techwebcode.in",
   },
 
   company: {

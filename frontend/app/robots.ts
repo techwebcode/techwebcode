@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/_next/"],
     },
-    sitemap: "https://techwebcode.com/sitemap.xml",
+    sitemap: "https://techwebcode.in/sitemap.xml",
   };
 }
