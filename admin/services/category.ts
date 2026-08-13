@@ -1,7 +1,7 @@
-import api from "./api";
+import api from "@/lib/axios";
 
 export const getCategories = () =>
     api.get("/categories");
 
-export const createCategory = (data:any)=>
-    api.post("/admin/categories",data);
+export const createCategory = (data: any) =>
+    api.post("/admin/categories", data);

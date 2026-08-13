@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 import { Article } from "@/types/article";
-import { ArticleSchema } from "@/validation/article";
+import { ArticleSchema, ArticleFormValues } from "@/validation/article";
 
 import BasicSection from "./BasicSection";
 import ContentSection from "./ContentSection";
@@ -21,7 +21,7 @@ import PublishSection from "./PublishCard";
 interface ArticleFormProps {
     article?: Article | null;
     loading?: boolean;
-    onSubmit: (data: any) => void;
+    onSubmit: (data: ArticleFormValues) => void;
 }
 
 export default function ArticleForm({
@@ -30,27 +30,24 @@ export default function ArticleForm({
     onSubmit,
 }: Readonly<ArticleFormProps>) {
 
-    const methods = useForm({
+    const methods = useForm<ArticleFormValues>({
         resolver: zodResolver(ArticleSchema),
         defaultValues: {
             title: "",
-
+            slug: "",
             category_id: undefined,
             tag_ids: [],
-
             excerpt: "",
             content_markdown: "",
             content_html: "",
-
             featured_image: "",
-
             seo_title: "",
             seo_description: "",
             canonical_url: "",
-
             status: "draft",
             is_featured: false,
             published_at: null,
+            robots: "index,follow",
         },
     });
 
@@ -71,10 +68,11 @@ export default function ArticleForm({
 
             reset({
                 ...article,
-                tag_ids:
-                    article.tags?.map((t: any) => t.id) ??
-                    [],
-            });
+                slug: article.slug || "",
+                category_id: (article as any).category_id || article.category?.id || 1,
+                tag_ids: article.tags?.map((t: any) => typeof t === "number" ? t : t.id) ?? [],
+                robots: (article as any).robots || "index,follow",
+            } as unknown as ArticleFormValues);
 
             return;
         }
@@ -94,6 +92,7 @@ export default function ArticleForm({
             status: "draft",
             is_featured: false,
             published_at: null,
+            robots: "index,follow",
         });
 
     }, [article, reset]);
