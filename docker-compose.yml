@@ -17,7 +17,7 @@ services:
     networks:
       - techwebcode_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER:-techwebcode}", "-p${MYSQL_PASSWORD:-root@123}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root@123}"]
       interval: 5s
       timeout: 3s
       retries: 15
