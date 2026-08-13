@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root@123}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root@123}
     ports:
-      - "3306:3306"
+      - "${MYSQL_HOST_PORT:-3600}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
