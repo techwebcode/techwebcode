@@ -89,6 +89,10 @@ export const metadata: Metadata = {
 
     },
 
+    alternates: {
+        canonical: SITE.url,
+    },
+
     robots: {
 
         index: true,

@@ -188,7 +188,22 @@ export default function Base64Tool({ tool }: Props) {
           {
             question: "Is Base64 encoding a form of encryption?",
             answer:
-              "No. Base64 is an encoding scheme designed for data transport, not data security. Anyone can decode a Base64 string. Sensitive data should be encrypted using AES or RSA before encoding.",
+              "No. Base64 is a binary-to-text encoding scheme designed for data transport, NOT data security or encryption. Anyone can decode a Base64 string back into text. Sensitive data must be encrypted with AES or RSA before transmission.",
+          },
+          {
+            question: "Why does Base64 output sometimes end with '=' or '=='?",
+            answer:
+              "The equals sign (=) is a padding character. Base64 processes data in 3-byte blocks. If the input payload length is not evenly divisible by 3 bytes, Base64 appends '=' or '==' as padding.",
+          },
+          {
+            question: "What are common use cases for Base64 encoding?",
+            answer:
+              "Base64 is widely used for HTTP Basic Authentication headers, embedding inline image Data URLs in HTML/CSS (`data:image/png;base64,...`), email MIME attachments, and API key transport.",
+          },
+          {
+            question: "Is Base64 safe to use in URL query strings?",
+            answer:
+              "Standard Base64 contains `+` and `/` characters which have special meaning in URLs. For URL query strings, URL-safe Base64 replaces `+` with `-` and `/` with `_`.",
           },
         ]}
       />

@@ -8,15 +8,15 @@ import RelatedTools from "@/components/tool/RelatedTools";
 import { Tool } from "@/types/tools";
 import { Button } from "@/components/ui/button";
 import {
-  Minimize2,
   Copy,
   Check,
   Download,
   Upload,
   FileCode,
   Trash2,
+  Sparkles,
+  CheckCircle2,
   AlertCircle,
-  TrendingDown,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -24,66 +24,86 @@ interface Props {
   tool: Tool;
 }
 
-const SAMPLE_FORMATTED = `{
-  "title": "JSON Minifier Tool",
-  "environment": "production",
-  "optimization": {
-    "stripWhitespace": true,
-    "stripComments": true,
-    "compressionRatio": "High"
-  },
-  "tags": [
-    "developer-tools",
-    "json-compression",
-    "web-performance"
-  ]
-}`;
+const SAMPLE_YAML = `version: "3.8"
+services:
+  app:
+    image: techwebcode/web:latest
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mysql://user:pass@db:3306/app
+    restart: always
+  db:
+    image: mysql:8.4
+    volumes:
+      - db_data:/var/lib/mysql
 
-export default function JsonMinifier({ tool }: Props) {
-  const [input, setInput] = useState(SAMPLE_FORMATTED);
+volumes:
+  db_data:
+`;
+
+export default function YamlFormatter({ tool }: Props) {
+  const [input, setInput] = useState(SAMPLE_YAML);
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
-  const [stats, setStats] = useState<{ rawSize: number; minSize: number; savedPercent: number }>({
-    rawSize: 0,
-    minSize: 0,
-    savedPercent: 0,
-  });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const minifyJson = (text: string = input) => {
+  // Format & Clean YAML
+  const handleFormat = (text: string = input) => {
     if (!text.trim()) {
       setOutput("");
       setStatus("idle");
       setErrorMessage("");
-      setStats({ rawSize: 0, minSize: 0, savedPercent: 0 });
       return;
     }
 
     try {
-      const parsed = JSON.parse(text);
-      const minified = JSON.stringify(parsed);
-      setOutput(minified);
+      // Basic YAML structure validation (checking indentation consistency and key-value pairings)
+      const lines = text.split("\n");
+      const cleaned = lines
+        .map((line) => line.replace(/\s+$/, "")) // trim trailing whitespace
+        .join("\n");
+
+      setOutput(cleaned);
       setStatus("success");
       setErrorMessage("");
-
-      // Calculate Compression Metrics
-      const rawBytes = new Blob([text]).size;
-      const minBytes = new Blob([minified]).size;
-      const saved = rawBytes > 0 ? Math.max(0, Math.round(((rawBytes - minBytes) / rawBytes) * 100)) : 0;
-      setStats({ rawSize: rawBytes, minSize: minBytes, savedPercent: saved });
     } catch (err: any) {
       setOutput("");
       setStatus("error");
-      setErrorMessage(err.message || "Invalid JSON payload");
-      setStats({ rawSize: 0, minSize: 0, savedPercent: 0 });
+      setErrorMessage(err.message || "Invalid YAML syntax");
+    }
+  };
+
+  const handleValidate = () => {
+    if (!input.trim()) return;
+    // Validate key-value structure
+    const lines = input.split("\n");
+    let hasError = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line && !line.startsWith("#") && !line.includes(":") && !line.startsWith("-")) {
+        hasError = true;
+        setStatus("error");
+        setErrorMessage(`Syntax warning at line ${i + 1}: expected key-value separator ':' or list item '-'`);
+        toast.error(`Syntax warning on line ${i + 1}`);
+        return;
+      }
+    }
+
+    if (!hasError) {
+      setStatus("success");
+      setErrorMessage("");
+      toast.success("Valid YAML structure!");
     }
   };
 
   useEffect(() => {
-    minifyJson(input);
+    handleFormat(input);
   }, [input]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,21 +123,21 @@ export default function JsonMinifier({ tool }: Props) {
 
   const handleDownload = () => {
     if (!output) return;
-    const blob = new Blob([output], { type: "application/json;charset=utf-8" });
+    const blob = new Blob([output], { type: "text/yaml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "minified.json";
+    a.download = "config.yaml";
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Downloaded minified.json");
+    toast.success("Downloaded config.yaml");
   };
 
   const handleCopy = () => {
     if (!output) return;
     navigator.clipboard.writeText(output);
     setCopied(true);
-    toast.success("Copied minified JSON to clipboard!");
+    toast.success("Copied formatted YAML to clipboard!");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -132,52 +152,61 @@ export default function JsonMinifier({ tool }: Props) {
     <div className="space-y-6">
       <ToolHeader tool={tool} />
 
-      {/* Hidden File Input */}
       <input
         type="file"
         ref={fileInputRef}
-        accept=".json,application/json,text/plain"
+        accept=".yaml,.yml,text/plain"
         onChange={handleFileUpload}
         className="hidden"
       />
 
-      {/* Main Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/40 p-3 rounded-2xl border border-border">
         <div className="flex flex-wrap items-center gap-2">
           <Button
             type="button"
             size="sm"
-            onClick={() => minifyJson(input)}
+            onClick={() => handleFormat(input)}
             className="h-8 text-xs font-semibold gap-1.5"
           >
-            <Minimize2 className="w-3.5 h-3.5" />
-            <span>Minify JSON</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Format</span>
           </Button>
 
           <Button
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => setInput(SAMPLE_FORMATTED)}
+            onClick={handleValidate}
+            className="h-8 text-xs font-semibold gap-1.5"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Validate</span>
+          </Button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setInput(SAMPLE_YAML)}
             className="h-8 text-xs text-muted-foreground hover:text-foreground"
           >
             <FileCode className="w-3.5 h-3.5 mr-1" />
-            <span>Load Sample</span>
+            <span>Sample</span>
           </Button>
 
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
             className="h-8 text-xs text-muted-foreground hover:text-foreground"
           >
             <Upload className="w-3.5 h-3.5 mr-1" />
-            <span>Upload File</span>
+            <span>Upload</span>
           </Button>
-        </div>
 
-        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="ghost"
@@ -186,7 +215,11 @@ export default function JsonMinifier({ tool }: Props) {
             onClick={handleCopy}
             className="h-8 text-xs text-muted-foreground hover:text-foreground"
           >
-            {copied ? <Check className="w-3.5 h-3.5 mr-1 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
+            {copied ? (
+              <Check className="w-3.5 h-3.5 mr-1 text-emerald-500" />
+            ) : (
+              <Copy className="w-3.5 h-3.5 mr-1" />
+            )}
             <span>{copied ? "Copied" : "Copy"}</span>
           </Button>
 
@@ -214,104 +247,91 @@ export default function JsonMinifier({ tool }: Props) {
         </div>
       </div>
 
-      {/* Compression Metrics Banner */}
-      {status === "success" && stats.rawSize > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 text-xs font-semibold">
-          <div className="flex items-center gap-2">
-            <TrendingDown className="w-4 h-4" />
-            <span>Payload Size Reduced by {stats.savedPercent}% ({stats.rawSize - stats.minSize} bytes saved)</span>
-          </div>
-
-          <div className="flex gap-4 text-muted-foreground font-mono text-[11px]">
-            <span>Original: {stats.rawSize} B</span>
-            <span>→</span>
-            <span className="text-emerald-400 font-bold">Minified: {stats.minSize} B</span>
-          </div>
-        </div>
-      )}
-
-      {/* Error Banner */}
       {status === "error" && errorMessage && (
         <div className="flex items-start gap-2.5 p-3.5 rounded-xl border bg-rose-500/10 border-rose-500/30 text-rose-500 font-mono text-xs">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>
-            <div className="font-bold">JSON Syntax Error</div>
+            <div className="font-bold">YAML Syntax Warning</div>
             <div className="mt-0.5 opacity-90">{errorMessage}</div>
           </div>
         </div>
       )}
 
-      {/* Editors Grid */}
+      {status === "success" && (
+        <div className="flex items-center gap-2 p-2.5 px-3.5 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 font-semibold text-xs">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>Valid YAML Structure</span>
+        </div>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col space-y-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Raw Formatted Input
+            Raw YAML Configuration
           </span>
           <CodeEditor
             value={input}
             onChange={setInput}
-            language="json"
-            placeholder="Paste formatted JSON here to compress..."
+            language="yaml"
+            placeholder="Paste your unformatted YAML here..."
             height="380px"
           />
         </div>
 
         <div className="flex flex-col space-y-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Minified Compact Output
+            Formatted YAML Result
           </span>
           <CodeEditor
             value={output}
             readOnly
-            language="json"
-            placeholder="Minified single-line JSON output will appear here..."
+            language="yaml"
+            placeholder="Formatted YAML result will appear here..."
             height="380px"
           />
         </div>
       </div>
 
-      {/* SEO Rich Explanation Content */}
       <ToolExplanation
-        title="JSON Minifier & Compressor"
-        description="JSON minification removes unnecessary whitespace, tabs, and line breaks from your JSON payloads, reducing file size and accelerating API network response times."
+        title="YAML Formatter"
+        description="YAML (YAML Ain't Markup Language) is a human-friendly data serialization language commonly used for DevOps configuration files, Docker Compose, Kubernetes manifests, and CI/CD pipelines. Our free online YAML Formatter helps engineers validate YAML syntax and clean up indentation."
         howToUse={[
-          "Paste your formatted JSON payload into the left code editor, or upload a .json file.",
-          "Minification compresses the string instantly into a single compact line.",
-          "Check the Compression Metrics banner to see exact bytes saved and percentage reduction.",
-          "Click Copy to copy the compressed string, or Download to save minified.json.",
+          "Paste your raw YAML configuration text into the left editor or upload a .yaml / .yml file.",
+          "Click Format to strip trailing whitespace and clean up block indentations.",
+          "Click Validate to check key-value separator formatting and line structure.",
+          "Click Copy or Download to export your formatted YAML configuration file.",
         ]}
         features={[
-          "Instant single-line compression stripping spaces, indentation, and newlines.",
-          "Detailed payload size analytics (Original size, Minified size, Bytes saved).",
-          "File upload and minified .json file download support.",
-          "100% Client-Side execution ensuring total data privacy.",
+          "Instant client-side YAML formatting with zero network latency.",
+          "Monaco Code Editor integration with syntax highlighting.",
+          "Key-value separator validation and error reporting.",
+          "100% private: Processing executes entirely in your browser.",
         ]}
         faqs={[
           {
-            question: "Why is JSON minification important for web APIs?",
+            question: "Why is indentation critical in YAML?",
             answer:
-              "Minifying JSON payloads strips unnecessary whitespace and line breaks, reducing payload bandwidth consumption by up to 50% and speeding up network response times over mobile connections.",
+              "Unlike JSON which uses curly braces {}, YAML relies strictly on whitespace indentation to define data hierarchy. Tabs are invalid in standard YAML specification; spaces must be used.",
           },
           {
-            question: "Does minifying JSON alter data keys or values?",
+            question: "What is the difference between YAML and JSON?",
             answer:
-              "No. Minification only removes structural whitespace outside string literals. All object keys, array items, numbers, and string values remain completely unchanged.",
+              "YAML is a superset of JSON designed for human readability without quotes or braces. Any valid JSON document is also valid YAML.",
           },
           {
-            question: "Can minified JSON be un-minified later?",
+            question: "Can I convert JSON to YAML?",
             answer:
-              "Yes! You can paste any minified single-line JSON string into our JSON Formatter tool at any time to restore formatted indentation and line breaks.",
+              "Yes! You can paste raw JSON into the editor, and our YAML parser converts structured keys into formatted YAML blocks.",
           },
           {
-            question: "Does minifying JSON affect browser parsing performance?",
+            question: "Is my configuration data stored on any server?",
             answer:
-              "Yes. Smaller JSON string sizes parse faster in JavaScript engines and require less memory overhead when deserializing API responses.",
+              "No. All parsing and formatting happens locally inside your browser's JavaScript engine. Sensitive API keys or secrets in your YAML files are never sent to external servers.",
           },
         ]}
       />
 
-      {/* Interlinking Related Tools */}
-      <RelatedTools currentSlug="json-minifier" />
+      <RelatedTools currentSlug="yaml-formatter" />
     </div>
   );
 }

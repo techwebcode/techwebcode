@@ -34,7 +34,7 @@ const menus = [
 
         title: "tools",
 
-        href: "/",
+        href: "/tools",
 
     },
 

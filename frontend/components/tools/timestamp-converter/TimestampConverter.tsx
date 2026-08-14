@@ -330,9 +330,24 @@ export default function TimestampConverter({ tool }: Props) {
         ]}
         faqs={[
           {
-            question: "What is Year 2038 Problem (Y2K38)?",
+            question: "What is a Unix Epoch timestamp?",
             answer:
-              "The Year 2038 problem affects systems storing Epoch time as a signed 32-bit integer, which will overflow on January 19, 2038. Modern 64-bit systems handle timestamps past the year 2038 without issue.",
+              "A Unix Epoch timestamp is an integer counting the exact number of seconds that have elapsed since 00:00:00 UTC on January 1, 1970. It is used as the universal standard for date-time storage in databases and operating systems.",
+          },
+          {
+            question: "How can I tell seconds from milliseconds in a timestamp?",
+            answer:
+              "Unix timestamps in seconds are 10 digits long (e.g. `1700000000`), while millisecond timestamps are 13 digits long (e.g. `1700000000000`). Our converter automatically detects and handles both formats.",
+          },
+          {
+            question: "Does Unix time include timezones?",
+            answer:
+              "No. Unix timestamps are strictly based on Coordinated Universal Time (UTC) and do not contain timezone offsets. Local time display depends on your browser's geographic timezone setting.",
+          },
+          {
+            question: "What is the Year 2038 Problem (Y2K38)?",
+            answer:
+              "The Year 2038 problem affects legacy 32-bit systems storing Unix time as a signed 32-bit integer, which will overflow on January 19, 2038. Modern 64-bit operating systems handle dates thousands of years into the future without issue.",
           },
         ]}
       />

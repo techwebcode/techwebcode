@@ -32,9 +32,9 @@ export default function HeroSection() {
             </span>
 
             <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-              Build Better Software
+              Fast, private, and easy-to-use tools for
               <span className="block text-primary">
-                with Confidence.
+                developers and everyday tasks.
               </span>
             </h1>
 

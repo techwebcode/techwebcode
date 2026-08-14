@@ -367,6 +367,16 @@ export default function JsonFormatter({ tool }: Props) {
             answer:
               "Yes, absolutely! All JSON parsing, formatting, and minification runs entirely inside your browser's JavaScript engine. No data is transmitted to external servers.",
           },
+          {
+            question: "What happens if my JSON has syntax errors?",
+            answer:
+              "The tool identifies syntax errors with precise error messages so you can fix unquoted keys, trailing commas, or unmatched brackets instantly.",
+          },
+          {
+            question: "Does formatting change the JSON data structure?",
+            answer:
+              "No. Formatting only adjusts whitespace and indentation to make the payload human-readable. Object key-value pairs and array values remain completely unchanged.",
+          },
         ]}
       />
 

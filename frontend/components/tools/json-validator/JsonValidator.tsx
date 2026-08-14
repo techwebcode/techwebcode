@@ -193,7 +193,22 @@ export default function JsonValidator({ tool }: Props) {
           {
             question: "What are the most common JSON validation errors?",
             answer:
-              "The top JSON syntax errors include: unquoted key names (e.g. key: 'val' instead of 'key': 'val'), trailing commas after the last element in an array or object, single quotes instead of double quotes, and unescaped line breaks inside string values.",
+              "The top JSON syntax errors include: unquoted key names (e.g. key: 'val' instead of \"key\": \"val\"), trailing commas after the last element in an array or object, single quotes instead of double quotes, and unescaped line breaks inside string values.",
+          },
+          {
+            question: "Can JSON property keys use single quotes?",
+            answer:
+              "No. The RFC 8259 JSON specification strictly mandates double quotes (\"key\") for all object property names. Single quotes ('key') will cause a syntax error.",
+          },
+          {
+            question: "Are trailing commas allowed in JSON arrays or objects?",
+            answer:
+              "No. Unlike JavaScript object literals, trailing commas after the final element in an array or object are invalid in standard JSON syntax.",
+          },
+          {
+            question: "Does JSON validation send my payload to a server?",
+            answer:
+              "No. Validation executes 100% locally in your web browser using JavaScript's native engine. Your data remains completely private and secure.",
           },
         ]}
       />

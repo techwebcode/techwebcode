@@ -146,8 +146,8 @@ export async function generateMetadata({
 
   if (!article) article = DEFAULT_ARTICLES[slug];
 
-  const title = article ? `${article.title} | TechWebCode` : "Developer Tutorial | TechWebCode";
-  const description = article?.summary || "Practical developer tutorials and troubleshooting guides.";
+  const title = article ? article.title : "Developer Tutorial";
+  const description = article?.summary || article?.seo_description || article?.excerpt || "Practical developer tutorials and troubleshooting guides.";
   const canonicalUrl = `https://techwebcode.in/articles/${slug}`;
 
   return {
@@ -157,7 +157,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title,
+      title: `${title} | TechWebCode`,
       description,
       url: canonicalUrl,
       type: "article",

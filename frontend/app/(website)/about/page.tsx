@@ -6,6 +6,16 @@ import { Card, CardContent } from "@/components/ui/card";
 export const metadata = {
   title: "About Us | TechWebCode",
   description: "Learn more about TechWebCode, our mission, technical architecture, and developer resources.",
+  alternates: {
+    canonical: "https://techwebcode.in/about",
+  },
+  openGraph: {
+    title: "About Us | TechWebCode",
+    description: "Learn more about TechWebCode, our mission, technical architecture, and developer resources.",
+    url: "https://techwebcode.in/about",
+    siteName: "TechWebCode",
+    type: "website",
+  },
 };
 
 const features = [

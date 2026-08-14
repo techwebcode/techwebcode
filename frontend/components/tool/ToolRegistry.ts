@@ -11,6 +11,7 @@ import TimestampConverter from "@/components/tools/timestamp-converter/Timestamp
 import UrlEncoder from "@/components/tools/url-encoder/UrlEncoder";
 import RegexTester from "@/components/tools/regex-tester/RegexTester";
 import SqlFormatter from "@/components/tools/sql-formatter/SqlFormatter";
+import YamlFormatter from "@/components/tools/yaml-formatter/YamlFormatter";
 
 export type ToolComponent = React.ComponentType<{ tool: Tool }>;
 
@@ -36,6 +37,9 @@ export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "regex-pattern-tester": RegexTester,
   "sql-formatter": SqlFormatter,
   "sql-query-formatter": SqlFormatter,
+  "yaml-formatter": YamlFormatter,
+  "yaml-validator": YamlFormatter,
+  "k8s-secret-tool": YamlFormatter,
 };
 
 export function getToolComponent(slug: string): ToolComponent | null {

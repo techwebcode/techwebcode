@@ -201,13 +201,28 @@ export default function UrlEncoder({ tool }: Props) {
           {
             question: "What is the difference between Component Mode and Full URL Mode?",
             answer:
-              "Component Mode (encodeURIComponent) encodes all special characters including ':', '/', '?', and '&', making it ideal for query param values. Full URL Mode (encodeURI) preserves protocol and domain syntax (http://) while encoding spaces.",
+              "Component Mode (encodeURIComponent) encodes all special characters including ':', '/', '?', and '&', making it ideal for query string parameter values. Full URL Mode (encodeURI) preserves URL protocol and domain syntax (https://) while encoding spaces.",
+          },
+          {
+            question: "Why are spaces encoded as %20 or + in URLs?",
+            answer:
+              "In standard URI percent-encoding (RFC 3986), spaces are encoded as `%20`. In HTML form POST data (`application/x-www-form-urlencoded`), spaces are often encoded as `+`.",
+          },
+          {
+            question: "What characters are reserved in URLs?",
+            answer:
+              "Reserved characters include `:`, `/`, `?`, `#`, `[`, `]`, `@`, `!`, `$`, `&`, `'`, `(`, `)`, `*`, `+`, `,`, `;`, `=`. They have special syntactical meaning in URIs and must be percent-encoded when passed as parameter values.",
+          },
+          {
+            question: "Does URL encoding support Unicode and emojis?",
+            answer:
+              "Yes. UTF-8 multi-byte characters and emojis are converted into hexadecimal byte sequences prefixed by `%` (e.g. `%F0%9F%9A%80` for 🚀).",
           },
         ]}
       />
 
       {/* Interlinking Related Tools */}
-      <RelatedTools currentSlug="url-encoder-decoder" />
+      <RelatedTools currentSlug="url-encoder" />
     </div>
   );
 }

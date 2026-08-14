@@ -144,6 +144,21 @@ export default function UuidGenerator({ tool }: Props) {
             answer:
               "The probability of generating two duplicate UUID v4 identifiers is virtually zero. You would need to generate 1 billion UUIDs per second for 85 years to have a 50% chance of a single collision.",
           },
+          {
+            question: "What is the standard structure of a Version 4 UUID?",
+            answer:
+              "A standard UUID v4 contains 32 hexadecimal characters arranged in 5 groups separated by hyphens (`8-4-4-4-12`), for example: `f47ac10b-58cc-4372-a567-0e02b2c3d479`.",
+          },
+          {
+            question: "What is the difference between a UUID and a GUID?",
+            answer:
+              "UUID (Universally Unique Identifier) is the open RFC 4122 standard. GUID (Globally Unique Identifier) is Microsoft's terminology for the exact same 128-bit structure. They are functionally identical.",
+          },
+          {
+            question: "What are common developer use cases for UUIDs?",
+            answer:
+              "UUIDs are used as primary keys in distributed databases (MongoDB, PostgreSQL, MySQL), API request tracking IDs, OAuth state tokens, microservice correlation IDs, and file upload filenames.",
+          },
         ]}
       />
 

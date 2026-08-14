@@ -282,14 +282,24 @@ export default function JwtDecoder({ tool }: Props) {
         ]}
         faqs={[
           {
-            question: "Does decoding a JWT verify its signature?",
+            question: "Does decoding a JWT verify its cryptographic signature?",
             answer:
-              "No. Decoding extracts and reads the Base64URL-encoded JSON payload claims inside your browser. Cryptographic signature verification requires checking the signature against the server's private secret key or public RSA key.",
+              "No. Decoding only extracts and parses the Base64URL-encoded JSON payload claims inside your browser. Verifying a JWT signature requires checking the cryptographic hash using your server's secret key or public RSA certificate.",
           },
           {
-            question: "Is it safe to paste sensitive JWT tokens here?",
+            question: "Is it safe to paste JWT tokens into this online tool?",
             answer:
-              "Yes! TechWebCode executes all decoding client-side using native JavaScript. No data is sent over the network or stored in any database.",
+              "Yes! TechWebCode decodes JWT tokens 100% client-side in your web browser memory. Tokens are never transmitted to external servers or recorded in logs.",
+          },
+          {
+            question: "What are the three parts of a JSON Web Token?",
+            answer:
+              "A JWT consists of three dot-separated Base64URL parts: Header (specifying algorithm and token type), Payload (containing user claims and metadata), and Signature (used for authentication).",
+          },
+          {
+            question: "What does the 'exp' claim represent in a JWT payload?",
+            answer:
+              "The 'exp' (expiration time) claim contains a Unix Epoch timestamp indicating the exact date and time after which the token is invalid.",
           },
         ]}
       />
