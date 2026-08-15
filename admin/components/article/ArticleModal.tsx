@@ -74,6 +74,7 @@ export default function ArticleModal({
                 article={article}
                 loading={loading}
                 onSubmit={handleSubmit}
+                onCancel={onClose}
             />
 
         </AppModal>

@@ -54,15 +54,15 @@ export default function ArticleTable({
         switch (status) {
             case "published":
                 return (
-                    <Badge className="bg-green-600">
-                        Published
+                    <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase text-[10px]">
+                        PUBLISHED
                     </Badge>
                 );
 
             case "draft":
                 return (
-                    <Badge variant="secondary">
-                        Draft
+                    <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-amber-500/30 font-bold uppercase text-[10px]">
+                        DRAFT
                     </Badge>
                 );
 
@@ -91,6 +91,10 @@ export default function ArticleTable({
                     </TableHead>
 
                     <TableHead>
+                        Primary Tool
+                    </TableHead>
+
+                    <TableHead>
                         Status
                     </TableHead>
 
@@ -106,18 +110,17 @@ export default function ArticleTable({
                         Reading
                     </TableHead>
 
-
                     <TableHead>
                         Published
+                    </TableHead>
+
+                    <TableHead>
+                        Updated
                     </TableHead>
 
                     <TableHead className="text-right">
                         Actions
                     </TableHead>
-
-                    {/* <TableHead>
-                        Author
-                    </TableHead> */}
 
                 </TableRow>
 
@@ -168,7 +171,11 @@ export default function ArticleTable({
                         </TableCell>
 
                         <TableCell>
-                            {article.category.name}
+                            {article.category?.name || "Uncategorized"}
+                        </TableCell>
+
+                        <TableCell>
+                            {article.primary_tool?.name || article.primaryTool?.name || "—"}
                         </TableCell>
 
                         <TableCell>
@@ -176,7 +183,7 @@ export default function ArticleTable({
                         </TableCell>
 
                         <TableCell>
-                            {article.is_featured}
+                            {article.is_featured ? "Yes" : "No"}
                         </TableCell>
 
                         <TableCell>
@@ -196,7 +203,11 @@ export default function ArticleTable({
                         </TableCell>
 
                         <TableCell>
-                            {toDateTimeFormat(article.published_at)}
+                            {article.published_at ? toDateTimeFormat(article.published_at) : "—"}
+                        </TableCell>
+
+                        <TableCell>
+                            {toDateTimeFormat(article.updated_at)}
                         </TableCell>
 
                         <TableCell>

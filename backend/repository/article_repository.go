@@ -18,6 +18,13 @@ func (r *ArticleRepository) Create(article *models.Article) error {
 	return database.DB.Create(article).Error
 }
 
+func (r *ArticleRepository) Update(article *models.Article) error {
+	if database.DB == nil {
+		return ErrDatabaseNil
+	}
+	return database.DB.Save(article).Error
+}
+
 func (r *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 	if database.DB == nil {
 		return nil, ErrDatabaseNil
@@ -26,7 +33,27 @@ func (r *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 
 	err := database.DB.
 		Preload("Category").
+		Preload("PrimaryTool").
 		Where("slug = ?", slug).
+		First(&article).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &article, nil
+}
+
+func (r *ArticleRepository) GetPublishedBySlug(slug string) (*models.Article, error) {
+	if database.DB == nil {
+		return nil, ErrDatabaseNil
+	}
+	var article models.Article
+
+	err := database.DB.
+		Preload("Category").
+		Preload("PrimaryTool").
+		Where("slug = ? AND status = ?", slug, "published").
 		First(&article).Error
 
 	if err != nil {
@@ -42,7 +69,10 @@ func (r *ArticleRepository) GetByID(id uint) (*models.Article, error) {
 	}
 	var article models.Article
 
-	err := database.DB.First(&article, id).Error
+	err := database.DB.
+		Preload("Category").
+		Preload("PrimaryTool").
+		First(&article, id).Error
 
 	if err != nil {
 		return nil, err
@@ -58,7 +88,7 @@ func (r *ArticleRepository) Delete(id uint) error {
 	return database.DB.Delete(&models.Article{}, id).Error
 }
 
-func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID uint) ([]models.Article, int64, error) {
+func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID uint, status string) ([]models.Article, int64, error) {
 	if database.DB == nil {
 		return nil, 0, ErrDatabaseNil
 	}
@@ -75,10 +105,15 @@ func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID ui
 		query = query.Where("category_id = ?", categoryID)
 	}
 
+	if status != "" {
+		query = query.Where("status = ?", status)
+	}
+
 	query.Count(&total)
 
 	err := query.
 		Preload("Category").
+		Preload("PrimaryTool").
 		Order("published_at DESC, id DESC").
 		Limit(limit).
 		Offset((page - 1) * limit).
@@ -95,6 +130,7 @@ func (r *ArticleRepository) GetFeatured(limit int) ([]models.Article, error) {
 
 	err := database.DB.
 		Preload("Category").
+		Preload("PrimaryTool").
 		Where("is_featured = ? AND status = ?", 1, "published").
 		Order("published_at DESC, id DESC").
 		Limit(limit).
@@ -111,6 +147,7 @@ func (r *ArticleRepository) GetTrending(limit int) ([]models.Article, error) {
 
 	err := database.DB.
 		Preload("Category").
+		Preload("PrimaryTool").
 		Where("status = ?", "published").
 		Order("view_count DESC, id DESC").
 		Limit(limit).

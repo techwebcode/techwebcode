@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     FormProvider,
     useForm,
@@ -22,12 +22,14 @@ interface ArticleFormProps {
     article?: Article | null;
     loading?: boolean;
     onSubmit: (data: ArticleFormValues) => void;
+    onCancel?: () => void;
 }
 
 export default function ArticleForm({
     article,
     loading = false,
     onSubmit,
+    onCancel,
 }: Readonly<ArticleFormProps>) {
 
     const methods = useForm<ArticleFormValues>({
@@ -36,6 +38,7 @@ export default function ArticleForm({
             title: "",
             slug: "",
             category_id: undefined,
+            primary_tool_id: null,
             tag_ids: [],
             excerpt: "",
             content_markdown: "",
@@ -66,11 +69,35 @@ export default function ArticleForm({
 
         if (article) {
 
+            const catId =
+                (article as any).category_id ??
+                (article as any).categoryID ??
+                article.category?.id;
+
+            const toolId =
+                (article as any).primary_tool_id ??
+                (article as any).primaryToolID ??
+                article.primary_tool?.id ??
+                article.primaryTool?.id ??
+                null;
+
             reset({
                 ...article,
+                title: article.title || "",
                 slug: article.slug || "",
-                category_id: (article as any).category_id || article.category?.id || 1,
+                category_id: catId ? Number(catId) : undefined,
+                primary_tool_id: toolId ? Number(toolId) : null,
                 tag_ids: article.tags?.map((t: any) => typeof t === "number" ? t : t.id) ?? [],
+                excerpt: article.excerpt || "",
+                content_markdown: article.content_markdown || "",
+                content_html: (article as any).content_html || "",
+                featured_image: article.featured_image || "",
+                seo_title: article.seo_title || "",
+                seo_description: article.seo_description || "",
+                canonical_url: article.canonical_url || "",
+                status: article.status || "draft",
+                is_featured: article.is_featured || false,
+                published_at: article.published_at || null,
                 robots: (article as any).robots || "index,follow",
             } as unknown as ArticleFormValues);
 
@@ -81,6 +108,7 @@ export default function ArticleForm({
             title: "",
             slug: "",
             category_id: undefined,
+            primary_tool_id: null,
             tag_ids: [],
             excerpt: "",
             content_markdown: "",
@@ -97,9 +125,25 @@ export default function ArticleForm({
 
     }, [article, reset]);
 
+    const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+    const [isSeoTitleManuallyEdited, setIsSeoTitleManuallyEdited] = useState(false);
+    const [isSeoDescManuallyEdited, setIsSeoDescManuallyEdited] = useState(false);
+
+    useEffect(() => {
+        if (article) {
+            setIsSlugManuallyEdited(true);
+            setIsSeoTitleManuallyEdited(true);
+            setIsSeoDescManuallyEdited(true);
+        } else {
+            setIsSlugManuallyEdited(false);
+            setIsSeoTitleManuallyEdited(false);
+            setIsSeoDescManuallyEdited(false);
+        }
+    }, [article]);
+
     useEffect(() => {
 
-        if (!title) return;
+        if (!title || isSlugManuallyEdited || article) return;
 
         const generatedSlug = title
             .toLowerCase()
@@ -108,42 +152,42 @@ export default function ArticleForm({
             .replace(/\s+/g, "-")
             .replace(/-+/g, "-");
 
-        setValue("slug", generatedSlug);
+        setValue("slug", generatedSlug, { shouldValidate: true });
 
-    }, [title, setValue]);
+    }, [title, isSlugManuallyEdited, article, setValue]);
 
     useEffect(() => {
 
-        if (!title) return;
+        if (!title || isSeoTitleManuallyEdited || article) return;
 
         setValue(
             "seo_title",
             `${title} | TechWebCode`
         );
 
-    }, [title, setValue]);
+    }, [title, isSeoTitleManuallyEdited, article, setValue]);
 
     useEffect(() => {
 
-        if (!excerpt) return;
+        if (!excerpt || isSeoDescManuallyEdited || article) return;
 
         setValue(
             "seo_description",
             excerpt.substring(0, 160)
         );
 
-    }, [excerpt, setValue]);
+    }, [excerpt, isSeoDescManuallyEdited, article, setValue]);
 
     useEffect(() => {
 
-        if (!slug) return;
+        if (!slug || article) return;
 
         setValue(
             "canonical_url",
             `https://techwebcode.in/articles/${slug}`
         );
 
-    }, [slug, setValue]);
+    }, [slug, article, setValue]);
 
     return (
 
@@ -154,36 +198,58 @@ export default function ArticleForm({
                 className="space-y-8"
             >
 
-                <BasicSection />
+                <BasicSection onSlugManualEdit={() => setIsSlugManuallyEdited(true)} />
 
                 <ContentSection />
 
-                <SeoCard />
+                <SeoCard
+                    onSeoTitleManualEdit={() => setIsSeoTitleManuallyEdited(true)}
+                    onSeoDescManualEdit={() => setIsSeoDescManuallyEdited(true)}
+                />
 
                 <PublishSection />
 
-                <div className="flex justify-end gap-3 border-t pt-6">
+                <div className="flex flex-wrap items-center justify-end gap-3 border-t pt-6">
+
+                    {onCancel && (
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={onCancel}
+                            disabled={loading}
+                        >
+                            Cancel
+                        </Button>
+                    )}
 
                     <Button
                         type="button"
                         variant="outline"
-                    >
-                        Cancel
-                    </Button>
-
-                    <Button
-                        type="submit"
+                        onClick={() => {
+                            setValue("status", "draft");
+                            handleSubmit((data) => onSubmit({ ...data, status: "draft" }))();
+                        }}
                         disabled={loading}
                     >
-
                         {loading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
+                        {article && watch("status") === "published" ? "Unpublish to Draft" : "Save Draft"}
+                    </Button>
 
-                        {article
-                            ? "Update Article"
-                            : "Create Article"}
-
+                    <Button
+                        type="button"
+                        variant="default"
+                        onClick={() => {
+                            setValue("status", "published");
+                            handleSubmit((data) => onSubmit({ ...data, status: "published" }))();
+                        }}
+                        disabled={loading}
+                    >
+                        {loading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {article ? (watch("status") === "published" ? "Update Published Article" : "Publish Article") : "Publish Article"}
                     </Button>
 
                 </div>

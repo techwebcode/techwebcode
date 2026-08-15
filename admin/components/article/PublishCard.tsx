@@ -1,55 +1,39 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-
-import { AppButton, AppCard } from "@/components/ui";
-import { Card } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 export default function PublishCard() {
-
     const { register } = useFormContext();
 
     return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Publishing & Visibility</CardTitle>
+            </CardHeader>
 
-        <Card title="Publish">
+            <CardContent className="space-y-4">
+                <div>
+                    <Label className="mb-2 block">Article Status</Label>
+                    <select
+                        {...register("status")}
+                        className="w-full rounded-lg border p-2.5 bg-background font-medium text-sm focus:ring-2 focus:ring-primary outline-none"
+                    >
+                        <option value="draft">Draft (Hidden from Public)</option>
+                        <option value="published">Published (Live on Public Site)</option>
+                    </select>
+                </div>
 
-            <div className="space-y-4">
-
-                <select
-                    {...register("status")}
-                    className="w-full rounded-lg border p-2"
-                >
-                    <option value="draft">
-                        Draft
-                    </option>
-
-                    <option value="published">
-                        Published
-                    </option>
-
-                </select>
-
-                <label className="flex items-center gap-2">
-
+                <label className="flex items-center gap-2 cursor-pointer pt-2">
                     <input
                         type="checkbox"
                         {...register("is_featured")}
+                        className="rounded border-border text-primary focus:ring-primary h-4 w-4"
                     />
-
-                    Featured Article
-
+                    <span className="text-sm font-medium">Mark as Featured Article</span>
                 </label>
-
-                <AppButton
-                    type="submit"
-                    className="w-full"
-                >
-                    Save Article
-                </AppButton>
-
-            </div>
-
+            </CardContent>
         </Card>
-
     );
 }

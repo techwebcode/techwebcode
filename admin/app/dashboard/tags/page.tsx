@@ -5,16 +5,15 @@ import { useState } from "react";
 import PageToolbar from "@/components/common/PageToolbar";
 
 import TagModal from "@/components/tag/TagModal";
+import DeleteTagDialog from "@/components/tag/DeleteTagDialog";
 import AppCard from "@/components/ui/AppCard";
 import DataTable from "@/components/ui/DataTable";
 
 import { TagColumns } from "@/components/tag/Columns";
-
 import { useTags } from "@/hooks/useTags";
-
 import { Tag } from "@/types/tag";
 
-export default function CategoriesPage() {
+export default function TagsPage() {
 
     const [page] = useState(1);
 
@@ -71,9 +70,9 @@ export default function CategoriesPage() {
                 }}
             />
 
-            {/* <DeleteCategoryDialog
+            <DeleteTagDialog
                 open={deleteOpen}
-                category={selectedTag}
+                tag={selectedTag}
                 onClose={() => {
 
                     setDeleteOpen(false);
@@ -81,7 +80,7 @@ export default function CategoriesPage() {
                     setSelectedTag(null);
 
                 }}
-            /> */}
+            />
 
             <AppCard>
 
@@ -89,17 +88,17 @@ export default function CategoriesPage() {
 
                     columns={TagColumns({
 
-                        onEdit(category) {
+                        onEdit(tag) {
 
-                            setSelectedTag(category);
+                            setSelectedTag(tag);
 
                             setOpen(true);
 
                         },
 
-                        onDelete(category) {
+                        onDelete(tag) {
 
-                            setSelectedTag(category);
+                            setSelectedTag(tag);
 
                             setDeleteOpen(true);
 
@@ -112,8 +111,7 @@ export default function CategoriesPage() {
 
                     loading={isLoading}
 
-                    emptyMessage="No categories found."
-
+                    emptyMessage="No tags found."
 
                 />
 

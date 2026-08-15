@@ -36,9 +36,9 @@ export default function ShareButtons({
 
     return (
 
-        <div className="space-y-3">
+        <div className="rounded-2xl border border-border bg-card p-5 space-y-3 shrink-0 shadow-xs">
 
-            <h3 className="font-semibold">
+            <h3 className="text-sm font-semibold text-foreground">
 
                 Share
 

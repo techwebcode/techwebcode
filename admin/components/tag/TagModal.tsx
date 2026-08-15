@@ -81,6 +81,7 @@ export default function TagModal({
                 tag={tag}
                 loading={loading}
                 onSubmit={handleSubmit}
+                onCancel={onClose}
             />
 
         </AppModal>

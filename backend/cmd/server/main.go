@@ -63,7 +63,13 @@ func main() {
 	})
 
 	routes.Setup(router, boot)
-	router.Static("/uploads", "./uploads")
+
+	uploadDir := config.Get("UPLOAD_PATH")
+	if uploadDir == "" {
+		uploadDir = "./uploads"
+	}
+	router.Static("/uploads", uploadDir)
+	router.Static("/media", uploadDir)
 
 	port := config.Get("PORT")
 	if port == "" {

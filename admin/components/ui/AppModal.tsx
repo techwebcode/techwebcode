@@ -67,26 +67,26 @@ export default function AppModal({
 
             <DialogContent
                 className={cn(
-                    "flex h-[90vh] w-[95vw] flex-col overflow-hidden p-0",
+                    "flex h-[90vh] w-[95vw] flex-col overflow-hidden p-0 bg-card text-card-foreground border border-border shadow-2xl rounded-2xl opacity-100",
                     maxWidthClass[maxWidth]
                 )}
             >
 
-                <DialogHeader className="sticky top-0 z-10 border-b bg-background px-6 py-4">
+                <DialogHeader className="sticky top-0 z-10 border-b border-border bg-card px-6 py-4">
 
-                    <DialogTitle>
+                    <DialogTitle className="text-lg font-semibold text-foreground">
                         {title}
                     </DialogTitle>
 
                     {description && (
-                        <DialogDescription>
+                        <DialogDescription className="text-muted-foreground text-sm mt-1">
                             {description}
                         </DialogDescription>
                     )}
 
                 </DialogHeader>
 
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-6 bg-card text-card-foreground">
 
                     {children}
 

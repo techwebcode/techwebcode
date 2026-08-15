@@ -1,18 +1,19 @@
 # Build Stage
-FROM golang:1.25-alpine AS builder
+FROM golang:alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache git ca-certificates tzdata
+ENV GOTOOLCHAIN=auto
+
+RUN apk add --no-cache git ca-certificates tzdata gcc musl-dev
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+RUN CGO_ENABLED=1 GOOS=linux \
     go build \
-    -tags netgo \
     -ldflags="-s -w" \
     -o /app/server ./backend/cmd/server
 

@@ -1,13 +1,16 @@
 import axios from "axios";
 
 const getBaseUrl = () => {
-    if (typeof window !== "undefined") {
-        if (process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
-            return process.env.NEXT_PUBLIC_API_URL;
-        }
-        return `${window.location.protocol}//${window.location.hostname}:8080/api/v1`;
+    if (typeof window === "undefined") {
+        // Server-side rendering (SSR) in Node.js / Docker container
+        return (
+            process.env.INTERNAL_API_URL ||
+            process.env.NEXT_PUBLIC_API_URL ||
+            "http://127.0.0.1:8090/api/v1"
+        );
     }
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
+    // Client-side browser rendering
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8090/api/v1";
 };
 
 const api = axios.create({
@@ -24,6 +27,7 @@ const api = axios.create({
  */
 api.interceptors.request.use(
     (config) => {
+        config.baseURL = getBaseUrl();
         return config;
     },
     (error) => {

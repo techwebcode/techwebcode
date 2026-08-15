@@ -13,6 +13,12 @@ type Article struct {
 	CategoryID uint     `gorm:"not null;index" json:"category_id"`
 	Category   Category `gorm:"foreignKey:CategoryID" json:"category"`
 
+	PrimaryToolID *uint `gorm:"type:bigint;index;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"primary_tool_id"`
+	PrimaryTool   *Tool `gorm:"foreignKey:PrimaryToolID;references:ID" json:"primary_tool"`
+
+	FeaturedImageID *uint  `gorm:"type:bigint;index;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"featured_image_id"`
+	FeaturedImageMedia *Media `gorm:"foreignKey:FeaturedImageID;references:ID" json:"featured_image_media"`
+
 	Tags []Tag `gorm:"many2many:article_tags;" json:"tags"`
 
 	// Content

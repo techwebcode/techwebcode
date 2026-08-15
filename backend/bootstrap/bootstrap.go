@@ -9,35 +9,43 @@ import (
 
 type Bootstrap struct {
 	CategoryController *controller.CategoryController
+	TagController      *controller.TagController
 	ArticleController  *controller.ArticleController
 	UploadController   *controller.UploadController
 	ToolController     *controller.ToolController
+	MediaController    *controller.MediaController
 }
 
 func New() *Bootstrap {
 
 	// repositories
 	categoryRepo := repository.NewCategoryRepository()
+	tagRepo := repository.NewTagRepository()
 	articleRepo := repository.NewArticleRepository()
 	mediaRepo := repository.NewMediaRepository()
 	toolRepo := repository.NewToolRepository()
 
 	// services
 	categoryService := service.NewCategoryService(categoryRepo)
-	articleService := service.NewArticleService(articleRepo, categoryRepo)
+	tagService := service.NewTagService(tagRepo)
+	articleService := service.NewArticleService(articleRepo, categoryRepo, toolRepo)
 	mediaService := service.NewMediaService(mediaRepo, storage.NewLocalStorage())
 	toolService := service.NewToolService(toolRepo)
 
 	// controllers
 	categoryController := controller.NewCategoryController(categoryService)
+	tagController := controller.NewTagController(tagService)
 	articleController := controller.NewArticleController(articleService)
 	uploadController := controller.NewUploadController(mediaService)
 	toolController := controller.NewToolController(toolService)
+	mediaController := controller.NewMediaController(mediaService)
 
 	return &Bootstrap{
 		CategoryController: categoryController,
+		TagController:      tagController,
 		ArticleController:  articleController,
 		UploadController:   uploadController,
 		ToolController:     toolController,
+		MediaController:    mediaController,
 	}
 }

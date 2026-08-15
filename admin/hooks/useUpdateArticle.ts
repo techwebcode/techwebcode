@@ -1,9 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { toast } from "sonner";
-
 import { updateArticle } from "@/api/article";
 
 export function useUpdateArticle() {
@@ -15,23 +13,19 @@ export function useUpdateArticle() {
         mutationFn: updateArticle,
 
         onSuccess() {
-
             queryClient.invalidateQueries({
-                queryKey: ["categories"],
+                queryKey: ["articles"],
             });
-            console.log("Category updated successfully.");
-            toast.success(
-                "Category updated successfully."
-            );
-
+            toast.success("Article updated successfully.");
         },
 
         onError(error: any) {
-
-            toast.error(
-                error.message
-            );
-
+            const message =
+                error.response?.data?.message ||
+                error.response?.data?.error ||
+                error.message ||
+                "Failed to update article";
+            toast.error(message);
         },
 
     });

@@ -1,4 +1,5 @@
 import { Category } from "./category"
+import { Tool } from "./tool"
 
 export interface ArticleForm {
 
@@ -7,6 +8,8 @@ export interface ArticleForm {
     slug:string
 
     category_id:number
+
+    primary_tool_id?:number|null
 
     tags:number[]
 
@@ -31,7 +34,11 @@ export interface Article {
     id: number;
     title: string;
     slug: string;
-    category: Category;
+    category_id?: number;
+    category?: Category;
+    primary_tool_id?: number | null;
+    primary_tool?: Tool | null;
+    primaryTool?: Tool | null;
     tags: number[];
     excerpt: string;
     content_markdown: string;

@@ -18,7 +18,7 @@ export default function ArticleHeader({
         <header className="mb-12">
 
             <CategoryBadge
-                name={article.category.name} slug={article.category.slug}
+                name={article.category?.name || "Tutorial"} slug={article.category?.slug || "tutorial"}
             />
 
             <h1
@@ -68,14 +68,14 @@ export default function ArticleHeader({
 
             />
 
-            {article.tags.length > 0 && (
+            {Array.isArray(article.tags) && article.tags.length > 0 && (
 
                 <div className="mt-6 flex flex-wrap gap-2">
 
-                    {article.tags.map((tag) => (
+                    {article.tags.map((tag: any) => (
 
                         <span
-                            key={tag.id}
+                            key={typeof tag === "object" ? tag.id : tag}
                             className="
                                 rounded-full
                                 bg-muted
@@ -85,7 +85,7 @@ export default function ArticleHeader({
                             "
                         >
 
-                            #{tag.name}
+                            #{typeof tag === "object" ? tag.name : tag}
 
                         </span>
 

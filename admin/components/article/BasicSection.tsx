@@ -22,7 +22,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useCategoryOptions } from "@/hooks/useCategories";
-
+import { useTagOptions } from "@/hooks/useTags";
+import { useToolOptions } from "@/hooks/useTools";
 
 interface Category {
     id: number;
@@ -34,7 +35,11 @@ interface Tag {
     name: string;
 }
 
-export default function BasicSection() {
+interface BasicSectionProps {
+    onSlugManualEdit?: () => void;
+}
+
+export default function BasicSection({ onSlugManualEdit }: Readonly<BasicSectionProps> = {}) {
 
     const {
         register,
@@ -43,16 +48,9 @@ export default function BasicSection() {
         formState: { errors },
     } = useFormContext<any>();
 
-    // TODO: Replace with API hooks
-
-    const { data, isLoading } = useCategoryOptions();
-
-    const tags: Tag[] = [
-        { id: 1, name: "Backend" },
-        { id: 2, name: "API" },
-        { id: 3, name: "Tutorial" },
-        { id: 4, name: "Beginner" },
-    ];
+    const { data: categoryOptions } = useCategoryOptions();
+    const { data: tagOptions } = useTagOptions();
+    const { data: toolOptions } = useToolOptions();
 
     const image = watch("featured_image");
 
@@ -145,8 +143,16 @@ export default function BasicSection() {
 
                     <Input
                         placeholder="go-tutorial-for-beginners"
-                        {...register("slug")}
+                        {...register("slug", {
+                            onChange: () => onSlugManualEdit?.(),
+                        })}
                     />
+
+                    {errors.slug && (
+                        <p className="mt-1 text-sm text-red-500">
+                            {String(errors.slug.message)}
+                        </p>
+                    )}
 
                 </div>
 
@@ -154,49 +160,129 @@ export default function BasicSection() {
 
                 <div>
 
-                    <Label>
-                        Category
+                    <Label htmlFor="category_id">
+                        Category <span className="text-destructive">*</span>
                     </Label>
 
-                    <Select
-                        onValueChange={(value) =>
-                            setValue(
-                                "category_id",
-                                Number(value)
-                            )
-                        }
-                    >
+                    {(() => {
+                        const activeCategoryId = watch("category_id");
+                        const selectedCategoryName = categoryOptions?.find(
+                            (c) => String(c.id) === String(activeCategoryId)
+                        )?.name;
 
-                        <SelectTrigger>
+                        return (
+                            <Select
+                                value={activeCategoryId ? String(activeCategoryId) : undefined}
+                                onValueChange={(value) =>
+                                    setValue(
+                                        "category_id",
+                                        Number(value),
+                                        { shouldValidate: true }
+                                    )
+                                }
+                            >
 
-                            <SelectValue
-                                placeholder="Select Category"
-                            />
+                                <SelectTrigger className="w-full">
 
-                        </SelectTrigger>
+                                    <SelectValue placeholder="Select Category">
+                                        {selectedCategoryName || "Select Category"}
+                                    </SelectValue>
 
-                        <SelectContent>
+                                </SelectTrigger>
 
-                            {data?.map(
-                                (category) => (
+                                <SelectContent>
 
-                                    <SelectItem
-                                        key={category.id}
-                                        value={String(
-                                            category.id
-                                        )}
-                                    >
+                                    {categoryOptions?.map(
+                                        (category) => (
 
-                                        {category.name}
+                                            <SelectItem
+                                                key={category.id}
+                                                value={String(
+                                                    category.id
+                                                )}
+                                            >
 
+                                                {category.name}
+
+                                            </SelectItem>
+
+                                        )
+                                    )}
+
+                                </SelectContent>
+
+                            </Select>
+                        );
+                    })()}
+
+                    {errors.category_id && (
+                        <p className="mt-1 text-sm text-destructive font-medium">
+                            {String(errors.category_id.message)}
+                        </p>
+                    )}
+
+                </div>
+
+                {/* Primary Tool */}
+
+                <div>
+
+                    <Label htmlFor="primary_tool_id">
+                        Primary Tool
+                    </Label>
+
+                    {(() => {
+                        const activeToolId = watch("primary_tool_id");
+                        const selectedTool = toolOptions?.find(
+                            (t) => String(t.id) === String(activeToolId)
+                        );
+
+                        return (
+                            <Select
+                                value={activeToolId ? String(activeToolId) : "none"}
+                                onValueChange={(value) => {
+                                    if (value === "none" || !value) {
+                                        setValue("primary_tool_id", null, { shouldValidate: true, shouldDirty: true });
+                                    } else {
+                                        setValue("primary_tool_id", Number(value), { shouldValidate: true, shouldDirty: true });
+                                    }
+                                }}
+                            >
+
+                                <SelectTrigger className="w-full">
+
+                                    <SelectValue placeholder="Select Primary Tool">
+                                        {selectedTool ? selectedTool.name : "None"}
+                                    </SelectValue>
+
+                                </SelectTrigger>
+
+                                <SelectContent>
+
+                                    <SelectItem value="none">
+                                        None
                                     </SelectItem>
 
-                                )
-                            )}
+                                    {toolOptions?.map(
+                                        (tool) => (
 
-                        </SelectContent>
+                                            <SelectItem
+                                                key={tool.id}
+                                                value={String(tool.id)}
+                                            >
 
-                    </Select>
+                                                {tool.name}
+
+                                            </SelectItem>
+
+                                        )
+                                    )}
+
+                                </SelectContent>
+
+                            </Select>
+                        );
+                    })()}
 
                 </div>
 
@@ -210,7 +296,7 @@ export default function BasicSection() {
 
                     <div className="mt-3 flex flex-wrap gap-2">
 
-                        {tags.map((tag) => (
+                        {(tagOptions ?? []).map((tag: any) => (
 
                             <button
                                 type="button"
@@ -268,13 +354,14 @@ export default function BasicSection() {
 
                 <div>
 
-                    <Label>
+                    <Label htmlFor="excerpt">
                         Excerpt
                     </Label>
 
                     <Textarea
-                        rows={5}
-                        placeholder="Short summary of the article..."
+                        id="excerpt"
+                        rows={4}
+                        placeholder="Learn how to format JSON, identify common syntax errors, and fix invalid JSON with practical examples and developer tools."
                         {...register("excerpt")}
                     />
 

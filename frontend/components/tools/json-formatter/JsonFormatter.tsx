@@ -18,6 +18,7 @@ import {
   Minimize2,
   CheckCircle2,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -47,6 +48,7 @@ export default function JsonFormatter({ tool }: Props) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -106,6 +108,19 @@ export default function JsonFormatter({ tool }: Props) {
     handleFormat(input, indent);
   }, [input, indent]);
 
+  // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter -> Format
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        handleFormat(input, indent);
+        toast.info("JSON Formatted (Ctrl+Enter)");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [input, indent]);
+
   // File Upload Handler
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -144,12 +159,21 @@ export default function JsonFormatter({ tool }: Props) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Clear Handler
-  const handleClear = () => {
+  const handleClearClick = () => {
+    if (input.trim() || output.trim()) {
+      setShowClearConfirm(true);
+    } else {
+      executeClear();
+    }
+  };
+
+  const executeClear = () => {
     setInput("");
     setOutput("");
     setStatus("idle");
     setErrorMessage("");
+    setShowClearConfirm(false);
+    toast.info("Cleared JSON editor");
   };
 
   return (
@@ -166,17 +190,21 @@ export default function JsonFormatter({ tool }: Props) {
       />
 
       {/* Main Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/40 p-3 rounded-2xl border border-border">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-card p-3 rounded-2xl border border-border shadow-sm">
         {/* Left Actions: Format, Minify, Validate, Indentation */}
         <div className="flex flex-wrap items-center gap-2">
           <Button
             type="button"
             size="sm"
             onClick={() => handleFormat(input, indent)}
-            className="h-8 text-xs font-semibold gap-1.5"
+            className="h-9 px-4 text-xs font-semibold gap-2 shadow-sm focus-visible:ring-2 focus-visible:ring-primary"
+            title="Format JSON (Ctrl+Enter)"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Format</span>
+            <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-primary-foreground/80 bg-primary-foreground/15 rounded border border-primary-foreground/20 ml-1">
+              Ctrl+Enter
+            </kbd>
           </Button>
 
           <Button
@@ -184,9 +212,9 @@ export default function JsonFormatter({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={handleMinify}
-            className="h-8 text-xs font-semibold gap-1.5"
+            className="h-9 text-xs font-medium text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <Minimize2 className="w-3.5 h-3.5" />
+            <Minimize2 className="w-3.5 h-3.5 mr-1.5" />
             <span>Minify</span>
           </Button>
 
@@ -195,13 +223,13 @@ export default function JsonFormatter({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={handleValidate}
-            className="h-8 text-xs font-semibold gap-1.5"
+            className="h-9 text-xs font-medium text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+            <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
             <span>Validate</span>
           </Button>
 
-          <div className="h-4 w-px bg-border mx-1" />
+          <div className="h-4 w-px bg-border mx-1 hidden sm:block" />
 
           {/* Indent Selector */}
           <div className="flex items-center gap-1">
@@ -213,7 +241,7 @@ export default function JsonFormatter({ tool }: Props) {
                 variant={indent === spaces ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => setIndent(spaces)}
-                className="h-7 text-xs px-2"
+                className="h-7 text-xs px-2 font-mono"
               >
                 {spaces}s
               </Button>
@@ -221,17 +249,20 @@ export default function JsonFormatter({ tool }: Props) {
           </div>
         </div>
 
-        {/* Right Actions: Upload, Sample, Copy, Clear */}
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Right Actions: Sample, Upload, Copy, Download, Clear */}
+        <div className="flex items-center gap-1.5">
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            onClick={() => setInput(SAMPLE_JSON)}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              setInput(SAMPLE_JSON);
+              toast.info("Loaded sample JSON");
+            }}
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
             title="Load Sample JSON"
           >
-            <FileCode className="w-3.5 h-3.5 mr-1" />
+            <FileCode className="w-3.5 h-3.5 mr-1.5" />
             <span>Sample</span>
           </Button>
 
@@ -240,10 +271,10 @@ export default function JsonFormatter({ tool }: Props) {
             variant="ghost"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
             title="Upload JSON File"
           >
-            <Upload className="w-3.5 h-3.5 mr-1" />
+            <Upload className="w-3.5 h-3.5 mr-1.5" />
             <span>Upload</span>
           </Button>
 
@@ -253,15 +284,15 @@ export default function JsonFormatter({ tool }: Props) {
             size="sm"
             disabled={!output}
             onClick={handleCopy}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40"
             title="Copy Formatted JSON"
           >
             {copied ? (
-              <Check className="w-3.5 h-3.5 mr-1 text-emerald-500" />
+              <Check className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
             ) : (
-              <Copy className="w-3.5 h-3.5 mr-1" />
+              <Copy className="w-3.5 h-3.5 mr-1.5" />
             )}
-            <span>{copied ? "Copied" : "Copy"}</span>
+            <span>{copied ? "Copied!" : "Copy"}</span>
           </Button>
 
           <Button
@@ -270,39 +301,67 @@ export default function JsonFormatter({ tool }: Props) {
             size="sm"
             disabled={!output}
             onClick={handleDownload}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
-            title="Download JSON File"
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40"
+            title="Download formatted.json"
           >
-            <Download className="w-3.5 h-3.5 mr-1" />
+            <Download className="w-3.5 h-3.5 mr-1.5" />
             <span>Download</span>
           </Button>
 
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={handleClear}
-            className="h-8 text-xs text-muted-foreground hover:text-destructive"
-            title="Clear All"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </Button>
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {showClearConfirm ? (
+            <div className="flex items-center gap-1.5 bg-destructive/10 p-1 rounded-lg border border-destructive/20 animate-in fade-in">
+              <span className="text-[11px] font-medium text-destructive px-1.5">Clear?</span>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={executeClear}
+                className="h-7 px-2.5 text-[11px] font-semibold"
+              >
+                Clear
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowClearConfirm(false)}
+                className="h-7 w-7 p-0 text-muted-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </Button>
+            </div>
+          ) : (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClearClick}
+              disabled={!input && !output}
+              className="h-9 px-2.5 text-xs text-muted-foreground hover:text-destructive focus-visible:ring-2 focus-visible:ring-destructive disabled:opacity-40"
+              title="Clear JSON Editor"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span className="sr-only">Clear</span>
+            </Button>
+          )}
         </div>
       </div>
 
       {/* Validation Status / Error Banner */}
       {status === "error" && errorMessage && (
-        <div className="flex items-start gap-2.5 p-3.5 rounded-xl border bg-rose-500/10 border-rose-500/30 text-rose-500 font-mono text-xs">
+        <div className="flex items-start gap-3 p-4 rounded-xl border bg-rose-500/10 border-rose-500/30 text-rose-500 font-mono text-xs shadow-xs">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>
-            <div className="font-bold">JSON Syntax Error</div>
-            <div className="mt-0.5 opacity-90">{errorMessage}</div>
+            <div className="font-bold text-rose-500">Invalid JSON Syntax</div>
+            <div className="mt-1 opacity-90 leading-relaxed">{errorMessage}</div>
           </div>
         </div>
       )}
 
       {status === "success" && (
-        <div className="flex items-center gap-2 p-2.5 px-3.5 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 font-semibold text-xs">
+        <div className="flex items-center gap-2 p-3 px-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 font-semibold text-xs shadow-xs">
           <CheckCircle2 className="w-4 h-4" />
           <span>Valid JSON Syntax</span>
         </div>
@@ -310,33 +369,31 @@ export default function JsonFormatter({ tool }: Props) {
 
       {/* Editors Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Input Editor */}
-        <div className="flex flex-col space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Raw / Unformatted JSON
-          </span>
-          <CodeEditor
-            value={input}
-            onChange={setInput}
-            language="json"
-            placeholder="Paste your unformatted JSON payload here..."
-            height="380px"
-          />
-        </div>
+        <CodeEditor
+          title="Raw / Unformatted JSON"
+          badge="Raw Input"
+          value={input}
+          onChange={setInput}
+          language="json"
+          placeholder="Paste your unformatted JSON payload here..."
+          height="420px"
+          onCopy={() => {
+            navigator.clipboard.writeText(input);
+            toast.success("Copied raw input!");
+          }}
+        />
 
-        {/* Output Editor */}
-        <div className="flex flex-col space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Formatted JSON Result
-          </span>
-          <CodeEditor
-            value={output}
-            readOnly
-            language="json"
-            placeholder="Formatted JSON result will appear here..."
-            height="380px"
-          />
-        </div>
+        <CodeEditor
+          title="Formatted JSON Result"
+          badge="Formatted"
+          value={output}
+          readOnly
+          language="json"
+          placeholder="Formatted JSON result will appear here..."
+          height="420px"
+          onCopy={handleCopy}
+          onDownload={handleDownload}
+        />
       </div>
 
       {/* SEO Rich Explanation Content */}

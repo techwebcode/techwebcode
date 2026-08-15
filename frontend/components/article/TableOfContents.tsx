@@ -90,22 +90,28 @@ export default function TableOfContents() {
 
     return (
 
-        <aside
+        <div
             className="
-                sticky
-                top-24
-                rounded-xl
+                rounded-2xl
                 border
+                border-border
                 bg-card
                 p-5
+                flex
+                flex-col
+                min-h-0
+                overflow-hidden
+                shadow-xs
             "
         >
 
             <h3
                 className="
-                    mb-4
-                    text-lg
+                    mb-3
+                    text-base
                     font-semibold
+                    text-foreground
+                    tracking-tight
                 "
             >
 
@@ -113,7 +119,7 @@ export default function TableOfContents() {
 
             </h3>
 
-            <nav>
+            <nav className="overflow-y-auto max-h-[calc(100vh-22rem)] pr-1">
 
                 <ul className="space-y-2">
 
@@ -123,7 +129,7 @@ export default function TableOfContents() {
                             key={heading.id}
                             className={
                                 heading.level === 3
-                                    ? "ml-4"
+                                    ? "ml-3"
                                     : ""
                             }
                         >
@@ -135,7 +141,9 @@ export default function TableOfContents() {
                                 className={`
                                     block
                                     text-sm
+                                    py-0.5
                                     transition-colors
+                                    leading-snug
                                     ${
                                         active ===
                                         heading.id
@@ -157,7 +165,7 @@ export default function TableOfContents() {
 
             </nav>
 
-        </aside>
+        </div>
 
     );
 

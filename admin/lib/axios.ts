@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+    return (
+        process.env.NEXT_PUBLIC_API_URL ||
+        process.env.NEXT_PUBLIC_API ||
+        process.env.NEXT_ADMIN_API ||
+        "http://localhost:8090/api/v1"
+    );
+};
+
 const api = axios.create({
-    baseURL: process.env.NEXT_ADMIN_API || "http://localhost:8080/api/v1",
+    baseURL: getBaseUrl(),
     timeout: 30000,
     headers: {
         "Content-Type": "application/json",
@@ -9,12 +18,13 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+    config.baseURL = getBaseUrl();
+
     const secret = process.env.NEXT_PUBLIC_ADMIN_SECRET;
-    
+
     if (secret) {
         config.headers["X-Admin-Secret"] = secret;
     }
-    console.log(config.headers);
     return config;
 });
 

@@ -26,6 +26,7 @@ export default function ArticleSidebar({
                 hidden
                 xl:block
                 xl:w-80
+                shrink-0
             "
         >
 
@@ -34,6 +35,10 @@ export default function ArticleSidebar({
                     sticky
                     top-24
                     space-y-6
+                    max-h-[calc(100vh-7rem)]
+                    flex
+                    flex-col
+                    justify-between
                 "
             >
 

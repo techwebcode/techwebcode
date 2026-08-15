@@ -82,6 +82,7 @@ export default function CategoryModal({
                 category={category}
                 loading={loading}
                 onSubmit={handleSubmit}
+                onCancel={onClose}
             />
 
         </AppModal>

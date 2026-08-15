@@ -1,97 +1,68 @@
 import { MetadataRoute } from "next";
 import ArticleService from "@/services/article";
+import ToolService from "@/services/tool.service";
+
+export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://techwebcode.in";
 
-  // Base meaningful modification date for site launch/update
-  const baseDate = "2026-08-13";
-
-  // Public Core Static Routes
-  const staticRoutes: MetadataRoute.Sitemap = [
-    "",
-    "/articles",
-    "/tools",
-    "/categories",
-    "/about",
-    "/contact",
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: baseDate,
+  // 1. Core Static Public Pages
+  const staticPaths = ["", "/tools", "/articles", "/categories", "/about", "/contact"];
+  const staticRoutes: MetadataRoute.Sitemap = staticPaths.map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: new Date(),
   }));
 
-  // Developer Tools Routes
-  const toolSlugs = [
-    "json-formatter",
-    "json-validator",
-    "json-minifier",
-    "jwt-decoder",
-    "base64",
-    "uuid-generator",
-    "timestamp-converter",
-    "url-encoder",
-    "regex-tester",
-    "sql-formatter",
-    "yaml-formatter",
-  ];
-
-  const toolRoutes: MetadataRoute.Sitemap = toolSlugs.map((slug) => ({
-    url: `${baseUrl}/tools/${slug}`,
-    lastModified: baseDate,
-  }));
-
-  // Categories Routes
-  const categorySlugs = [
-    "frontend",
-    "backend",
-    "devops",
-    "system-design",
-    "mobile",
-  ];
-
-  const categoryRoutes: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
-    url: `${baseUrl}/categories/${slug}`,
-    lastModified: baseDate,
-  }));
-
-  // Key SEO Articles Routes with meaningful modification dates
-  let articleRoutes: MetadataRoute.Sitemap = [];
-
+  // 2. Dynamic Published Articles (Status = Published)
+  let publishedArticles: any[] = [];
   try {
-    const articlesRes = await ArticleService.getArticles({ limit: 50 });
-    const fetchedArticles = articlesRes?.data ?? [];
-
-    if (fetchedArticles.length > 0) {
-      articleRoutes = fetchedArticles.map((article) => {
-        const modDate =
-          article.updated_at || article.published_at || article.created_at || baseDate;
-        // Format ISO date string to YYYY-MM-DD
-        const formattedDate = modDate ? modDate.split("T")[0] : baseDate;
-        return {
-          url: `${baseUrl}/articles/${article.slug}`,
-          lastModified: formattedDate,
-        };
-      });
-    }
+    const res = await ArticleService.getArticles({ limit: 1000 });
+    publishedArticles = res?.data ?? [];
   } catch {
-    // API Fallback
+    publishedArticles = [];
   }
 
-  // If no dynamic articles were loaded, use accurate fallback articles
-  if (articleRoutes.length === 0) {
-    const defaultArticleSlugs = [
-      { slug: "how-to-fix-nextjs-hydration-error", date: "2026-08-10" },
-      { slug: "how-to-connect-go-to-mysql", date: "2026-08-11" },
-      { slug: "how-to-deploy-go-api-with-docker", date: "2026-08-12" },
-      { slug: "flutter-push-notifications-fcm-setup", date: "2026-08-12" },
-      { slug: "how-to-format-json-and-fix-syntax-errors", date: "2026-08-13" },
-    ];
+  const articleRoutes: MetadataRoute.Sitemap = publishedArticles
+    .filter((article) => article.slug && (article.status === "published" || !article.status))
+    .map((article) => {
+      const rawDate = article.updated_at || article.published_at || article.created_at;
+      return {
+        url: `${baseUrl}/articles/${article.slug}`,
+        lastModified: rawDate ? new Date(rawDate) : new Date(),
+      };
+    });
 
-    articleRoutes = defaultArticleSlugs.map((item) => ({
-      url: `${baseUrl}/articles/${item.slug}`,
-      lastModified: item.date,
+  // 3. Categories WITH AT LEAST ONE Published Article
+  const activeCategorySlugs = new Set<string>();
+  publishedArticles.forEach((article) => {
+    if (article.category?.slug && (article.status === "published" || !article.status)) {
+      activeCategorySlugs.add(article.category.slug);
+    }
+  });
+
+  const categoryRoutes: MetadataRoute.Sitemap = Array.from(activeCategorySlugs).map(
+    (categorySlug) => ({
+      url: `${baseUrl}/categories/${categorySlug}`,
+      lastModified: new Date(),
+    })
+  );
+
+  // 4. Dynamic Public Developer Tools
+  let tools: any[] = [];
+  try {
+    const toolsRes = await ToolService.getTools({ limit: 1000 });
+    tools = Array.isArray(toolsRes) ? toolsRes : [];
+  } catch {
+    tools = [];
+  }
+
+  const toolRoutes: MetadataRoute.Sitemap = tools
+    .filter((tool) => tool.slug && (tool.status === undefined || tool.status === true))
+    .map((tool) => ({
+      url: `${baseUrl}/tools/${tool.slug}`,
+      lastModified: tool.updated_at ? new Date(tool.updated_at) : new Date(),
     }));
-  }
 
   return [...staticRoutes, ...toolRoutes, ...categoryRoutes, ...articleRoutes];
 }

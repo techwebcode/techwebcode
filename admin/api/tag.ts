@@ -2,9 +2,8 @@ import api from "@/lib/axios";
 import { TagResponse } from "@/types/tag";
 
 export async function createTag(data: any) {
-
     const response = await api.post(
-        "/admin/Tags",
+        "/admin/tags",
         data
     );
 
@@ -17,7 +16,7 @@ export async function getTags(
     search = ""
 ) {
     const response = await api.get<TagResponse>(
-        `/Tags?page=${page}&limit=${limit}&search=${search}`
+        `/tags?page=${page}&limit=${limit}&search=${search}`
     );
 
     return response.data;
@@ -25,8 +24,16 @@ export async function getTags(
 
 export async function updateTag(data: any) {
     const response = await api.put(
-        `/admin/categories/${data.id}`,
+        `/admin/tags/${data.id}`,
         data
+    );
+
+    return response.data;
+}
+
+export async function deleteTag(id: number) {
+    const response = await api.delete(
+        `/admin/tags/${id}`
     );
 
     return response.data;

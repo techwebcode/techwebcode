@@ -17,6 +17,7 @@ import {
   Trash2,
   AlertCircle,
   TrendingDown,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -45,6 +46,7 @@ export default function JsonMinifier({ tool }: Props) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [stats, setStats] = useState<{ rawSize: number; minSize: number; savedPercent: number }>({
     rawSize: 0,
     minSize: 0,
@@ -52,6 +54,7 @@ export default function JsonMinifier({ tool }: Props) {
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const minifyBtnRef = useRef<HTMLButtonElement>(null);
 
   const minifyJson = (text: string = input) => {
     if (!text.trim()) {
@@ -77,13 +80,26 @@ export default function JsonMinifier({ tool }: Props) {
     } catch (err: any) {
       setOutput("");
       setStatus("error");
-      setErrorMessage(err.message || "Invalid JSON payload");
+      setErrorMessage(err.message || "Invalid JSON payload structure");
       setStats({ rawSize: 0, minSize: 0, savedPercent: 0 });
     }
   };
 
   useEffect(() => {
     minifyJson(input);
+  }, [input]);
+
+  // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter -> Minify JSON
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        minifyJson(input);
+        toast.info("JSON Minified (Ctrl+Enter)");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [input]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,11 +137,21 @@ export default function JsonMinifier({ tool }: Props) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleClear = () => {
+  const handleClearClick = () => {
+    if (input.trim() || output.trim()) {
+      setShowClearConfirm(true);
+    } else {
+      executeClear();
+    }
+  };
+
+  const executeClear = () => {
     setInput("");
     setOutput("");
     setStatus("idle");
     setErrorMessage("");
+    setShowClearConfirm(false);
+    toast.info("Cleared JSON editor");
   };
 
   return (
@@ -141,27 +167,37 @@ export default function JsonMinifier({ tool }: Props) {
         className="hidden"
       />
 
-      {/* Main Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/40 p-3 rounded-2xl border border-border">
+      {/* Action Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-card p-3 rounded-2xl border border-border shadow-sm">
+        {/* Left Actions: Primary Minify, Load Sample, Upload */}
         <div className="flex flex-wrap items-center gap-2">
           <Button
+            ref={minifyBtnRef}
             type="button"
             size="sm"
             onClick={() => minifyJson(input)}
-            className="h-8 text-xs font-semibold gap-1.5"
+            className="h-9 px-4 text-xs font-semibold gap-2 shadow-sm focus-visible:ring-2 focus-visible:ring-primary"
+            title="Minify JSON (Ctrl+Enter)"
           >
             <Minimize2 className="w-3.5 h-3.5" />
             <span>Minify JSON</span>
+            <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-primary-foreground/80 bg-primary-foreground/15 rounded border border-primary-foreground/20 ml-1">
+              Ctrl+Enter
+            </kbd>
           </Button>
 
           <Button
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => setInput(SAMPLE_FORMATTED)}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              setInput(SAMPLE_FORMATTED);
+              toast.info("Loaded sample JSON");
+            }}
+            className="h-9 text-xs font-medium text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
+            title="Load sample formatted JSON"
           >
-            <FileCode className="w-3.5 h-3.5 mr-1" />
+            <FileCode className="w-3.5 h-3.5 mr-1.5" />
             <span>Load Sample</span>
           </Button>
 
@@ -170,24 +206,31 @@ export default function JsonMinifier({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            className="h-9 text-xs font-medium text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
+            title="Upload .json file"
           >
-            <Upload className="w-3.5 h-3.5 mr-1" />
+            <Upload className="w-3.5 h-3.5 mr-1.5" />
             <span>Upload File</span>
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right Actions: Copy, Download, Clear */}
+        <div className="flex items-center gap-1.5">
           <Button
             type="button"
             variant="ghost"
             size="sm"
             disabled={!output}
             onClick={handleCopy}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40"
+            title="Copy Minified JSON"
           >
-            {copied ? <Check className="w-3.5 h-3.5 mr-1 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
-            <span>{copied ? "Copied" : "Copy"}</span>
+            {copied ? (
+              <Check className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
+            ) : (
+              <Copy className="w-3.5 h-3.5 mr-1.5" />
+            )}
+            <span>{copied ? "Copied!" : "Copy"}</span>
           </Button>
 
           <Button
@@ -196,35 +239,65 @@ export default function JsonMinifier({ tool }: Props) {
             size="sm"
             disabled={!output}
             onClick={handleDownload}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            className="h-9 px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40"
+            title="Download minified.json"
           >
-            <Download className="w-3.5 h-3.5 mr-1" />
+            <Download className="w-3.5 h-3.5 mr-1.5" />
             <span>Download</span>
           </Button>
 
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={handleClear}
-            className="h-8 text-xs text-muted-foreground hover:text-destructive"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </Button>
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {showClearConfirm ? (
+            <div className="flex items-center gap-1.5 bg-destructive/10 p-1 rounded-lg border border-destructive/20 animate-in fade-in">
+              <span className="text-[11px] font-medium text-destructive px-1.5">Clear?</span>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={executeClear}
+                className="h-7 px-2.5 text-[11px] font-semibold"
+              >
+                Clear
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowClearConfirm(false)}
+                className="h-7 w-7 p-0 text-muted-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </Button>
+            </div>
+          ) : (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClearClick}
+              disabled={!input && !output}
+              className="h-9 px-2.5 text-xs text-muted-foreground hover:text-destructive focus-visible:ring-2 focus-visible:ring-destructive disabled:opacity-40"
+              title="Clear JSON Editor"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span className="sr-only">Clear</span>
+            </Button>
+          )}
         </div>
       </div>
 
       {/* Compression Metrics Banner */}
       {status === "success" && stats.rawSize > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 text-xs font-semibold">
+        <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 px-4 rounded-xl border bg-emerald-500/10 border-emerald-500/30 text-emerald-500 text-xs font-semibold shadow-xs">
           <div className="flex items-center gap-2">
-            <TrendingDown className="w-4 h-4" />
+            <TrendingDown className="w-4 h-4 shrink-0" />
             <span>Payload Size Reduced by {stats.savedPercent}% ({stats.rawSize - stats.minSize} bytes saved)</span>
           </div>
 
-          <div className="flex gap-4 text-muted-foreground font-mono text-[11px]">
-            <span>Original: {stats.rawSize} B</span>
-            <span>→</span>
+          <div className="flex items-center gap-3 font-mono text-[11px]">
+            <span className="text-muted-foreground">Original: <strong className="text-foreground">{stats.rawSize} B</strong></span>
+            <span className="text-muted-foreground">→</span>
             <span className="text-emerald-400 font-bold">Minified: {stats.minSize} B</span>
           </div>
         </div>
@@ -232,42 +305,42 @@ export default function JsonMinifier({ tool }: Props) {
 
       {/* Error Banner */}
       {status === "error" && errorMessage && (
-        <div className="flex items-start gap-2.5 p-3.5 rounded-xl border bg-rose-500/10 border-rose-500/30 text-rose-500 font-mono text-xs">
+        <div className="flex items-start gap-3 p-4 rounded-xl border bg-rose-500/10 border-rose-500/30 text-rose-500 font-mono text-xs shadow-xs">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>
-            <div className="font-bold">JSON Syntax Error</div>
-            <div className="mt-0.5 opacity-90">{errorMessage}</div>
+            <div className="font-bold text-rose-500">Invalid JSON Syntax</div>
+            <div className="mt-1 opacity-90 leading-relaxed">{errorMessage}</div>
           </div>
         </div>
       )}
 
       {/* Editors Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="flex flex-col space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Raw Formatted Input
-          </span>
-          <CodeEditor
-            value={input}
-            onChange={setInput}
-            language="json"
-            placeholder="Paste formatted JSON here to compress..."
-            height="380px"
-          />
-        </div>
+        <CodeEditor
+          title="Raw Formatted Input"
+          badge="Input"
+          value={input}
+          onChange={setInput}
+          language="json"
+          placeholder="Paste formatted JSON payload here to compress..."
+          height="420px"
+          onCopy={() => {
+            navigator.clipboard.writeText(input);
+            toast.success("Copied raw input!");
+          }}
+        />
 
-        <div className="flex flex-col space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            Minified Compact Output
-          </span>
-          <CodeEditor
-            value={output}
-            readOnly
-            language="json"
-            placeholder="Minified single-line JSON output will appear here..."
-            height="380px"
-          />
-        </div>
+        <CodeEditor
+          title="Minified Compact Output"
+          badge="Minified"
+          value={output}
+          readOnly
+          language="json"
+          placeholder="Minified single-line JSON output will appear here..."
+          height="420px"
+          onCopy={handleCopy}
+          onDownload={handleDownload}
+        />
       </div>
 
       {/* SEO Rich Explanation Content */}
@@ -276,7 +349,7 @@ export default function JsonMinifier({ tool }: Props) {
         description="JSON minification removes unnecessary whitespace, tabs, and line breaks from your JSON payloads, reducing file size and accelerating API network response times."
         howToUse={[
           "Paste your formatted JSON payload into the left code editor, or upload a .json file.",
-          "Minification compresses the string instantly into a single compact line.",
+          "Click Minify JSON (or press Ctrl+Enter) to compress the payload instantly into a single compact line.",
           "Check the Compression Metrics banner to see exact bytes saved and percentage reduction.",
           "Click Copy to copy the compressed string, or Download to save minified.json.",
         ]}

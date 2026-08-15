@@ -35,6 +35,9 @@ services:
       DB_USER: ${MYSQL_USER:-techwebcode_user}
       DB_PASSWORD: ${MYSQL_PASSWORD:-techwebcode_pass}
       ADMIN_SECRET: ${ADMIN_SECRET:-xL6Lwfl5GgKVBMl1ehHiZ1}
+      UPLOAD_PATH: ${UPLOAD_PATH:-/var/www/techwebcode-media}
+    volumes:
+      - media_data:${UPLOAD_PATH:-/var/www/techwebcode-media}
     depends_on:
       mysql:
         condition: service_healthy
@@ -50,6 +53,7 @@ services:
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080/api/v1}
+      INTERNAL_API_URL: http://backend:8080/api/v1
     depends_on:
       - backend
     expose:
@@ -64,6 +68,7 @@ services:
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080/api/v1}
+      INTERNAL_API_URL: http://backend:8080/api/v1
       ADMIN_SECRET: ${ADMIN_SECRET:-xL6Lwfl5GgKVBMl1ehHiZ1}
     depends_on:
       - backend
@@ -82,6 +87,7 @@ services:
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - media_data:${UPLOAD_PATH:-/var/www/techwebcode-media}:ro
     depends_on:
       - frontend
       - backend
@@ -91,6 +97,7 @@ services:
 
 volumes:
   mysql_data:
+  media_data:
 
 networks:
   techwebcode_network:

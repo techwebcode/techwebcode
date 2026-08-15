@@ -12,9 +12,15 @@ export const ArticleSchema = z.object({
         .max(255),
 
     category_id: z
-    .coerce
-    .number()
-    .min(1, "Please select a category."),
+        .coerce
+        .number({ invalid_type_error: "Category is required for publishing." })
+        .min(1, "Category is required for publishing."),
+
+    primary_tool_id: z
+        .coerce
+        .number()
+        .nullable()
+        .optional(),
     
     tag_ids: z
         .array(z.number())

@@ -19,6 +19,11 @@ func Setup(
 		boot.CategoryController,
 	)
 
+	RegisterTagPublicRoutes(
+		public,
+		boot.TagController,
+	)
+
 	RegisterArticlePublicRoutes(
 		public,
 		boot.ArticleController,
@@ -38,6 +43,11 @@ func Setup(
 		boot.CategoryController,
 	)
 
+	RegisterTagAdminRoutes(
+		admin,
+		boot.TagController,
+	)
+
 	RegisterArticleAdminRoutes(
 		admin,
 		boot.ArticleController,
@@ -51,5 +61,10 @@ func Setup(
 	RegisterUploadRoutes(
 		admin,
 		boot.UploadController,
+	)
+
+	RegisterMediaAdminRoutes(
+		admin,
+		boot.MediaController,
 	)
 }

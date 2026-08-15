@@ -34,11 +34,33 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 	article, err := a.service.Create(&req)
 
 	if err != nil {
-		utils.InternalServerError(c, err)
+		utils.BadRequest(c, err)
 		return
 	}
 
 	utils.Created(c, "Article created successfully", article)
+}
+
+func (a *ArticleController) UpdateArticle(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil || id <= 0 {
+		utils.BadRequest(c, err)
+		return
+	}
+
+	var req dto.UpdateArticleRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.BadRequest(c, err)
+		return
+	}
+
+	article, err := a.service.Update(uint(id), &req)
+	if err != nil {
+		utils.BadRequest(c, err)
+		return
+	}
+
+	utils.Success(c, "Article updated successfully", article)
 }
 
 func (a *ArticleController) GetArticles(c *gin.Context) {
@@ -50,23 +72,58 @@ func (a *ArticleController) GetArticles(c *gin.Context) {
 	var categoryID uint
 
 	if category := c.Query("category"); category != "" {
-
 		id, _ := strconv.Atoi(category)
-
 		categoryID = uint(id)
 	}
 
+	// Public GET /articles returns only published articles
 	articles, total, err := a.service.GetAll(
 		page,
 		limit,
 		search,
 		categoryID,
+		"published",
 	)
 
 	if err != nil {
-
 		utils.InternalServerError(c, err)
+		return
+	}
 
+	utils.SuccessWithPagination(
+		c,
+		"Articles fetched successfully",
+		articles,
+		page,
+		limit,
+		int(total),
+	)
+}
+
+func (a *ArticleController) GetAdminArticles(c *gin.Context) {
+
+	page, limit, _ := utils.GetPagination(c)
+
+	search := c.Query("search")
+
+	var categoryID uint
+
+	if category := c.Query("category"); category != "" {
+		id, _ := strconv.Atoi(category)
+		categoryID = uint(id)
+	}
+
+	// Admin GET /admin/articles returns all articles (draft and published)
+	articles, total, err := a.service.GetAll(
+		page,
+		limit,
+		search,
+		categoryID,
+		"",
+	)
+
+	if err != nil {
+		utils.InternalServerError(c, err)
 		return
 	}
 
@@ -110,7 +167,8 @@ func (a *ArticleController) GetArticle(c *gin.Context) {
 
 	slug := c.Param("slug")
 
-	article, err := a.service.GetBySlug(slug)
+	// Public single article query filters status = 'published'
+	article, err := a.service.GetPublishedBySlug(slug)
 
 	if err != nil {
 

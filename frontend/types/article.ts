@@ -20,8 +20,11 @@ export interface Article {
     published_at: string | null;
     created_at: string;
     updated_at: string;
-    category: Category;
-    tags: Tag[];
+    category?: Category;
+    primary_tool_id?: number | null;
+    primary_tool?: any;
+    primaryTool?: any;
+    tags?: Tag[] | null;
 }
 
 export interface Pagination {

@@ -7,9 +7,9 @@ interface Props {
 export default function ArticleContent({
     article,
 }: Readonly<Props>) {
+    const rawContent = article.content_html || article.content_markdown || (article as any).content || "";
 
     return (
-
         <article
             className="
                 prose
@@ -20,9 +20,9 @@ export default function ArticleContent({
                 prose-headings:scroll-mt-24
                 prose-headings:font-bold
 
-                prose-h1:text-5xl
-                prose-h2:text-4xl
-                prose-h3:text-3xl
+                prose-h1:text-4xl
+                prose-h2:text-3xl
+                prose-h3:text-2xl
 
                 prose-p:leading-8
 
@@ -46,10 +46,8 @@ export default function ArticleContent({
                 hover:prose-a:underline
             "
             dangerouslySetInnerHTML={{
-                __html: article.content_html,
+                __html: rawContent,
             }}
         />
-
     );
-
 }
