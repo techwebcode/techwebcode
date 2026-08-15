@@ -20,11 +20,24 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
     config.baseURL = getBaseUrl();
 
-    const secret = process.env.NEXT_PUBLIC_ADMIN_SECRET;
+    let secret = process.env.NEXT_PUBLIC_ADMIN_SECRET;
 
-    if (secret) {
-        config.headers["X-Admin-Secret"] = secret;
+    if (typeof window !== "undefined") {
+        const localSecret =
+            localStorage.getItem("admin_secret") ||
+            localStorage.getItem("token");
+        if (localSecret) {
+            secret = localSecret;
+        }
     }
+
+    if (!secret) {
+        secret = "xL6Lwfl5GgKVBMl1ehHiZ1";
+    }
+
+    config.headers["X-Admin-Secret"] = secret;
+    config.headers["Authorization"] = `Bearer ${secret}`;
+
     return config;
 });
 
