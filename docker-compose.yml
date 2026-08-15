@@ -82,6 +82,7 @@ services:
       dockerfile: docker/admin/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080/api/v1}
+        NEXT_PUBLIC_ADMIN_SECRET: ${ADMIN_SECRET:-xL6Lwfl5GgKVBMl1ehHiZ1}
     container_name: techwebcode-admin
     restart: unless-stopped
     environment:
