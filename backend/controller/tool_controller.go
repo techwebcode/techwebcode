@@ -177,10 +177,15 @@ func (c *ToolController) CreateTool(ctx *gin.Context) {
 		return
 	}
 
+	slug := req.Slug
+	if slug == "" {
+		slug = utils.GenerateSlug(req.Name)
+	}
+
 	tool := models.Tool{
 		CategoryID:       req.CategoryID,
 		Name:             req.Name,
-		Slug:             utils.GenerateSlug(req.Name),
+		Slug:             slug,
 		ShortDescription: req.ShortDescription,
 		Description:      req.Description,
 		Icon:             req.Icon,
@@ -215,11 +220,16 @@ func (c *ToolController) UpdateTool(ctx *gin.Context) {
 		return
 	}
 
+	slug := req.Slug
+	if slug == "" {
+		slug = utils.GenerateSlug(req.Name)
+	}
+
 	tool := models.Tool{
 		ID:               uint(id),
 		CategoryID:       req.CategoryID,
 		Name:             req.Name,
-		Slug:             utils.GenerateSlug(req.Name),
+		Slug:             slug,
 		ShortDescription: req.ShortDescription,
 		Description:      req.Description,
 		Icon:             req.Icon,

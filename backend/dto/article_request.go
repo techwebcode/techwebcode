@@ -3,6 +3,7 @@ package dto
 type CreateArticleRequest struct {
 	CategoryID      uint   `json:"category_id" binding:"required"`
 	PrimaryToolID   *uint  `json:"primary_tool_id"`
+	FeaturedImageID *uint  `json:"featured_image_id"`
 	Title           string `json:"title" binding:"required"`
 	Slug            string `json:"slug"`
 	Excerpt         string `json:"excerpt"`
@@ -21,6 +22,7 @@ type CreateArticleRequest struct {
 type UpdateArticleRequest struct {
 	CategoryID      uint   `json:"category_id"`
 	PrimaryToolID   *uint  `json:"primary_tool_id"`
+	FeaturedImageID *uint  `json:"featured_image_id"`
 	Title           string `json:"title"`
 	Slug            string `json:"slug"`
 	Excerpt         string `json:"excerpt"`

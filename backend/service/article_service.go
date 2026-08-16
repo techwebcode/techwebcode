@@ -15,26 +15,37 @@ type ArticleService struct {
 	articleRepo  *repository.ArticleRepository
 	categoryRepo *repository.CategoryRepository
 	toolRepo     *repository.ToolRepository
+	mediaRepo    *repository.MediaRepository
 }
 
 func NewArticleService(
 	articleRepo *repository.ArticleRepository,
 	categoryRepo *repository.CategoryRepository,
 	toolRepo *repository.ToolRepository,
+	mediaRepo *repository.MediaRepository,
 ) *ArticleService {
-
 	return &ArticleService{
 		articleRepo:  articleRepo,
 		categoryRepo: categoryRepo,
 		toolRepo:     toolRepo,
+		mediaRepo:    mediaRepo,
 	}
 }
 
-func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article, error) {
+func isImageMedia(media *models.Media) bool {
+	if media == nil {
+		return false
+	}
+	if strings.HasPrefix(strings.ToLower(media.MimeType), "image/") {
+		return true
+	}
+	ext := strings.ToLower(media.Extension)
+	return ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "webp" || ext == "gif" || ext == "svg"
+}
 
+func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article, error) {
 	// Check category exists
 	_, err := s.categoryRepo.FindByID(req.CategoryID)
-
 	if err != nil {
 		return nil, errors.New("category not found")
 	}
@@ -45,6 +56,19 @@ func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article,
 		if err != nil {
 			return nil, errors.New("selected primary tool not found")
 		}
+	}
+
+	// Validate featured image if provided
+	var featuredMedia *models.Media
+	if req.FeaturedImageID != nil && *req.FeaturedImageID > 0 {
+		media, err := s.mediaRepo.FindByID(*req.FeaturedImageID)
+		if err != nil {
+			return nil, errors.New("selected featured image not found")
+		}
+		if !isImageMedia(media) {
+			return nil, errors.New("selected media item is not an image")
+		}
+		featuredMedia = media
 	}
 
 	// Slug resolution & sanitization
@@ -66,38 +90,32 @@ func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article,
 	}
 
 	html, err := utils.MarkdownToHTML(req.ContentMarkdown)
-
 	if err != nil {
 		return nil, err
 	}
 
 	article := &models.Article{
-
-		CategoryID: req.CategoryID,
-
-		PrimaryToolID: req.PrimaryToolID,
-
-		Title: strings.TrimSpace(req.Title),
-
-		Slug: slugToUse,
-
-		Excerpt: req.Excerpt,
-
+		CategoryID:      req.CategoryID,
+		PrimaryToolID:   req.PrimaryToolID,
+		Title:           strings.TrimSpace(req.Title),
+		Slug:            slugToUse,
+		Excerpt:         req.Excerpt,
 		ContentMarkdown: req.ContentMarkdown,
+		ContentHTML:     html,
+		FeaturedImage:   req.FeaturedImage,
+		SeoTitle:        req.SeoTitle,
+		SeoDescription:  req.SeoDescription,
+		CanonicalURL:    req.CanonicalURL,
+		IsFeatured:      req.IsFeatured,
+		Status:          req.Status,
+	}
 
-		ContentHTML: html,
-
-		FeaturedImage: req.FeaturedImage,
-
-		SeoTitle: req.SeoTitle,
-
-		SeoDescription: req.SeoDescription,
-
-		CanonicalURL: req.CanonicalURL,
-
-		IsFeatured: req.IsFeatured,
-
-		Status: req.Status,
+	if featuredMedia != nil {
+		article.FeaturedImageID = &featuredMedia.ID
+		article.FeaturedImageMedia = featuredMedia
+		if article.FeaturedImage == "" {
+			article.FeaturedImage = featuredMedia.URL
+		}
 	}
 
 	// Default status
@@ -115,7 +133,6 @@ func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article,
 	}
 
 	err = s.articleRepo.Create(article)
-
 	if err != nil {
 		if strings.Contains(strings.ToLower(err.Error()), "duplicate") || strings.Contains(strings.ToLower(err.Error()), "unique") {
 			return nil, errors.New("slug already exists")
@@ -184,6 +201,26 @@ func (s *ArticleService) Update(id uint, req *dto.UpdateArticleRequest) (*models
 		}
 	}
 
+	// Featured Image ID handling
+	if req.FeaturedImageID != nil {
+		if *req.FeaturedImageID > 0 {
+			media, err := s.mediaRepo.FindByID(*req.FeaturedImageID)
+			if err != nil {
+				return nil, errors.New("selected featured image not found")
+			}
+			if !isImageMedia(media) {
+				return nil, errors.New("selected media item is not an image")
+			}
+			article.FeaturedImageID = req.FeaturedImageID
+			article.FeaturedImageMedia = media
+			article.FeaturedImage = media.URL
+		} else {
+			article.FeaturedImageID = nil
+			article.FeaturedImageMedia = nil
+			article.FeaturedImage = ""
+		}
+	}
+
 	// Status transition rules
 	if req.Status != "" {
 		oldStatus := article.Status
@@ -216,19 +253,22 @@ func (s *ArticleService) Update(id uint, req *dto.UpdateArticleRequest) (*models
 		article.PrimaryTool = nil
 	}
 
+	if article.FeaturedImageID != nil && *article.FeaturedImageID > 0 {
+		media, _ := s.mediaRepo.FindByID(*article.FeaturedImageID)
+		article.FeaturedImageMedia = media
+	} else {
+		article.FeaturedImageMedia = nil
+	}
+
 	return article, nil
 }
 
 func calculateReadingTime(content string) int {
-
 	words := len(strings.Fields(content))
-
 	minutes := words / 200
-
 	if minutes < 1 {
 		return 1
 	}
-
 	return minutes
 }
 
@@ -239,7 +279,6 @@ func (s *ArticleService) GetAll(
 	categoryID uint,
 	statusFilter string,
 ) ([]models.Article, int64, error) {
-
 	return s.articleRepo.GetAll(
 		page,
 		limit,
@@ -264,16 +303,13 @@ func (s *ArticleService) GetTrending(limit int) ([]models.Article, error) {
 }
 
 func (s *ArticleService) GetBySlug(slug string) (*models.Article, error) {
-
 	return s.articleRepo.GetBySlug(slug)
 }
 
 func (s *ArticleService) GetPublishedBySlug(slug string) (*models.Article, error) {
-
 	return s.articleRepo.GetPublishedBySlug(slug)
 }
 
 func (s *ArticleService) Delete(id uint) error {
-
 	return s.articleRepo.Delete(id)
 }

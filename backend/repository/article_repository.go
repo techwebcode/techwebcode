@@ -34,6 +34,7 @@ func (r *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 	err := database.DB.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		Where("slug = ?", slug).
 		First(&article).Error
 
@@ -53,6 +54,7 @@ func (r *ArticleRepository) GetPublishedBySlug(slug string) (*models.Article, er
 	err := database.DB.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		Where("slug = ? AND status = ?", slug, "published").
 		First(&article).Error
 
@@ -72,6 +74,7 @@ func (r *ArticleRepository) GetByID(id uint) (*models.Article, error) {
 	err := database.DB.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		First(&article, id).Error
 
 	if err != nil {
@@ -114,6 +117,7 @@ func (r *ArticleRepository) GetAll(page, limit int, search string, categoryID ui
 	err := query.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		Order("published_at DESC, id DESC").
 		Limit(limit).
 		Offset((page - 1) * limit).
@@ -131,6 +135,7 @@ func (r *ArticleRepository) GetFeatured(limit int) ([]models.Article, error) {
 	err := database.DB.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		Where("is_featured = ? AND status = ?", 1, "published").
 		Order("published_at DESC, id DESC").
 		Limit(limit).
@@ -148,6 +153,7 @@ func (r *ArticleRepository) GetTrending(limit int) ([]models.Article, error) {
 	err := database.DB.
 		Preload("Category").
 		Preload("PrimaryTool").
+		Preload("FeaturedImageMedia").
 		Where("status = ?", "published").
 		Order("view_count DESC, id DESC").
 		Limit(limit).

@@ -9,11 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ThemeToggle from "./ThemeToggle";
 import MobileMenu from "@/components/layout/MobileMenu";
-import { NAVIGATION } from "@/constants/navigation";
+import ToolsMegaMenu from "@/components/layout/ToolsMegaMenu";
+import NavDropdown from "@/components/layout/NavDropdown";
+import { ARTICLE_DROPDOWN_ITEMS } from "@/constants/navigationData";
+import { useDynamicNavData } from "@/hooks/useDynamicNavData";
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/";
   const router = useRouter();
+
+  const { categories, toolCategories } = useDynamicNavData();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +31,13 @@ export default function Navbar() {
       setSearchQuery("");
     }
   };
+
+  const isHomeActive = pathname === "/";
+  const isArticlesActive = pathname.startsWith("/articles");
+  const isToolsActive = pathname.startsWith("/tools");
+  const isCategoriesActive = pathname.startsWith("/categories");
+  const isAboutActive = pathname === "/about";
+  const isContactActive = pathname === "/contact";
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
@@ -43,7 +55,7 @@ export default function Navbar() {
               <Input
                 autoFocus
                 type="text"
-                placeholder="Search articles and tools..."
+                placeholder="Search articles and developer tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="h-9 rounded-xl text-sm"
@@ -64,17 +76,53 @@ export default function Navbar() {
           ) : (
             <>
               {/* Desktop Navigation */}
-              <nav className="hidden items-center gap-8 md:flex">
-                {NAVIGATION.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`text-sm font-medium transition-colors hover:text-blue-600 ${pathname === item.href ? "text-blue-600 font-semibold" : "text-muted-foreground"
-                      }`}
-                  >
-                    {item.title}
-                  </Link>
-                ))}
+              <nav className="hidden items-center gap-6 md:flex" aria-label="Main Navigation">
+                <Link
+                  href="/"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
+                    isHomeActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                  }`}
+                >
+                  Home
+                </Link>
+
+                {/* Articles Dropdown */}
+                <NavDropdown
+                  title="Articles"
+                  isActive={isArticlesActive}
+                  items={ARTICLE_DROPDOWN_ITEMS}
+                  widthClass="w-80"
+                />
+
+                {/* Dynamic Tools Mega-Menu */}
+                <ToolsMegaMenu isActive={isToolsActive} categories={toolCategories} />
+
+                {/* Dynamic Categories Dropdown */}
+                <NavDropdown
+                  title="Categories"
+                  isActive={isCategoriesActive}
+                  items={categories}
+                  widthClass="w-80"
+                  isCategoryGrid
+                />
+
+                <Link
+                  href="/about"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
+                    isAboutActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                  }`}
+                >
+                  About
+                </Link>
+
+                <Link
+                  href="/contact"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
+                    isContactActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                  }`}
+                >
+                  Contact
+                </Link>
               </nav>
 
               {/* Right Controls */}

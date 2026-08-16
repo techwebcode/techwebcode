@@ -10,27 +10,51 @@ import (
 func SeedToolCategories(db *gorm.DB) error {
 	categories := []models.ToolCategory{
 		{
-			Name:        "JSON",
-			Slug:        "json",
+			Name:        "JSON & Data",
+			Slug:        "json-and-data",
 			Icon:        "FileCode",
 			Description: "Free online tools for formatting, validating, beautifying, and minifying JSON data structures.",
 			SortOrder:   1,
 			Status:      true,
 		},
 		{
-			Name:        "Security",
-			Slug:        "security",
-			Icon:        "ShieldCheck",
-			Description: "Security utilities including JWT decoding, header inspection, and claim analysis.",
+			Name:        "Regex & SQL",
+			Slug:        "regex-and-sql",
+			Icon:        "Code2",
+			Description: "Regular expression testers, explainers, and SQL query formatting tools.",
 			SortOrder:   2,
 			Status:      true,
 		},
 		{
-			Name:        "Encoding",
-			Slug:        "encoding",
-			Icon:        "ArrowLeftRight",
-			Description: "Data encoding and decoding utilities for Base64 and text conversions.",
+			Name:        "API & DevOps",
+			Slug:        "api-and-devops",
+			Icon:        "ArrowRightLeft",
+			Description: "API contract response checkers and deployment configuration analyzers.",
 			SortOrder:   3,
+			Status:      true,
+		},
+		{
+			Name:        "YAML & Kubernetes",
+			Slug:        "yaml-and-kubernetes",
+			Icon:        "FileText",
+			Description: "YAML formatters and Kubernetes Secret manifest generators & decoders.",
+			SortOrder:   4,
+			Status:      true,
+		},
+		{
+			Name:        "Text & Encoding",
+			Slug:        "text-and-encoding",
+			Icon:        "ArrowLeftRight",
+			Description: "Data encoding and decoding utilities for Base64 and URL percent-conversions.",
+			SortOrder:   5,
+			Status:      true,
+		},
+		{
+			Name:        "Security",
+			Slug:        "security",
+			Icon:        "ShieldCheck",
+			Description: "Security utilities including JWT decoding, claim inspection, and header analysis.",
+			SortOrder:   6,
 			Status:      true,
 		},
 		{
@@ -38,7 +62,7 @@ func SeedToolCategories(db *gorm.DB) error {
 			Slug:        "generators",
 			Icon:        "RefreshCw",
 			Description: "Random string, cryptographically secure UUID v4, and dummy data generators.",
-			SortOrder:   4,
+			SortOrder:   7,
 			Status:      true,
 		},
 		{
@@ -46,23 +70,7 @@ func SeedToolCategories(db *gorm.DB) error {
 			Slug:        "date-and-time",
 			Icon:        "Clock",
 			Description: "Unix Epoch timestamp conversion, ISO 8601 date parsing, and time conversion tools.",
-			SortOrder:   5,
-			Status:      true,
-		},
-		{
-			Name:        "Web",
-			Slug:        "web",
-			Icon:        "Globe",
-			Description: "Web development utilities including URL percent-encoding and Regex pattern testing.",
-			SortOrder:   6,
-			Status:      true,
-		},
-		{
-			Name:        "Database",
-			Slug:        "database",
-			Icon:        "Database",
-			Description: "Database utilities for SQL query formatting, beautification, and query cleanup.",
-			SortOrder:   7,
+			SortOrder:   8,
 			Status:      true,
 		},
 	}
@@ -77,6 +85,6 @@ func SeedToolCategories(db *gorm.DB) error {
 		}
 	}
 
-	log.Println("[Seeder] Successfully seeded initial 7 tool categories")
+	log.Println("[Seeder] Successfully seeded tool categories")
 	return nil
 }

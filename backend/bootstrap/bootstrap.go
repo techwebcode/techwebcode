@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"github.com/techwebcode/techwebcode/backend/controller"
+	"github.com/techwebcode/techwebcode/backend/database"
 	"github.com/techwebcode/techwebcode/backend/repository"
 	"github.com/techwebcode/techwebcode/backend/service"
 	"github.com/techwebcode/techwebcode/backend/storage"
@@ -14,6 +15,7 @@ type Bootstrap struct {
 	UploadController   *controller.UploadController
 	ToolController     *controller.ToolController
 	MediaController    *controller.MediaController
+	ContactController  *controller.ContactController
 }
 
 func New() *Bootstrap {
@@ -28,7 +30,7 @@ func New() *Bootstrap {
 	// services
 	categoryService := service.NewCategoryService(categoryRepo)
 	tagService := service.NewTagService(tagRepo)
-	articleService := service.NewArticleService(articleRepo, categoryRepo, toolRepo)
+	articleService := service.NewArticleService(articleRepo, categoryRepo, toolRepo, mediaRepo)
 	mediaService := service.NewMediaService(mediaRepo, storage.NewLocalStorage())
 	toolService := service.NewToolService(toolRepo)
 
@@ -39,6 +41,7 @@ func New() *Bootstrap {
 	uploadController := controller.NewUploadController(mediaService)
 	toolController := controller.NewToolController(toolService)
 	mediaController := controller.NewMediaController(mediaService)
+	contactController := controller.NewContactController(database.DB)
 
 	return &Bootstrap{
 		CategoryController: categoryController,
@@ -47,5 +50,6 @@ func New() *Bootstrap {
 		UploadController:   uploadController,
 		ToolController:     toolController,
 		MediaController:    mediaController,
+		ContactController:  contactController,
 	}
 }

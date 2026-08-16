@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, Folder, FileText, Tags, ImageIcon, Settings } from "lucide-react";
+import { LayoutDashboard, Folder, FileText, Tags, ImageIcon, Mail, Settings } from "lucide-react";
 
 const menus = [
     {
         title: "Dashboard",
         href: "/dashboard",
         icon: LayoutDashboard,
+    },
+    {
+        title: "Contact Messages",
+        href: "/dashboard/contact-messages",
+        icon: Mail,
     },
     {
         title: "Articles",
@@ -38,32 +43,27 @@ const menus = [
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 border-r bg-white">
-
+        <aside className="w-64 border-r bg-white min-h-screen">
             <div className="p-6 text-xl font-bold">
-                TechWebCode
+                TechWebCode Admin
             </div>
 
             <nav className="space-y-1 px-3">
-
                 {menus.map((menu) => {
-
                     const Icon = menu.icon;
 
                     return (
                         <Link
                             key={menu.href}
                             href={menu.href}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-100 transition-colors"
                         >
                             <Icon size={18} />
                             {menu.title}
                         </Link>
                     );
                 })}
-
             </nav>
-
         </aside>
     );
 }

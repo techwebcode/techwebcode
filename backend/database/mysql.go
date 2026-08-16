@@ -21,11 +21,15 @@ func getEnvWithDefault(key, defaultValue string) string {
 }
 
 func Connect() {
-	host := getEnvWithDefault("MYSQL_HOST", getEnvWithDefault("DB_HOST", "mysql"))
-	port := getEnvWithDefault("MYSQL_PORT", getEnvWithDefault("DB_PORT", "3306"))
-	user := getEnvWithDefault("MYSQL_USER", getEnvWithDefault("DB_USER", "techwebcode"))
-	pass := getEnvWithDefault("MYSQL_PASSWORD", getEnvWithDefault("DB_PASSWORD", "root@123"))
-	dbname := getEnvWithDefault("MYSQL_DATABASE", getEnvWithDefault("DB_NAME", "techwebcode"))
+	host := getEnvWithDefault("DB_HOST", "mysql")
+	port := getEnvWithDefault("DB_PORT", "3306")
+	user := config.Get("DB_USER")
+	pass := config.Get("DB_PASSWORD")
+	dbname := config.Get("DB_NAME")
+
+	if user == "" || dbname == "" {
+		log.Fatalf("[Error] DB_USER and DB_NAME environment variables must be defined in environment configuration")
+	}
 
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",

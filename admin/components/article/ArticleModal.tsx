@@ -68,6 +68,7 @@ export default function ArticleModal({
             }
             onClose={onClose}
             maxWidth="5xl"
+            fullHeight
         >
 
             <ArticleForm

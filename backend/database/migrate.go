@@ -15,11 +15,12 @@ func Migrate() {
 		&models.Media{},
 		&models.ToolCategory{},
 		&models.Tool{},
+		&models.ContactMessage{},
 	)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Migration completed")
+	log.Println("Migration completed with ContactMessage table")
 }

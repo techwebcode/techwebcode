@@ -11,6 +11,7 @@ import AdBanner from "@/components/common/AdBanner";
 import ArticleService from "@/services/article";
 import Link from "next/link";
 import { Wrench, ArrowRight } from "lucide-react";
+import { getPublicMediaAlt, getPublicMediaUrl } from "@/utils/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -26,7 +27,6 @@ const SLUG_ALIASES: Record<string, string> = {
 };
 
 async function fetchArticleData(slug: string): Promise<any> {
-  // 1. Try exact slug match from DB API
   try {
     const res = await ArticleService.getArticle(slug);
     if (res && res.data) return res.data;
@@ -34,7 +34,6 @@ async function fetchArticleData(slug: string): Promise<any> {
     // Fallthrough
   }
 
-  // 2. Try alias slug match if registered
   const targetSlug = SLUG_ALIASES[slug];
   if (targetSlug && targetSlug !== slug) {
     try {
@@ -57,6 +56,9 @@ export async function generateMetadata({
   const title = article ? article.title : "Developer Tutorial";
   const description = article?.summary || article?.seo_description || article?.excerpt || "Practical developer tutorials and troubleshooting guides.";
   const canonicalUrl = `https://techwebcode.in/articles/${slug}`;
+  const imageUrl = getPublicMediaUrl(article?.featured_image_media || article?.featured_image);
+  const imageAlt = getPublicMediaAlt(article);
+  const images = imageUrl ? [{ url: imageUrl, alt: imageAlt }] : [];
 
   return {
     title,
@@ -70,6 +72,13 @@ export async function generateMetadata({
       url: canonicalUrl,
       type: "article",
       siteName: "TechWebCode",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | TechWebCode`,
+      description,
+      images: imageUrl ? [imageUrl] : [],
     },
   };
 }
@@ -90,8 +99,35 @@ export default async function ArticlePage({
     { label: article.title },
   ];
 
+  const imageUrl = getPublicMediaUrl(article.featured_image_media || article.featured_image);
+
+  // JSON-LD Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": article.title,
+    "description": article.excerpt || article.seo_description,
+    "image": imageUrl ? [imageUrl] : undefined,
+    "datePublished": article.published_at || article.created_at,
+    "dateModified": article.updated_at || article.created_at,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://techwebcode.in/articles/${article.slug}`,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "TechWebCode",
+      "url": "https://techwebcode.in",
+    },
+  };
+
   return (
     <Container className="py-12 space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={breadcrumbItems} />
 

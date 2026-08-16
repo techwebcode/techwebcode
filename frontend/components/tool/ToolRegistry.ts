@@ -12,6 +12,8 @@ import UrlEncoder from "@/components/tools/url-encoder/UrlEncoder";
 import RegexTester from "@/components/tools/regex-tester/RegexTester";
 import SqlFormatter from "@/components/tools/sql-formatter/SqlFormatter";
 import YamlFormatter from "@/components/tools/yaml-formatter/YamlFormatter";
+import DeploymentConfigDoctor from "@/components/tools/deployment-config-doctor/DeploymentConfigDoctor";
+import ApiContractChecker from "@/components/tools/api-contract-checker/ApiContractChecker";
 
 export type ToolComponent = React.ComponentType<{ tool: Tool }>;
 
@@ -38,8 +40,15 @@ export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "sql-formatter": SqlFormatter,
   "sql-query-formatter": SqlFormatter,
   "yaml-formatter": YamlFormatter,
+  "yaml-formatter-and-kubernetes-secret-tool": YamlFormatter,
+  "yaml-formatter-and-k8s-secret-tool": YamlFormatter,
   "yaml-validator": YamlFormatter,
   "k8s-secret-tool": YamlFormatter,
+  "kubernetes-secret-generator": YamlFormatter,
+  "kubernetes-secret-tool": YamlFormatter,
+  "deployment-config-doctor": DeploymentConfigDoctor,
+  "api-contract-checker": ApiContractChecker,
+  "api-contract-and-response-compatibility-checker": ApiContractChecker,
 };
 
 export function getToolComponent(slug: string): ToolComponent | null {

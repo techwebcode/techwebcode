@@ -21,7 +21,13 @@ export const ArticleSchema = z.object({
         .number()
         .nullable()
         .optional(),
-    
+
+    featured_image_id: z
+        .coerce
+        .number()
+        .nullable()
+        .optional(),
+
     tag_ids: z
         .array(z.number())
         .default([]),
@@ -89,5 +95,4 @@ export const ArticleSchema = z.object({
         .optional(),
 });
 
-export type ArticleFormValues =
-    z.infer<typeof ArticleSchema>;
+export type ArticleFormValues = z.infer<typeof ArticleSchema>;

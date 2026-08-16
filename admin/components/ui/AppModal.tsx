@@ -18,6 +18,7 @@ interface AppModalProps {
     description?: string;
     children: ReactNode;
     onClose: () => void;
+    fullHeight?: boolean;
 
     maxWidth?:
         | "sm"
@@ -51,6 +52,7 @@ export default function AppModal({
     description,
     children,
     onClose,
+    fullHeight = false,
     maxWidth = "md",
 }: Readonly<AppModalProps>) {
 
@@ -67,7 +69,8 @@ export default function AppModal({
 
             <DialogContent
                 className={cn(
-                    "flex h-[90vh] w-[95vw] flex-col overflow-hidden p-0 bg-card text-card-foreground border border-border shadow-2xl rounded-2xl opacity-100",
+                    "flex w-[95vw] flex-col overflow-hidden p-0 bg-card text-card-foreground border border-border shadow-2xl rounded-2xl opacity-100",
+                    fullHeight ? "h-[90vh]" : "max-h-[90vh] h-auto",
                     maxWidthClass[maxWidth]
                 )}
             >

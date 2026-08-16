@@ -10,7 +10,7 @@ interface AdBannerProps {
 }
 
 export default function AdBanner({
-  slot = "1234567890",
+  slot = "5905469300",
   format = "auto",
   responsive = true,
   className = "",
@@ -36,7 +36,7 @@ export default function AdBanner({
       <ins
         className="adsbygoogle w-full"
         style={{ display: "block" }}
-        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-0000000000000000"}
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-2701940262314279"}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive ? "true" : "false"}

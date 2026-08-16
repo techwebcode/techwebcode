@@ -6,11 +6,11 @@ const getBaseUrl = () => {
         return (
             process.env.INTERNAL_API_URL ||
             process.env.NEXT_PUBLIC_API_URL ||
-            "http://127.0.0.1:8090/api/v1"
+            "http://backend:8080/api/v1"
         );
     }
     // Client-side browser rendering
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8090/api/v1";
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8082/api/v1";
 };
 
 const api = axios.create({

@@ -3,6 +3,7 @@ package dto
 type CreateToolRequest struct {
 	CategoryID       uint   `json:"category_id" binding:"required"`
 	Name             string `json:"name" binding:"required,min=2,max=150"`
+	Slug             string `json:"slug"`
 	ShortDescription string `json:"short_description"`
 	Description      string `json:"description"`
 	Icon             string `json:"icon"`
@@ -18,6 +19,7 @@ type CreateToolRequest struct {
 type UpdateToolRequest struct {
 	CategoryID       uint   `json:"category_id"`
 	Name             string `json:"name" binding:"required,min=2,max=150"`
+	Slug             string `json:"slug"`
 	ShortDescription string `json:"short_description"`
 	Description      string `json:"description"`
 	Icon             string `json:"icon"`

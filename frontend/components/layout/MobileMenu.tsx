@@ -1,113 +1,209 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
-import { Menu } from "lucide-react";
-
+import { usePathname } from "next/navigation";
+import { Menu, ChevronDown } from "lucide-react";
 import {
-
-    Sheet,
-
-    SheetContent,
-
-    SheetHeader,
-
-    SheetTitle,
-
-    SheetTrigger,
-
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-
-import { Button } from "@/components/ui/button";
-
-const menus = [
-
-    {
-
-        title: "Home",
-
-        href: "/",
-
-    },
-
-    {
-
-        title: "tools",
-
-        href: "/tools",
-
-    },
-
-    {
-
-        title: "Articles",
-
-        href: "/articles",
-
-    },
-
-    {
-
-        title: "Categories",
-
-        href: "/categories",
-
-    },
-
-    {
-
-        title: "About",
-
-        href: "/about",
-
-    },
-
-];
+import { ARTICLE_DROPDOWN_ITEMS } from "@/constants/navigationData";
+import { useDynamicNavData } from "@/hooks/useDynamicNavData";
 
 export default function MobileMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
+    tools: false,
+    articles: false,
+    categories: false,
+  });
 
-    return (
+  const pathname = usePathname();
+  const { categories, toolCategories } = useDynamicNavData();
 
-        <Sheet>
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
-            <SheetTrigger className="inline-flex items-center justify-center rounded-md">
-                <Menu className="h-5 w-5" />
-            </SheetTrigger>
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
-            <SheetContent side="left">
+  const toggleAccordion = (key: string) => {
+    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
-                <SheetHeader>
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger className="inline-flex items-center justify-center rounded-lg p-2 text-foreground hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+        <Menu className="h-5 w-5" />
+        <span className="sr-only">Open navigation menu</span>
+      </SheetTrigger>
 
-                    <SheetTitle>
+      <SheetContent side="left" className="w-[310px] sm:w-[350px] p-6 overflow-y-auto">
+        <SheetHeader className="border-b pb-4">
+          <SheetTitle className="text-left font-bold text-xl tracking-tight">
+            <span className="text-blue-600">Tech</span>
+            <span>WebCode</span>
+          </SheetTitle>
+        </SheetHeader>
 
-                        TechWebCode
+        <nav className="mt-6 flex flex-col gap-2" aria-label="Mobile Navigation">
+          {/* Home */}
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors"
+          >
+            Home
+          </Link>
 
-                    </SheetTitle>
+          {/* Articles Accordion */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => toggleAccordion("articles")}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
+            >
+              <span>Articles</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openAccordions.articles ? "rotate-180 text-blue-600" : ""
+                }`}
+              />
+            </button>
 
-                </SheetHeader>
+            {openAccordions.articles && (
+              <div className="pl-4 space-y-1 py-1 border-l-2 border-border ml-3">
+                {ARTICLE_DROPDOWN_ITEMS.map((art) => (
+                  <Link
+                    key={art.href}
+                    href={art.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block p-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-blue-600 hover:bg-muted/50 transition-colors"
+                  >
+                    {art.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
-                <nav className="mt-8 flex flex-col gap-6">
+          {/* Tools Accordion */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => toggleAccordion("tools")}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
+            >
+              <div className="flex items-center gap-2">
+                <span>Tools</span>
+                <span className="px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-600 font-extrabold text-[10px] uppercase">
+                  Mega Catalog
+                </span>
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openAccordions.tools ? "rotate-180 text-blue-600" : ""
+                }`}
+              />
+            </button>
 
-                    {menus.map((item) => (
-
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className="text-lg font-medium"
-                        >
-
-                            {item.title}
-
-                        </Link>
-
+            {openAccordions.tools && (
+              <div className="pl-3 space-y-3 py-2 border-l-2 border-blue-500/40 ml-3">
+                {toolCategories.map((catGroup) => (
+                  <div key={catGroup.title} className="space-y-1">
+                    <div className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground px-1">
+                      {catGroup.title}
+                    </div>
+                    {catGroup.tools.map((t) => (
+                      <Link
+                        key={t.slug}
+                        href={t.href}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-between p-2 rounded-lg text-xs font-semibold text-foreground hover:text-blue-600 hover:bg-muted/50 transition-colors"
+                      >
+                        <span className="truncate">{t.name}</span>
+                        {t.badge && (
+                          <span
+                            className={`px-1.5 py-0.2 rounded text-[9px] font-extrabold uppercase ${
+                              t.badge === "NEW"
+                                ? "bg-rose-500 text-white"
+                                : "bg-amber-500 text-white"
+                            }`}
+                          >
+                            {t.badge}
+                          </span>
+                        )}
+                      </Link>
                     ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-                </nav>
+          {/* Categories Accordion */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => toggleAccordion("categories")}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
+            >
+              <span>Categories</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openAccordions.categories ? "rotate-180 text-blue-600" : ""
+                }`}
+              />
+            </button>
 
-            </SheetContent>
+            {openAccordions.categories && (
+              <div className="pl-4 grid grid-cols-2 gap-1 py-1 border-l-2 border-border ml-3">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.href}
+                    href={cat.href}
+                    onClick={() => setIsOpen(false)}
+                    className="p-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-blue-600 hover:bg-muted/50 transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
-        </Sheet>
+          {/* About */}
+          <Link
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className="p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors"
+          >
+            About
+          </Link>
 
-    );
-
+          {/* Contact */}
+          <Link
+            href="/contact"
+            onClick={() => setIsOpen(false)}
+            className="p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors"
+          >
+            Contact
+          </Link>
+        </nav>
+      </SheetContent>
+    </Sheet>
+  );
 }

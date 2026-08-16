@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { SITE } from "@/constants/site";
 
 import "./globals.css";
@@ -63,6 +64,14 @@ export default function RootLayout({
             suppressHydrationWarning
             className="font-sans"
         >
+            <head>
+                <Script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2701940262314279"
+                    crossOrigin="anonymous"
+                    strategy="afterInteractive"
+                />
+            </head>
             <body
                 className="
                     font-sans

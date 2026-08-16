@@ -39,6 +39,7 @@ export default function ArticleForm({
             slug: "",
             category_id: undefined,
             primary_tool_id: null,
+            featured_image_id: null,
             tag_ids: [],
             excerpt: "",
             content_markdown: "",
@@ -81,17 +82,24 @@ export default function ArticleForm({
                 article.primaryTool?.id ??
                 null;
 
+            const imageId =
+                (article as any).featured_image_id ??
+                (article as any).featuredImageID ??
+                (article as any).featured_image_media?.id ??
+                null;
+
             reset({
                 ...article,
                 title: article.title || "",
                 slug: article.slug || "",
                 category_id: catId ? Number(catId) : undefined,
                 primary_tool_id: toolId ? Number(toolId) : null,
+                featured_image_id: imageId ? Number(imageId) : null,
                 tag_ids: article.tags?.map((t: any) => typeof t === "number" ? t : t.id) ?? [],
                 excerpt: article.excerpt || "",
                 content_markdown: article.content_markdown || "",
                 content_html: (article as any).content_html || "",
-                featured_image: article.featured_image || "",
+                featured_image: article.featured_image || (article as any).featured_image_media?.url || "",
                 seo_title: article.seo_title || "",
                 seo_description: article.seo_description || "",
                 canonical_url: article.canonical_url || "",
@@ -109,6 +117,7 @@ export default function ArticleForm({
             slug: "",
             category_id: undefined,
             primary_tool_id: null,
+            featured_image_id: null,
             tag_ids: [],
             excerpt: "",
             content_markdown: "",
@@ -227,7 +236,7 @@ export default function ArticleForm({
                         variant="outline"
                         onClick={() => {
                             setValue("status", "draft");
-                            handleSubmit((data) => onSubmit({ ...data, status: "draft" }))();
+                            handleSubmit((data: ArticleFormValues) => onSubmit({ ...data, status: "draft" }))();
                         }}
                         disabled={loading}
                     >
@@ -242,7 +251,7 @@ export default function ArticleForm({
                         variant="default"
                         onClick={() => {
                             setValue("status", "published");
-                            handleSubmit((data) => onSubmit({ ...data, status: "published" }))();
+                            handleSubmit((data: ArticleFormValues) => onSubmit({ ...data, status: "published" }))();
                         }}
                         disabled={loading}
                     >

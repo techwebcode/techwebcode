@@ -1,0 +1,44 @@
+/**
+ * Resolves the canonical public media URL for TechWebCode.
+ * Format: https://techwebcode.in/media/...
+ */
+export function getPublicMediaUrl(mediaOrUrl?: any): string {
+    if (!mediaOrUrl) return "";
+
+    let rawUrl = "";
+    if (typeof mediaOrUrl === "string") {
+        rawUrl = mediaOrUrl;
+    } else if (typeof mediaOrUrl === "object" && mediaOrUrl !== null) {
+        rawUrl = mediaOrUrl.url || mediaOrUrl.URL || "";
+    }
+
+    if (!rawUrl) return "";
+
+    // Replace admin subdomain references if present
+    rawUrl = rawUrl.replace("https://admin.techwebcode.in", "https://techwebcode.in");
+    rawUrl = rawUrl.replace("http://admin.techwebcode.in", "https://techwebcode.in");
+    rawUrl = rawUrl.replace("http://localhost:8080/media", "https://techwebcode.in/media");
+    rawUrl = rawUrl.replace("http://backend:8080/media", "https://techwebcode.in/media");
+
+    // If relative path, prepend canonical origin
+    if (rawUrl.startsWith("/")) {
+        return `https://techwebcode.in${rawUrl}`;
+    }
+
+    return rawUrl;
+}
+
+/**
+ * Resolves the canonical alt text for an article featured image.
+ * Uses Media.alt_text if available, falling back to article title.
+ */
+export function getPublicMediaAlt(article: any): string {
+    if (!article) return "";
+    if (article.featured_image_media?.alt_text) {
+        return article.featured_image_media.alt_text;
+    }
+    if (article.featuredImageMedia?.alt_text) {
+        return article.featuredImageMedia.alt_text;
+    }
+    return article.title || "";
+}

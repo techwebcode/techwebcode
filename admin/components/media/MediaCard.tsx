@@ -38,7 +38,7 @@ export function getMediaUrl(url: string | undefined): string {
     if (url.startsWith("http://") || url.startsWith("https://")) {
         return url;
     }
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8090/api/v1";
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8082/api/v1";
     try {
         const origin = new URL(apiBase).origin;
         return `${origin}${url.startsWith("/") ? "" : "/"}${url}`;

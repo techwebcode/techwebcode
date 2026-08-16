@@ -34,6 +34,11 @@ func Setup(
 		boot.ToolController,
 	)
 
+	RegisterContactPublicRoutes(
+		public,
+		boot.ContactController,
+	)
+
 	admin := router.Group("/api/v1/admin")
 
 	RegisterAdminRoutes(admin)
@@ -66,5 +71,10 @@ func Setup(
 	RegisterMediaAdminRoutes(
 		admin,
 		boot.MediaController,
+	)
+
+	RegisterContactAdminRoutes(
+		admin,
+		boot.ContactController,
 	)
 }

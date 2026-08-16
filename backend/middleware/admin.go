@@ -22,9 +22,6 @@ func AdminMiddleware() gin.HandlerFunc {
 		}
 
 		expectedSecret := config.Get("ADMIN_SECRET")
-		if expectedSecret == "" {
-			expectedSecret = "xL6Lwfl5GgKVBMl1ehHiZ1"
-		}
 
 		if adminKey == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
@@ -34,7 +31,7 @@ func AdminMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if adminKey != expectedSecret {
+		if expectedSecret == "" || adminKey != expectedSecret {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"success": false,
 				"message": "Invalid admin secret",
