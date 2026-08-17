@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown, Wrench, BookOpen, FolderKanban } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -17,7 +17,7 @@ import { useDynamicNavData } from "@/hooks/useDynamicNavData";
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
-    tools: false,
+    tools: true,
     articles: false,
     categories: false,
   });
@@ -69,53 +69,23 @@ export default function MobileMenu() {
             Home
           </Link>
 
-          {/* Articles Accordion */}
-          <div className="space-y-1">
-            <button
-              type="button"
-              onClick={() => toggleAccordion("articles")}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
-            >
-              <span>Articles</span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-200 ${
-                  openAccordions.articles ? "rotate-180 text-blue-600" : ""
-                }`}
-              />
-            </button>
-
-            {openAccordions.articles && (
-              <div className="pl-4 space-y-1 py-1 border-l-2 border-border ml-3">
-                {ARTICLE_DROPDOWN_ITEMS.map((art) => (
-                  <Link
-                    key={art.href}
-                    href={art.href}
-                    onClick={() => setIsOpen(false)}
-                    className="block p-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-blue-600 hover:bg-muted/50 transition-colors"
-                  >
-                    {art.title}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Tools Accordion */}
+          {/* Tools Accordion (PRIMARY NAV ITEM - OPEN BY DEFAULT) */}
           <div className="space-y-1">
             <button
               type="button"
               onClick={() => toggleAccordion("tools")}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
+              className="w-full flex items-center justify-between p-2.5 rounded-xl font-bold text-sm bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-colors text-left"
             >
               <div className="flex items-center gap-2">
-                <span>Tools</span>
-                <span className="px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-600 font-extrabold text-[10px] uppercase">
-                  Mega Catalog
+                <Wrench className="w-4 h-4" />
+                <span>Developer Tools</span>
+                <span className="px-1.5 py-0.2 rounded bg-blue-600 text-white font-extrabold text-[9px] uppercase">
+                  Catalog
                 </span>
               </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
-                  openAccordions.tools ? "rotate-180 text-blue-600" : ""
+                  openAccordions.tools ? "rotate-180" : ""
                 }`}
               />
             </button>
@@ -150,6 +120,48 @@ export default function MobileMenu() {
                     ))}
                   </div>
                 ))}
+
+                <Link
+                  href="/tools"
+                  onClick={() => setIsOpen(false)}
+                  className="block p-2 text-center text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  View All Tools →
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Articles Accordion */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => toggleAccordion("articles")}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
+            >
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-muted-foreground" />
+                <span>Articles & Guides</span>
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openAccordions.articles ? "rotate-180 text-blue-600" : ""
+                }`}
+              />
+            </button>
+
+            {openAccordions.articles && (
+              <div className="pl-4 space-y-1 py-1 border-l-2 border-border ml-3">
+                {ARTICLE_DROPDOWN_ITEMS.map((art) => (
+                  <Link
+                    key={art.href}
+                    href={art.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block p-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-blue-600 hover:bg-muted/50 transition-colors"
+                  >
+                    {art.title}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
@@ -161,7 +173,10 @@ export default function MobileMenu() {
               onClick={() => toggleAccordion("categories")}
               className="w-full flex items-center justify-between p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors text-left"
             >
-              <span>Categories</span>
+              <div className="flex items-center gap-2">
+                <FolderKanban className="w-4 h-4 text-muted-foreground" />
+                <span>Categories</span>
+              </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
                   openAccordions.categories ? "rotate-180 text-blue-600" : ""

@@ -14,6 +14,7 @@ import SqlFormatter from "@/components/tools/sql-formatter/SqlFormatter";
 import YamlFormatter from "@/components/tools/yaml-formatter/YamlFormatter";
 import DeploymentConfigDoctor from "@/components/tools/deployment-config-doctor/DeploymentConfigDoctor";
 import ApiContractChecker from "@/components/tools/api-contract-checker/ApiContractChecker";
+import CodeDiffChecker from "@/components/tools/code-diff-checker/CodeDiffChecker";
 
 export type ToolComponent = React.ComponentType<{ tool: Tool }>;
 
@@ -49,6 +50,10 @@ export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "deployment-config-doctor": DeploymentConfigDoctor,
   "api-contract-checker": ApiContractChecker,
   "api-contract-and-response-compatibility-checker": ApiContractChecker,
+  "code-diff-checker": CodeDiffChecker,
+  "code-difference-checker": CodeDiffChecker,
+  "code-diff": CodeDiffChecker,
+  "diff-checker": CodeDiffChecker,
 };
 
 export function getToolComponent(slug: string): ToolComponent | null {

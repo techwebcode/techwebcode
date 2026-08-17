@@ -49,6 +49,14 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
+    icons: {
+        icon: [
+            { url: "/icon.png", type: "image/png" },
+            { url: "/favicon.ico" },
+        ],
+        shortcut: "/icon.png",
+        apple: "/apple-icon.png",
+    },
 };
 
 interface RootLayoutProps {

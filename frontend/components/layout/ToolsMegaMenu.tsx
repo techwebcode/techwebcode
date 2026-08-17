@@ -2,8 +2,78 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, Sparkles, Wrench } from "lucide-react";
+import {
+  ChevronDown,
+  Sparkles,
+  Wrench,
+  FileCode,
+  CheckCircle2,
+  Minimize2,
+  Code2,
+  Database,
+  FileText,
+  ArrowRightLeft,
+  ShieldCheck,
+  ArrowLeftRight,
+  Key,
+  Link as LinkIcon,
+  RefreshCw,
+  Clock,
+  Terminal,
+  Cpu,
+  Braces,
+  Binary,
+  Hash,
+  LucideIcon,
+} from "lucide-react";
 import { TOOL_NAV_CATEGORIES, ToolCategoryGroup } from "@/constants/navigationData";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  FileCode,
+  CheckCircle2,
+  Minimize2,
+  Code2,
+  Database,
+  FileText,
+  ArrowRightLeft,
+  ShieldCheck,
+  ArrowLeftRight,
+  Key,
+  Link: LinkIcon,
+  LinkIcon,
+  RefreshCw,
+  Clock,
+  Wrench,
+  Terminal,
+  Cpu,
+  Braces,
+  Binary,
+  Hash,
+  "file-code": FileCode,
+  "check-circle-2": CheckCircle2,
+  "minimize-2": Minimize2,
+  "code-2": Code2,
+  "database": Database,
+  "file-text": FileText,
+  "arrow-right-left": ArrowRightLeft,
+  "shield-check": ShieldCheck,
+  "arrow-left-right": ArrowLeftRight,
+  "key": Key,
+  "link": LinkIcon,
+  "refresh-cw": RefreshCw,
+  "clock": Clock,
+  "wrench": Wrench,
+};
+
+function resolveToolIcon(icon: any): LucideIcon {
+  if (typeof icon === "function") return icon;
+  if (typeof icon === "object" && icon !== null && "$$typeof" in icon) return icon as LucideIcon;
+  if (typeof icon === "string") {
+    const found = ICON_MAP[icon] || ICON_MAP[icon.toLowerCase()];
+    if (found) return found;
+  }
+  return Wrench;
+}
 
 interface Props {
   isActive: boolean;
@@ -17,13 +87,13 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
 
   const displayCategories = categories && categories.length > 0 ? categories : TOOL_NAV_CATEGORIES;
 
-  // Organize 8 categories into 4 structured columns for perfect grid balance
-  const column1 = displayCategories.filter(c => ["JSON & DATA", "TEXT & ENCODING"].includes(c.title));
-  const column2 = displayCategories.filter(c => ["REGEX & SQL", "SECURITY"].includes(c.title));
-  const column3 = displayCategories.filter(c => ["API & DEVOPS", "GENERATORS"].includes(c.title));
-  const column4 = displayCategories.filter(c => ["YAML & KUBERNETES", "DATE & TIME"].includes(c.title));
-
-  const columns = [column1, column2, column3, column4];
+  // Dynamically partition all categories across 4 columns for balanced grid layout
+  const columns: ToolCategoryGroup[][] = [[], [], [], []];
+  displayCategories.forEach((catGroup, idx) => {
+    if (catGroup.tools && catGroup.tools.length > 0) {
+      columns[idx % 4].push(catGroup);
+    }
+  });
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -34,6 +104,17 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 150);
+  };
+
+  const handleFocus = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsOpen(true);
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+      setIsOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -62,6 +143,8 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       className="relative"
     >
       <button
@@ -70,30 +153,33 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="Developer Tools Mega Menu"
-        className={`flex items-center gap-1 py-2 text-sm font-medium transition-colors hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg px-2 ${
-          isActive || isOpen ? "text-blue-600 font-semibold" : "text-muted-foreground"
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+          isActive || isOpen
+            ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+            : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 hover:bg-blue-500/20"
         }`}
       >
+        <Wrench className="w-3.5 h-3.5" />
         <span>Tools</span>
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180 text-blue-600" : ""}`} />
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {/* 100% Solid Opaque Mega-Menu Panel */}
       {isOpen && (
-        <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[940px] max-w-[calc(100vw-32px)] z-50 animate-in fade-in-50 slide-in-from-top-2 duration-150">
+        <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[940px] max-w-[calc(100vw-32px)] z-50 animate-in fade-in-50 slide-in-from-top-1 duration-150">
           <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-5 shadow-2xl space-y-4">
             {/* Header Banner */}
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-blue-600" />
+                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                  TechWebCode Developer Tools
+                  ✨ TECHWEBCODE DEVELOPER TOOLS
                 </span>
               </div>
               <Link
                 href="/tools"
                 onClick={() => setIsOpen(false)}
-                className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline flex items-center gap-1 transition-colors"
               >
                 <span>View All Tools Catalog</span>
                 <span>→</span>
@@ -112,13 +198,13 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
 
                       <div className="space-y-0.5">
                         {group.tools.map((tool) => {
-                          const Icon = typeof tool.icon === "function" ? tool.icon : Wrench;
+                          const Icon = resolveToolIcon(tool.icon);
                           return (
                             <Link
                               key={tool.slug}
                               href={tool.href}
                               onClick={() => setIsOpen(false)}
-                              className="group flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-150 text-left"
+                              className="group flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                             >
                               <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0 mt-0.5">
                                 <Icon className="w-3.5 h-3.5" />
@@ -131,7 +217,7 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
                                   </span>
                                   {tool.badge && (
                                     <span
-                                      className={`px-1 py-0.1 rounded text-[8px] font-extrabold uppercase shrink-0 ${
+                                      className={`px-1.5 py-0.2 rounded text-[8px] font-extrabold uppercase shrink-0 ${
                                         tool.badge === "NEW"
                                           ? "bg-rose-500 text-white"
                                           : "bg-amber-500 text-white"
@@ -141,9 +227,11 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight line-clamp-1">
-                                  {tool.description}
-                                </p>
+                                {tool.description && (
+                                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight line-clamp-1">
+                                    {tool.description}
+                                  </p>
+                                )}
                               </div>
                             </Link>
                           );
@@ -160,3 +248,4 @@ export default function ToolsMegaMenu({ isActive, categories }: Props) {
     </div>
   );
 }
+

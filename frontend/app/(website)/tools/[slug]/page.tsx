@@ -139,11 +139,21 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     id: 17,
     name: "API Contract & Response Compatibility Checker",
     slug: "api-contract-checker",
-    description: "Compare API responses and detect breaking changes, type mismatches, removed fields, and structural payload alterations client-side in your browser.",
-    shortDescription: "Compare API response payloads for breaking changes, field removals, and type mismatches.",
+    description: "Compare API response JSON payloads against expected schemas, detect breaking changes, missing properties, and field type mismatches instantly.",
+    shortDescription: "Detect API breaking changes, missing properties, and schema compatibility issues.",
     featured: true,
     seoTitle: "API Contract & Response Compatibility Checker | TechWebCode",
-    seoDescription: "Compare API responses and detect breaking changes, type mismatches, removed fields, and structural payload alterations client-side in your browser.",
+    seoDescription: "Compare API response JSON payloads against expected schemas, detect breaking changes, missing properties, and field type mismatches instantly.",
+  },
+  "code-diff-checker": {
+    id: 18,
+    name: "Code Difference Checker",
+    slug: "code-diff-checker",
+    description: "Compare two versions of code side-by-side or unified online. Instantly highlight added, removed, and modified lines with 100% client-side browser privacy.",
+    shortDescription: "Compare two versions of code side-by-side or unified to instantly spot additions, deletions, and modifications.",
+    featured: true,
+    seoTitle: "Code Difference Checker — Side-by-Side Code Diff Online | TechWebCode",
+    seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, change navigation, and 100% client-side privacy.",
   },
 };
 
@@ -238,7 +248,7 @@ export default async function ToolPage({
   ];
 
   return (
-    <Container className="py-12 space-y-6">
+    <div className="w-[calc(100%-24px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] max-w-[1800px] mx-auto py-6 sm:py-8 space-y-6">
       {/* Inject JSON-LD Schema */}
       <script
         type="application/ld+json"
@@ -248,11 +258,11 @@ export default async function ToolPage({
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={breadcrumbItems} />
 
-      {/* Tool Interface & Content (Immediately Accessible, Zero Ads near controls) */}
+      {/* Tool Interface & Workspace */}
       <ToolRenderer tool={tool} />
 
       {/* Non-Intrusive Bottom Ad Banner */}
-      <AdBanner slot="8877665544" className="mt-12" />
-    </Container>
+      <AdBanner slot="8877665544" className="mt-8" />
+    </div>
   );
 }

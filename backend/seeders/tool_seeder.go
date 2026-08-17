@@ -57,6 +57,7 @@ func SeedTools(db *gorm.DB) error {
 		"sql-formatter",
 		"deployment-config-doctor",
 		"api-contract-checker",
+		"code-diff-checker",
 	}
 
 	toolsData := []ToolSeedData{
@@ -284,6 +285,21 @@ func SeedTools(db *gorm.DB) error {
 			Status:           true,
 			SeoTitle:         "API Contract & Response Compatibility Checker | TechWebCode",
 			SeoDescription:   "Compare API responses and detect breaking changes, type mismatches, removed fields, and structural payload alterations client-side in your browser.",
+		},
+		{
+			Name:             "Code Difference Checker",
+			Slug:             "code-diff-checker",
+			CategorySlug:     "json-and-data",
+			ShortDescription: "Compare two versions of code side-by-side or unified to spot additions, deletions, and modifications.",
+			Description:      "Compare two versions of code side-by-side or unified online with TechWebCode's Code Difference Checker. Instantly highlight added, removed, and modified lines with 100% client-side browser privacy.",
+			Icon:             "FileCode",
+			Featured:         true,
+			Popular:          true,
+			IsNew:            true,
+			SortOrder:        18,
+			Status:           true,
+			SeoTitle:         "Code Difference Checker — Side-by-Side Code Diff Online | TechWebCode",
+			SeoDescription:   "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, change navigation, and 100% client-side privacy.",
 		},
 	}
 

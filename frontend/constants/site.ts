@@ -3,10 +3,10 @@ export const SITE = {
 
   shortName: "TWC",
 
-  title: "TechWebCode — Developer Tools, Tutorials & Programming Guides",
+  title: "TechWebCode — Developer Tools That Just Get The Job Done",
 
   description:
-    "Free developer tools, practical programming tutorials, troubleshooting guides, and curated learning roadmaps for developers.",
+    "Fast, practical, privacy-first developer tools for formatting, validating, encoding, debugging, and working with modern development data.",
 
   url: "https://techwebcode.in",
 
@@ -21,27 +21,20 @@ export const SITE = {
   language: "en",
 
   keywords: [
-    "Developer Tools",
+    "developer tools",
+    "online developer tools",
     "JSON Formatter",
+    "JSON Validator",
+    "JSON Minifier",
     "JWT Decoder",
     "Base64 Encoder",
     "UUID Generator",
     "Timestamp Converter",
     "Regex Tester",
     "SQL Formatter",
-    "Programming",
-    "Go",
-    "Java",
-    "Python",
-    "Node.js",
-    "Next.js",
-    "React",
-    "Flutter",
-    "Docker",
-    "Kubernetes",
-    "MySQL",
-    "PostgreSQL",
-    "Software Engineering",
+    "YAML Formatter",
+    "Kubernetes tools",
+    "encoding tools",
     "TechWebCode",
   ],
 

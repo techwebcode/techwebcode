@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Wrench, BookOpen, ArrowRight } from "lucide-react";
 
 interface HeroActionsProps {
   primaryHref?: string;
@@ -10,19 +11,22 @@ export default function HeroActions({
   secondaryHref = "/articles",
 }: HeroActionsProps) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap items-center gap-3">
       <Link
         href={primaryHref}
-        className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+        className="group inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-blue-700 active:scale-95"
       >
-        Explore Tools
+        <Wrench className="h-4 w-4" />
+        <span>Explore Developer Tools</span>
+        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </Link>
 
       <Link
         href={secondaryHref}
-        className="rounded-lg border px-6 py-3 text-sm font-semibold transition hover:bg-muted"
+        className="inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-100 dark:hover:bg-slate-800"
       >
-        Explore Tutorials
+        <BookOpen className="h-4 w-4 text-slate-500" />
+        <span>Read Developer Guides →</span>
       </Link>
     </div>
   );

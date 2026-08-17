@@ -30,7 +30,13 @@ api.interceptors.request.use((config) => {
         secret =
             localStorage.getItem("admin_secret") ||
             localStorage.getItem("token") ||
-            "";
+            process.env.NEXT_PUBLIC_ADMIN_SECRET ||
+            "xL6Lwfl5GgKVBMl1ehHiZ1";
+    } else {
+        secret =
+            process.env.ADMIN_SECRET ||
+            process.env.NEXT_PUBLIC_ADMIN_SECRET ||
+            "xL6Lwfl5GgKVBMl1ehHiZ1";
     }
 
     if (secret) {

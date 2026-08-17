@@ -23,9 +23,16 @@ const TOOL_RELATIONS: Record<string, string[]> = {
   "regex-tester": ["url-encoder", "json-validator", "sql-formatter", "base64"],
   "sql-formatter": ["json-formatter", "yaml-formatter", "regex-tester", "uuid-generator"],
   "yaml-formatter": ["json-formatter", "sql-formatter", "json-validator", "base64"],
+  "code-diff-checker": ["json-formatter", "json-validator", "sql-formatter", "api-contract-checker"],
 };
 
 const ALL_RELATED_TOOLS: Record<string, RelatedToolItem> = {
+  "code-diff-checker": {
+    name: "Code Difference Checker",
+    slug: "code-diff-checker",
+    actionText: "Compare Code Diffs",
+    description: "Compare two versions of code side-by-side or unified with 100% browser privacy.",
+  },
   "json-formatter": {
     name: "JSON Formatter",
     slug: "json-formatter",

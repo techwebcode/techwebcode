@@ -48,12 +48,22 @@ export const FALLBACK_TOOLS = [
   { id: 11, name: "YAML Formatter & Kubernetes Secret", slug: "yaml-formatter" },
   { id: 22, name: "Deployment Config Doctor", slug: "deployment-config-doctor" },
   { id: 25, name: "API Contract Checker", slug: "api-contract-checker" },
+  { id: 28, name: "Code Difference Checker", slug: "code-diff-checker" },
 ];
 
 export const TOOL_NAV_CATEGORIES: ToolCategoryGroup[] = [
   {
     title: "JSON & DATA",
     tools: [
+      {
+        id: 28,
+        name: "Code Difference Checker",
+        slug: "code-diff-checker",
+        href: "/tools/code-diff-checker",
+        description: "Compare two versions of code side-by-side or unified.",
+        icon: FileCode,
+        badge: "NEW",
+      },
       {
         id: 1,
         name: "JSON Formatter",

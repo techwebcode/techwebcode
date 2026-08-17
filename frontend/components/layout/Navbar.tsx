@@ -76,7 +76,7 @@ export default function Navbar() {
           ) : (
             <>
               {/* Desktop Navigation */}
-              <nav className="hidden items-center gap-6 md:flex" aria-label="Main Navigation">
+              <nav className="hidden items-center gap-5 md:flex" aria-label="Main Navigation">
                 <Link
                   href="/"
                   className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
@@ -86,16 +86,16 @@ export default function Navbar() {
                   Home
                 </Link>
 
-                {/* Articles Dropdown */}
+                {/* Dynamic Tools Mega-Menu (PRIMARY FEATURE) */}
+                <ToolsMegaMenu isActive={isToolsActive} categories={toolCategories} />
+
+                {/* Articles Dropdown (SECONDARY) */}
                 <NavDropdown
                   title="Articles"
                   isActive={isArticlesActive}
                   items={ARTICLE_DROPDOWN_ITEMS}
                   widthClass="w-80"
                 />
-
-                {/* Dynamic Tools Mega-Menu */}
-                <ToolsMegaMenu isActive={isToolsActive} categories={toolCategories} />
 
                 {/* Dynamic Categories Dropdown */}
                 <NavDropdown

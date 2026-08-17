@@ -1,34 +1,43 @@
 import HeroSection from "@/components/home/HeroSection";
-import PopularTopicsSection from "@/components/home/PopularTopicsSection";
 import DeveloperToolsSection from "@/components/home/DeveloperToolsSection";
+import BrowseCategoriesSection from "@/components/home/BrowseCategoriesSection";
 import FeaturedArticles from "@/components/home/FeaturedArticles";
-import LatestArticles from "@/components/home/LatestArticles";
-import CategorySection from "@/components/home/CategorySection";
-import LearningResourcesSection from "@/components/home/LearningResourcesSection";
 
 export default function HomePage() {
+  // WebSite JSON-LD Schema with SearchAction for Developer Tools Search
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "TechWebCode",
+    url: "https://techwebcode.in",
+    description: "Developer tools that just get the job done. Fast, practical, privacy-first tools for formatting, validating, encoding, debugging, and modern web engineering.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://techwebcode.in/tools?search={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
-    <main className="space-y-4">
-      {/* Hero Section */}
-      <HeroSection />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* Popular Topics Band */}
-      <PopularTopicsSection />
+      <div className="flex flex-col min-h-screen">
+        {/* 1. Hero Section (Compact, Tools-Focused Headline, ⌘K Search, Explore Tools CTA) */}
+        <HeroSection />
 
-      {/* Developer Tools Section */}
-      <DeveloperToolsSection />
+        {/* 2. Popular Developer Tools (PRIMARY SECTION 1) */}
+        <DeveloperToolsSection />
 
-      {/* Featured Tutorials */}
-      <FeaturedArticles />
+        {/* 3. Browse Developer Tools by Category (PRIMARY SECTION 2) */}
+        <BrowseCategoriesSection />
 
-      {/* Latest Tutorials */}
-      <LatestArticles />
-
-      {/* Explore by Technology */}
-      <CategorySection />
-
-      {/* Learning Resources */}
-      <LearningResourcesSection />
-    </main>
+        {/* 4. Developer Guides & Articles (SECONDARY SECTION 3) */}
+        <FeaturedArticles />
+      </div>
+    </>
   );
 }

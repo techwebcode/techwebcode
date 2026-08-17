@@ -18,6 +18,7 @@ interface CodeEditorProps {
   minHeight?: string;
   onCopy?: () => void;
   onDownload?: () => void;
+  onEditorMount?: (editor: any) => void;
 }
 
 export default function CodeEditor({
@@ -31,11 +32,13 @@ export default function CodeEditor({
   height = "380px",
   onCopy,
   onDownload,
+  onEditorMount,
 }: CodeEditorProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [copied, setCopied] = useState(false);
   const expandBtnRef = useRef<HTMLButtonElement>(null);
+  const editorRef = useRef<any>(null);
 
   // Handle Fullscreen Toggle
   const handleOpenFullscreen = () => {
@@ -129,8 +132,10 @@ export default function CodeEditor({
           value={value}
           onChange={(val) => onChange && onChange(val || "")}
           onMount={(editor) => {
+            editorRef.current = editor;
             editor.onDidFocusEditorText(() => setIsFocused(true));
             editor.onDidBlurEditorText(() => setIsFocused(false));
+            if (onEditorMount) onEditorMount(editor);
           }}
           options={{
             readOnly,

@@ -1,25 +1,5 @@
-import HeroSection from "@/components/home/HeroSection";
-import FeaturedArticles from "@/components/home/FeaturedArticles";
-import LatestArticles from "@/components/home/LatestArticles";
-import TrendingArticles from "@/components/home/TrendingArticles";
-import CategorySection from "@/components/home/CategorySection";
+import HomePage from "@/components/home/HomePage";
 
-export default function HomePage() {
-
-    return (
-
-       <>
-        <HeroSection />
-
-        <FeaturedArticles />
-
-        <LatestArticles />
-
-        <TrendingArticles />
-
-        <CategorySection />
-    </>
-
-    );
-
+export default function Page() {
+  return <HomePage />;
 }
