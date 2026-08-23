@@ -19,6 +19,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
+import FullScreenWorkspace from "@/components/tool/workspace/FullScreenWorkspace";
 
 interface Template {
   name: string;
@@ -689,6 +690,11 @@ export default function CodePlayground() {
                   wordWrap: "on",
                   lineNumbers: "on",
                   tabSize: 2,
+                  scrollbar: {
+                    alwaysConsumeMouseWheel: false,
+                    vertical: "auto",
+                    horizontal: "auto",
+                  },
                 }}
               />
             </div>
@@ -708,6 +714,11 @@ export default function CodePlayground() {
                   wordWrap: "on",
                   lineNumbers: "on",
                   tabSize: 2,
+                  scrollbar: {
+                    alwaysConsumeMouseWheel: false,
+                    vertical: "auto",
+                    horizontal: "auto",
+                  },
                 }}
               />
             </div>
@@ -727,6 +738,11 @@ export default function CodePlayground() {
                   wordWrap: "on",
                   lineNumbers: "on",
                   tabSize: 2,
+                  scrollbar: {
+                    alwaysConsumeMouseWheel: false,
+                    vertical: "auto",
+                    horizontal: "auto",
+                  },
                 }}
               />
             </div>
@@ -746,25 +762,34 @@ export default function CodePlayground() {
 
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setIsFullscreen(!isFullscreen)}
+                onClick={() => setIsFullscreen(true)}
                 className="p-1 text-muted-foreground hover:text-foreground rounded transition-colors"
-                title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Preview"}
+                title="Fullscreen Workspace Preview"
               >
-                {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+                <Maximize2 className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* IFrame Preview */}
-          <div className={`flex-1 bg-white relative ${isFullscreen ? "fixed inset-0 z-50 bg-white" : ""}`}>
-            {isFullscreen && (
-              <button
-                onClick={() => setIsFullscreen(false)}
-                className="absolute top-4 right-4 z-50 bg-black/80 text-white p-2 rounded-full hover:bg-black transition-colors"
-              >
-                <Minimize2 className="w-5 h-5" />
-              </button>
-            )}
+          {/* Viewport-Level Reusable FullScreen Workspace */}
+          <FullScreenWorkspace
+            isOpen={isFullscreen}
+            onClose={() => setIsFullscreen(false)}
+            title="Live Code Playground Preview"
+            badge="Full Viewport Preview"
+          >
+            <div className="flex-1 w-full h-full bg-white rounded-xl overflow-hidden relative shadow-2xl min-h-0">
+              <iframe
+                srcDoc={srcDoc}
+                title="Full Viewport Preview"
+                className="w-full h-full border-none bg-white"
+                sandbox="allow-scripts allow-modals allow-same-origin"
+              />
+            </div>
+          </FullScreenWorkspace>
+
+          {/* Inline IFrame Preview */}
+          <div className="flex-1 bg-white relative">
             <iframe
               ref={previewFrameRef}
               srcDoc={srcDoc}
@@ -791,7 +816,7 @@ export default function CodePlayground() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-2.5 space-y-1">
+            <div className="flex-1 editor-scroll-area p-2.5 space-y-1">
               {logs.length === 0 ? (
                 <div className="text-slate-600 italic py-2">
                   Console logs and runtime errors will appear here...

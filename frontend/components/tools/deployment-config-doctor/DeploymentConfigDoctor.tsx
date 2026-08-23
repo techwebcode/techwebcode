@@ -435,7 +435,7 @@ export default function DeploymentConfigDoctor({ tool }: Props) {
                       <span>{selectedFilePreview.name}</span>
                       <span>{selectedFilePreview.lines.length} lines</span>
                     </div>
-                    <pre className="p-3 rounded-xl bg-background border font-mono text-[11px] text-foreground max-h-[300px] overflow-auto leading-relaxed">
+                    <pre className="p-3 rounded-xl bg-background border font-mono text-[11px] text-foreground max-h-[300px] editor-scroll-area leading-relaxed">
                       {selectedFilePreview.content}
                     </pre>
                   </div>

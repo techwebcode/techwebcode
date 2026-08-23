@@ -114,7 +114,7 @@ export default function ToolInput({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         readOnly={readOnly}
-        className={`w-full ${minHeight} p-4 bg-transparent font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60`}
+        className={`w-full ${minHeight} max-h-[500px] p-4 bg-transparent font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60 editor-scroll-area`}
       />
     </div>
   );

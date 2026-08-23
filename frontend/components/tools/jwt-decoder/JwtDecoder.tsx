@@ -185,7 +185,7 @@ export default function JwtDecoder({ tool }: Props) {
             value={token}
             onChange={(e) => setToken(e.target.value)}
             placeholder="Paste your JWT token here (eyJhbGci...)"
-            className="w-full h-[420px] p-4 bg-muted/20 rounded-xl border border-border font-mono text-xs leading-relaxed resize-none outline-none focus:ring-2 focus:ring-primary break-all"
+            className="w-full h-[420px] p-4 bg-muted/20 rounded-xl border border-border font-mono text-xs leading-relaxed resize-none outline-none focus:ring-2 focus:ring-primary break-all editor-scroll-area"
           />
         </div>
 

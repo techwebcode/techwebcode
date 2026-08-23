@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { FileCode, Database, ShieldCheck, Terminal, Code2, Braces } from "lucide-react";
+import { getPublicMediaUrl } from "@/utils/media";
 
 interface ArticleThumbnailProps {
   src?: string | null;
@@ -15,23 +16,26 @@ export default function ArticleThumbnail({
   categorySlug = "",
   categoryName = "",
 }: ArticleThumbnailProps) {
+  const publicSrc = getPublicMediaUrl(src);
+
   // Check if real image URL exists (and is not default placeholder text image)
   const hasRealImage =
-    src &&
-    typeof src === "string" &&
-    src.trim().length > 0 &&
-    !src.includes("article-placeholder.jpg") &&
-    !src.includes("placeholder");
+    publicSrc &&
+    typeof publicSrc === "string" &&
+    publicSrc.trim().length > 0 &&
+    !publicSrc.includes("article-placeholder.jpg") &&
+    !publicSrc.includes("placeholder");
 
   if (hasRealImage) {
     return (
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900">
         <Image
-          src={src}
+          src={publicSrc}
           alt={alt}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          unoptimized
         />
       </div>
     );

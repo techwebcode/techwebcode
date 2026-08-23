@@ -190,9 +190,9 @@ export default function HeroSearch({
     <div ref={containerRef} className="relative w-full max-w-2xl">
       <form
         onSubmit={handleSubmit}
-        className="group relative flex items-center rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-md transition-all focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-500/10"
+        className="group relative flex items-center rounded-2xl border border-slate-300/90 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 p-2 shadow-lg transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-500/15 dark:focus-within:ring-blue-500/20"
       >
-        <div className="flex items-center pl-3 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-600 transition-colors">
+        <div className="flex items-center pl-3.5 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400 transition-colors">
           <Search className="h-5 w-5" />
         </div>
 
@@ -208,7 +208,7 @@ export default function HeroSearch({
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="flex-1 bg-transparent px-3 py-2 text-sm font-medium text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
+          className="flex-1 bg-transparent px-3 py-2.5 text-sm sm:text-base font-medium text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
           aria-label="Search developer tools"
         />
 
@@ -216,7 +216,7 @@ export default function HeroSearch({
         <button
           type="button"
           onClick={() => inputRef.current?.focus()}
-          className="hidden sm:flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/80 px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700"
+          className="hidden sm:flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700"
           title="Press ⌘K to search"
         >
           {isMac ? (
@@ -231,7 +231,7 @@ export default function HeroSearch({
 
         <button
           type="submit"
-          className="ml-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-700 active:scale-95 shrink-0"
+          className="ml-2 rounded-xl bg-blue-600 dark:bg-blue-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-700 dark:hover:bg-blue-600 active:scale-95 shrink-0"
         >
           Search
         </button>

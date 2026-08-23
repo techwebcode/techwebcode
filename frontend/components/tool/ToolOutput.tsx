@@ -115,7 +115,7 @@ export default function ToolOutput({
         readOnly
         value={value}
         placeholder={placeholder}
-        className={`w-full ${minHeight} p-4 bg-muted/20 font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60`}
+        className={`w-full ${minHeight} max-h-[500px] p-4 bg-muted/20 font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60 editor-scroll-area`}
       />
     </div>
   );

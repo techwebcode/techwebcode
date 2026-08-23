@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Article } from "@/types/article";
 import ArticleMeta from "./ArticleMeta";
 import CategoryBadge from "./CategoryBadge";
+import { getPublicMediaUrl } from "@/utils/media";
 
 interface Props {
   article: Article;
@@ -18,18 +19,25 @@ export default function FeaturedArticleCard({
   const categoryName = article.category?.name || "Featured";
   const categorySlug = article.category?.slug || "featured";
 
+  const imageUrl = getPublicMediaUrl(
+    (article as any).featured_image_media ||
+    (article as any).featuredImageMedia ||
+    article.featured_image
+  );
+
   return (
     <Card className="group overflow-hidden border-0 shadow-lg transition-all duration-300 hover:shadow-2xl">
       <Link href={`/articles/${article.slug}`}>
         <div className="relative aspect-[16/9] overflow-hidden bg-muted">
           <Image
             src={
-              article.featured_image ||
+              imageUrl ||
               "/images/article-placeholder.jpg"
             }
             alt={article.title || "Featured Article"}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            unoptimized
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />

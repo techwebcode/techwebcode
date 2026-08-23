@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Article } from "@/types/article";
-import { toDateTimeFormat } from "@/lib/utils";
+import { toDateTimeFormat, getMediaUrl } from "@/lib/utils";
 
 
 interface ArticleTableProps {
@@ -128,31 +128,38 @@ export default function ArticleTable({
 
             <TableBody>
 
-                {articles.map((article) => (
+                {articles.map((article) => {
+                    const rawImageUrl =
+                        article.featured_image ||
+                        (article as any).featured_image_media?.url ||
+                        (article as any).featuredImageMedia?.url;
+                    const imageUrl = getMediaUrl(rawImageUrl);
 
-                    <TableRow key={article.id}>
+                    return (
+                        <TableRow key={article.id}>
 
-                        <TableCell>
+                            <TableCell>
 
-                            {article.featured_image ? (
+                                {imageUrl ? (
 
-                                <Image
-                                    src={article.featured_image}
-                                    alt={article.title}
-                                    width={60}
-                                    height={60}
-                                    className="rounded-lg object-cover"
-                                />
+                                    <Image
+                                        src={imageUrl}
+                                        alt={article.title}
+                                        width={60}
+                                        height={60}
+                                        className="rounded-lg object-cover"
+                                        unoptimized
+                                    />
 
-                            ) : (
+                                ) : (
 
-                                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg bg-gray-100 text-xs text-gray-400">
-                                    No Image
-                                </div>
+                                    <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg bg-gray-100 text-xs text-gray-400">
+                                        No Image
+                                    </div>
 
-                            )}
+                                )}
 
-                        </TableCell>
+                            </TableCell>
 
                         <TableCell>
 
@@ -239,8 +246,8 @@ export default function ArticleTable({
                         </TableCell>
 
                     </TableRow>
-
-                ))}
+                );
+            })}
 
             </TableBody>
 

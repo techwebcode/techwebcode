@@ -1,6 +1,7 @@
 import HeroSection from "@/components/home/HeroSection";
 import DeveloperToolsSection from "@/components/home/DeveloperToolsSection";
 import BrowseCategoriesSection from "@/components/home/BrowseCategoriesSection";
+import DeveloperPlatformSpecs from "@/components/home/DeveloperPlatformSpecs";
 import FeaturedArticles from "@/components/home/FeaturedArticles";
 
 export default function HomePage() {
@@ -26,16 +27,19 @@ export default function HomePage() {
       />
 
       <div className="flex flex-col min-h-screen">
-        {/* 1. Hero Section (Compact, Tools-Focused Headline, ⌘K Search, Explore Tools CTA) */}
+        {/* 1. Hero Section (Compact, Tools-Focused Headline, ⌘K Search, Quick Access, Explore Tools CTA) */}
         <HeroSection />
 
-        {/* 2. Popular Developer Tools (PRIMARY SECTION 1) */}
+        {/* 2. Popular Developer Tools with Inline Category Filter Tabs */}
         <DeveloperToolsSection />
 
-        {/* 3. Browse Developer Tools by Category (PRIMARY SECTION 2) */}
+        {/* 3. Browse Developer Tools by Category with Included Utility Chips */}
         <BrowseCategoriesSection />
 
-        {/* 4. Developer Guides & Articles (SECONDARY SECTION 3) */}
+        {/* 4. Privacy & Platform Architecture Guarantee */}
+        <DeveloperPlatformSpecs />
+
+        {/* 5. Developer Guides & Articles */}
         <FeaturedArticles />
       </div>
     </>

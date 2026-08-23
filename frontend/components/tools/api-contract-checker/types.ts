@@ -3,10 +3,14 @@ export type FindingSeverity = "breaking" | "potential" | "compatible";
 export type FindingChangeType =
   | "field_removed"
   | "field_added"
+  | "renamed_field"
+  | "moved_field"
   | "type_changed"
   | "nullability_changed"
   | "structure_changed"
   | "array_item_changed"
+  | "required_changed"
+  | "value_changed"
   | "path_param_missing"
   | "unresolved_ref"
   | "security_mismatch"
@@ -27,6 +31,10 @@ export interface ApiContractFinding {
   title: string;
   explanation: string;
   recommendation?: string;
+  isStructural?: boolean; // Distinguishes schema structural changes from value updates
+  lineNumberPrev?: number | null;
+  lineNumberCurr?: number | null;
+  targetSide?: "previous" | "current" | "both";
 }
 
 export interface CompatibilityReport {
@@ -35,6 +43,7 @@ export interface CompatibilityReport {
   potentialCount: number;
   compatibleCount: number;
   findings: ApiContractFinding[];
+  clientImpactSummary?: string;
   isPreviousValid: boolean;
   isCurrentValid: boolean;
   parseErrorPrevious?: string;

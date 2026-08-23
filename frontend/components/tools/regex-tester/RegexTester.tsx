@@ -16,7 +16,6 @@ import {
   FileCode,
   ShieldCheck,
   Maximize2,
-  Minimize2,
   Sparkles,
   HelpCircle,
   Search,
@@ -32,6 +31,7 @@ import {
   RegexToken,
   DiagnosticResult,
 } from "./regexParser";
+import FullScreenWorkspace from "@/components/tool/workspace/FullScreenWorkspace";
 
 interface Props {
   readonly tool: Tool;
@@ -297,9 +297,41 @@ export default function RegexTester({ tool }: Props) {
       item.desc.toLowerCase().includes(cheatFilter.toLowerCase())
   );
 
+  if (isFullScreen) {
+    return (
+      <FullScreenWorkspace
+        isOpen={true}
+        onClose={() => setIsFullScreen(false)}
+        title={tool.name}
+        badge="IDE Workspace Mode"
+      >
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto space-y-4 pr-1 w-full h-full">
+          {/* Privacy Notice Banner */}
+          <div className="flex items-center gap-2 p-3 px-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs shrink-0">
+            <ShieldCheck className="w-4 h-4 shrink-0" />
+            <span className="font-bold text-slate-100">100% Client-Side Evaluation & Privacy Guarantee</span>
+          </div>
+
+          {/* Regex Input & Flags Controls inside Fullscreen */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Regular Expression Pattern</label>
+              <Input value={pattern} onChange={(e) => setPattern(e.target.value)} placeholder="e.g. ([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})" className="h-10 text-sm font-mono bg-slate-900 border-slate-800 text-slate-100" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Test String Input</label>
+              <textarea value={testText} onChange={(e) => setTestText(e.target.value)} placeholder="Paste test text string here..." className="w-full h-44 p-3 rounded-xl border border-slate-800 bg-slate-900 font-mono text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none" />
+            </div>
+          </div>
+        </div>
+      </FullScreenWorkspace>
+    );
+  }
+
   return (
-    <div className={`space-y-6 ${isFullScreen ? "fixed inset-0 z-50 bg-background p-6 overflow-y-auto" : ""}`}>
-      {/* Header Toolbar */}
+    <div className="space-y-6 w-full">
+      {/* Header Toolbar in Normal Mode */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <ToolHeader tool={tool} />
         <div className="flex items-center gap-3 self-start sm:self-auto shrink-0">
@@ -307,20 +339,11 @@ export default function RegexTester({ tool }: Props) {
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => setIsFullScreen(!isFullScreen)}
+            onClick={() => setIsFullScreen(true)}
             className="h-9 px-3 text-xs font-medium gap-1.5"
           >
-            {isFullScreen ? (
-              <>
-                <Minimize2 className="w-4 h-4" />
-                <span>Exit Full Screen</span>
-              </>
-            ) : (
-              <>
-                <Maximize2 className="w-4 h-4" />
-                <span>Full Screen Workspace</span>
-              </>
-            )}
+            <Maximize2 className="w-4 h-4" />
+            <span>Full Screen Workspace</span>
           </Button>
         </div>
       </div>
@@ -522,7 +545,7 @@ export default function RegexTester({ tool }: Props) {
             onChange={(e) => setTestText(e.target.value)}
             placeholder="Paste text string here to evaluate pattern matches..."
             rows={14}
-            className="w-full rounded-2xl border border-input bg-card p-4 font-mono text-xs text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary leading-relaxed resize-y"
+            className="w-full rounded-2xl border border-input bg-card p-4 font-mono text-xs text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary leading-relaxed resize-y editor-scroll-area"
           />
         </div>
 
@@ -550,7 +573,7 @@ export default function RegexTester({ tool }: Props) {
             )}
           </div>
 
-          <div className="flex-1 rounded-2xl border border-border bg-card p-4 space-y-3 overflow-y-auto max-h-[380px] font-mono text-xs shadow-sm">
+          <div className="flex-1 rounded-2xl border border-border bg-card p-4 space-y-3 editor-scroll-area max-h-[380px] font-mono text-xs shadow-sm">
             {matches.length === 0 ? (
               <div className="space-y-3 py-2">
                 <div className="flex items-center gap-2 text-rose-500 font-semibold">

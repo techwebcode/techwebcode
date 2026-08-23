@@ -49,14 +49,16 @@ export function useDynamicNavData() {
           // Deduplicate tools based on canonical key
           const seenKeys = new Map<string, Tool>();
           activeTools.forEach((t) => {
-            const key = t.slug
-              .replace("-encoder-decoder", "")
-              .replace("unix-timestamp-converter", "timestamp-converter")
-              .toLowerCase();
+            const canonicalKey = t.slug
+              .toLowerCase()
+              .replace(/-encoder-decoder/g, "")
+              .replace(/-encoder/g, "")
+              .replace(/-decoder/g, "")
+              .replace("unix-timestamp-converter", "timestamp-converter");
 
             // Prefer cleaner/canonical slug
-            if (!seenKeys.has(key) || t.slug.length < seenKeys.get(key)!.slug.length) {
-              seenKeys.set(key, t);
+            if (!seenKeys.has(canonicalKey) || t.slug.length < seenKeys.get(canonicalKey)!.slug.length) {
+              seenKeys.set(canonicalKey, t);
             }
           });
 

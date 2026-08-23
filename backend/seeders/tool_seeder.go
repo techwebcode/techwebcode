@@ -36,7 +36,7 @@ func SeedTools(db *gorm.DB) error {
 	}
 
 	// Explicitly remove obsolete or duplicate tool entries if they exist in DB
-	if err := db.Where("slug IN ?", []string{"json-formatter-and-validator", "yaml-formatter-and-kubernetes-secret-tool"}).Delete(&models.Tool{}).Error; err != nil {
+	if err := db.Where("slug IN ?", []string{"json-formatter-and-validator", "yaml-formatter-and-kubernetes-secret-tool", "base64-encoder-decoder", "url-encoder-decoder"}).Delete(&models.Tool{}).Error; err != nil {
 		log.Printf("[Seeder Warning] Failed to delete obsolete tools: %v", err)
 	}
 
@@ -46,12 +46,9 @@ func SeedTools(db *gorm.DB) error {
 		"json-validator",
 		"json-minifier",
 		"jwt-decoder",
-		"base64-encoder-decoder",
 		"base64",
 		"uuid-generator",
 		"timestamp-converter",
-		"unix-timestamp-converter",
-		"url-encoder-decoder",
 		"url-encoder",
 		"regex-tester",
 		"sql-formatter",
@@ -136,21 +133,7 @@ func SeedTools(db *gorm.DB) error {
 			SeoTitle:         "Free Online JWT Decoder & Inspector | TechWebCode",
 			SeoDescription:   "Decode JSON Web Tokens (JWT), inspect payload claims, and verify token expiration dates online.",
 		},
-		{
-			Name:             "Base64 Encoder & Decoder",
-			Slug:             "base64-encoder-decoder",
-			CategorySlug:     "text-and-encoding",
-			ShortDescription: "Encode and decode Base64 text directly in your browser.",
-			Description:      "Free online Base64 Encoder and Decoder with UTF-8 support. Encode and decode text, HTTP authorization headers, and data URLs directly in your browser.",
-			Icon:             "ArrowLeftRight",
-			Featured:         true,
-			Popular:          false,
-			IsNew:            false,
-			SortOrder:        8,
-			Status:           true,
-			SeoTitle:         "Free Online Base64 Encoder & Decoder | TechWebCode",
-			SeoDescription:   "Encode and decode Base64 strings with UTF-8 support online. Fast, client-side, and free.",
-		},
+
 		{
 			Name:             "Base64 Encoder / Decoder",
 			Slug:             "base64",
@@ -196,21 +179,7 @@ func SeedTools(db *gorm.DB) error {
 			SeoTitle:         "Free Online Unix Timestamp Converter | TechWebCode",
 			SeoDescription:   "Convert Epoch timestamps to human readable local dates, UTC, and ISO 8601 strings online.",
 		},
-		{
-			Name:             "URL Encoder & Decoder",
-			Slug:             "url-encoder-decoder",
-			CategorySlug:     "text-and-encoding",
-			ShortDescription: "Encode and decode URLs and URI query parameters.",
-			Description:      "Free online URL Percent Encoder and Decoder. Safely encode special characters for query strings or parse percent-encoded URL parameters.",
-			Icon:             "Link",
-			Featured:         false,
-			Popular:          false,
-			IsNew:            false,
-			SortOrder:        12,
-			Status:           true,
-			SeoTitle:         "Free Online URL Encoder & Decoder | TechWebCode",
-			SeoDescription:   "Percent-encode special characters in URLs or decode URL parameters online.",
-		},
+
 		{
 			Name:             "URL Encoder / Decoder",
 			Slug:             "url-encoder",

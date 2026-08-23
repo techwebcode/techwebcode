@@ -10,6 +10,7 @@ import {
   Clock,
   ArrowRight,
   FolderKanban,
+  Check,
 } from "lucide-react";
 
 const TOOL_CATEGORIES = [
@@ -18,6 +19,7 @@ const TOOL_CATEGORIES = [
     slug: "json-data",
     count: "3 Tools",
     description: "Format, validate, beautify, and compress JSON payloads.",
+    includedTools: ["JSON Formatter", "JSON Validator", "Minifier"],
     icon: FileCode,
     href: "/tools?category=json-data",
     gradient: "from-blue-500/10 to-indigo-500/10 text-blue-600 dark:text-blue-400",
@@ -27,6 +29,7 @@ const TOOL_CATEGORIES = [
     slug: "regex-sql",
     count: "2 Tools",
     description: "Test regular expressions and format complex SQL queries.",
+    includedTools: ["Regex Tester", "SQL Formatter"],
     icon: Database,
     href: "/tools?category=regex-sql",
     gradient: "from-emerald-500/10 to-teal-500/10 text-emerald-600 dark:text-emerald-400",
@@ -36,6 +39,7 @@ const TOOL_CATEGORIES = [
     slug: "security",
     count: "3 Tools",
     description: "Inspect JWT claims, encode Base64 strings & URL query params.",
+    includedTools: ["JWT Decoder", "Base64 Encoder", "URL Encoder"],
     icon: ShieldCheck,
     href: "/tools?category=security",
     gradient: "from-amber-500/10 to-orange-500/10 text-amber-600 dark:text-amber-400",
@@ -45,6 +49,7 @@ const TOOL_CATEGORIES = [
     slug: "yaml-k8s",
     count: "2 Tools",
     description: "Format YAML documents and generate K8s Secret payloads.",
+    includedTools: ["YAML Formatter", "K8s Secret Generator"],
     icon: FileText,
     href: "/tools?category=yaml-k8s",
     gradient: "from-purple-500/10 to-violet-500/10 text-purple-600 dark:text-purple-400",
@@ -54,6 +59,7 @@ const TOOL_CATEGORIES = [
     slug: "api-devops",
     count: "2 Tools",
     description: "API contract testing and cross-file deployment config diagnostic.",
+    includedTools: ["API Contract Tester", "Deployment Config"],
     icon: ArrowRightLeft,
     href: "/tools?category=api-devops",
     gradient: "from-rose-500/10 to-pink-500/10 text-rose-600 dark:text-rose-400",
@@ -63,6 +69,7 @@ const TOOL_CATEGORIES = [
     slug: "generators",
     count: "1 Tool",
     description: "Generate cryptographically secure v4 UUIDs individually or bulk.",
+    includedTools: ["v4 UUID Bulk Generator"],
     icon: RefreshCw,
     href: "/tools?category=generators",
     gradient: "from-cyan-500/10 to-blue-500/10 text-cyan-600 dark:text-cyan-400",
@@ -72,6 +79,7 @@ const TOOL_CATEGORIES = [
     slug: "date-time",
     count: "1 Tool",
     description: "Convert Epoch Unix timestamps to UTC, ISO dates, and local time.",
+    includedTools: ["Epoch Unix Converter"],
     icon: Clock,
     href: "/tools?category=date-time",
     gradient: "from-sky-500/10 to-indigo-500/10 text-sky-600 dark:text-sky-400",
@@ -84,7 +92,7 @@ export default function BrowseCategoriesSection() {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               <FolderKanban className="h-3.5 w-3.5" />
               <span>Categorized Directory</span>
             </div>
@@ -113,14 +121,14 @@ export default function BrowseCategoriesSection() {
               <Link
                 key={cat.slug}
                 href={cat.href}
-                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-600/50 hover:shadow-lg"
+                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-slate-900 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500/60 hover:shadow-md"
               >
                 <div>
                   <div className="flex items-center justify-between">
                     <div className={`p-2.5 rounded-xl bg-gradient-to-br ${cat.gradient}`}>
                       <Icon className="h-5 w-5" />
                     </div>
-                    <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span className="rounded-full bg-slate-100 dark:bg-slate-800/80 px-2.5 py-0.5 text-[10px] font-extrabold text-slate-600 dark:text-slate-400 uppercase tracking-wider border border-slate-200/60 dark:border-slate-700/60">
                       {cat.count}
                     </span>
                   </div>
@@ -129,13 +137,28 @@ export default function BrowseCategoriesSection() {
                     {cat.title}
                   </h3>
 
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
                     {cat.description}
                   </p>
+
+                  {/* Included Utilities List */}
+                  {cat.includedTools && cat.includedTools.length > 0 && (
+                    <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-wrap gap-1">
+                      {cat.includedTools.map((tName) => (
+                        <span
+                          key={tName}
+                          className="inline-flex items-center gap-1 rounded bg-slate-100/80 dark:bg-slate-800/60 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-400"
+                        >
+                          <Check className="h-2.5 w-2.5 text-emerald-500 shrink-0" />
+                          <span>{tName}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                <div className="mt-4 flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 opacity-80 group-hover:opacity-100 transition-opacity">
-                  <span>Browse Tools</span>
+                <div className="mt-4 flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <span>Browse Category</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </div>
               </Link>

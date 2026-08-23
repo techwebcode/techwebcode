@@ -303,3 +303,19 @@ button {
     }
 
 }
+
+/* ---------- Editor Scroll Utility ---------- */
+
+.editor-scroll-area {
+
+    overflow-y: auto;
+
+    overflow-x: auto;
+
+    overscroll-behavior-y: auto;
+
+    overscroll-behavior-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+}

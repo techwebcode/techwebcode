@@ -242,7 +242,7 @@ export default function ToolWorkspaceHeader({
             title="Fullscreen Workspace (Distraction Free)"
           >
             <Maximize2 className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Fullscreen</span>
+            <span className="hidden sm:inline">Full Screen Workspace</span>
           </Button>
         </div>
       </div>

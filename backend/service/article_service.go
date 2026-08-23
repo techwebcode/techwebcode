@@ -113,9 +113,7 @@ func (s *ArticleService) Create(req *dto.CreateArticleRequest) (*models.Article,
 	if featuredMedia != nil {
 		article.FeaturedImageID = &featuredMedia.ID
 		article.FeaturedImageMedia = featuredMedia
-		if article.FeaturedImage == "" {
-			article.FeaturedImage = featuredMedia.URL
-		}
+		article.FeaturedImage = featuredMedia.URL
 	}
 
 	// Default status

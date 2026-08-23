@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import ToolGrid from "@/components/tool/ToolGrid";
 import ToolCard from "@/components/tool/ToolCard";
 import { useFeaturedTools } from "@/hooks/useTools";
 import { Tool } from "@/types/tools";
-import { ArrowRight, Wrench } from "lucide-react";
+import { ArrowRight, Wrench, Layers } from "lucide-react";
 
 // Curated tools list mapping catalog items with related guides for cross-linking
 const CURATED_POPULAR_TOOLS = [
@@ -84,7 +84,7 @@ const CURATED_POPULAR_TOOLS = [
     slug: "yaml-formatter",
     description: "Format YAML documents and encode/decode Kubernetes Secret payloads client-side.",
     icon: "FileText",
-    category: "YAML & Kubernetes",
+    category: "Encoding & YAML",
     featured: true,
     badge: "NEW",
     relatedGuide: {
@@ -98,7 +98,7 @@ const CURATED_POPULAR_TOOLS = [
     slug: "base64",
     description: "Encode text strings into Base64 format or decode Base64 back to plain text.",
     icon: "ArrowLeftRight",
-    category: "Encoding",
+    category: "Encoding & YAML",
     featured: true,
   },
   {
@@ -112,17 +112,29 @@ const CURATED_POPULAR_TOOLS = [
   },
 ];
 
-export default function DeveloperToolsSection() {
-  const { data, isLoading } = useFeaturedTools();
+const FILTER_TABS = [
+  { id: "all", label: "All Utilities" },
+  { id: "JSON & Data", label: "JSON & Data" },
+  { id: "Regex & SQL", label: "Regex & SQL" },
+  { id: "Security", label: "Security & JWT" },
+  { id: "Encoding & YAML", label: "Encoding & YAML" },
+];
 
-  const apiTools: Tool[] = Array.isArray(data) ? data : [];
+export default function DeveloperToolsSection() {
+  const [activeTab, setActiveTab] = useState("all");
+  const { data } = useFeaturedTools();
+
+  const filteredTools = CURATED_POPULAR_TOOLS.filter((tool) => {
+    if (activeTab === "all") return true;
+    return tool.category === activeTab;
+  });
 
   return (
-    <section className="py-12 lg:py-16 bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200/60 dark:border-slate-800/60">
+    <section className="py-12 lg:py-16 bg-slate-50/50 dark:bg-slate-950/30 border-b border-slate-200/60 dark:border-slate-800/60">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               <Wrench className="h-3.5 w-3.5" />
               <span>Primary Developer Utilities</span>
             </div>
@@ -138,14 +150,38 @@ export default function DeveloperToolsSection() {
             href="/tools"
             className="group inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors shrink-0"
           >
-            <span>Explore All Tools Catalog</span>
+            <span>Explore Full Catalog</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
 
+        {/* Filter Category Tabs */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-6 scrollbar-none">
+          <span className="text-xs font-bold text-slate-400 dark:text-slate-500 mr-2 flex items-center gap-1 shrink-0">
+            <Layers className="h-3.5 w-3.5" /> Filter:
+          </span>
+          {FILTER_TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all shrink-0 border ${
+                  isActive
+                    ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                    : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-500/40 hover:text-slate-900 dark:hover:text-slate-100"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Tools Grid */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CURATED_POPULAR_TOOLS.map((tool) => (
+          {filteredTools.map((tool) => (
             <ToolCard
               key={tool.slug}
               name={tool.name}

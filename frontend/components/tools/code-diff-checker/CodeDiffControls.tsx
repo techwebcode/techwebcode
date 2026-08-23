@@ -2,7 +2,6 @@
 
 import React from "react";
 import { DiffOptions } from "./diff.utils";
-import { SlidersHorizontal, Layers, Code, CheckSquare } from "lucide-react";
 
 export type ViewMode = "side-by-side" | "unified" | "split" | "word-diff";
 
@@ -59,21 +58,20 @@ export default function CodeDiffControls({
               mode === "side-by-side"
                 ? "Side by Side"
                 : mode === "unified"
-                ? "Unified"
-                : mode === "split"
-                ? "Split"
-                : "Word Diff";
+                  ? "Unified"
+                  : mode === "split"
+                    ? "Split"
+                    : "Word Diff";
 
             return (
               <button
                 key={mode}
                 type="button"
                 onClick={() => onViewModeChange(mode)}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-                  isActive
+                className={`px-3 py-1.5 rounded-lg font-bold transition-all ${isActive
                     ? "bg-blue-600 text-white shadow-sm"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
-                }`}
+                  }`}
               >
                 {label}
               </button>

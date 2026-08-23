@@ -10,6 +10,9 @@ export interface Article {
     content_markdown?: string;
     content_html?: string;
     featured_image?: string | null;
+    featured_image_id?: number | null;
+    featured_image_media?: any;
+    featuredImageMedia?: any;
     seo_title?: string;
     seo_description?: string;
     canonical_url?: string;

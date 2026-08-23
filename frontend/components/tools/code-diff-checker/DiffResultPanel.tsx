@@ -167,7 +167,7 @@ export default function DiffResultPanel({
 
       {/* Tab Content: Structured Changes List with Git-Merge Hunk Actions */}
       {activeTab === "changes" && (
-        <div className="space-y-2.5 max-h-96 overflow-y-auto">
+        <div className="space-y-2.5 max-h-96 editor-scroll-area">
           {changes.map((block, idx) => {
             const isSelected = idx === safeIndex;
             return (
@@ -241,7 +241,7 @@ export default function DiffResultPanel({
 
       {/* Tab Content: Unified Diff */}
       {activeTab === "unified" && (
-        <div className="font-mono text-xs overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-950 p-3 text-slate-200 space-y-0.5 max-h-96 overflow-y-auto select-text">
+        <div className="font-mono text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-950 p-3 text-slate-200 space-y-0.5 max-h-96 editor-scroll-area select-text">
           {lines.map((line, idx) => {
             const isAdded = line.type === "added";
             const isRemoved = line.type === "removed";
@@ -255,14 +255,48 @@ export default function DiffResultPanel({
                       {line.originalLineNumber || "-"}
                     </span>
                     <span className="w-4 shrink-0 font-bold text-rose-400">-</span>
-                    <span className="flex-1 whitespace-pre">{line.originalContent}</span>
+                    <span className="flex-1 whitespace-pre">
+                      {line.wordChangesOriginal ? (
+                        line.wordChangesOriginal.map((w, wIdx) => (
+                          <span
+                            key={wIdx}
+                            className={
+                              w.type === "removed"
+                                ? "bg-rose-500/40 text-rose-100 font-bold px-0.5 rounded"
+                                : ""
+                            }
+                          >
+                            {w.value}
+                          </span>
+                        ))
+                      ) : (
+                        line.originalContent
+                      )}
+                    </span>
                   </div>
                   <div className="flex items-center bg-emerald-950/40 text-emerald-300 px-2 py-0.5 rounded">
                     <span className="w-10 shrink-0 text-slate-600 select-none text-[10px]">
                       {line.modifiedLineNumber || "-"}
                     </span>
                     <span className="w-4 shrink-0 font-bold text-emerald-400">+</span>
-                    <span className="flex-1 whitespace-pre">{line.modifiedContent}</span>
+                    <span className="flex-1 whitespace-pre">
+                      {line.wordChangesModified ? (
+                        line.wordChangesModified.map((w, wIdx) => (
+                          <span
+                            key={wIdx}
+                            className={
+                              w.type === "added"
+                                ? "bg-emerald-500/40 text-emerald-100 font-bold px-0.5 rounded"
+                                : ""
+                            }
+                          >
+                            {w.value}
+                          </span>
+                        ))
+                      ) : (
+                        line.modifiedContent
+                      )}
+                    </span>
                   </div>
                 </React.Fragment>
               );

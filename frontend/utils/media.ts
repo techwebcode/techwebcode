@@ -20,8 +20,25 @@ export function getPublicMediaUrl(mediaOrUrl?: any): string {
     rawUrl = rawUrl.replace("http://localhost:8080/media", "https://techwebcode.in/media");
     rawUrl = rawUrl.replace("http://backend:8080/media", "https://techwebcode.in/media");
 
-    // If relative path, prepend canonical origin
+    // If relative path, prepend canonical origin (or local dev backend origin)
     if (rawUrl.startsWith("/")) {
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || "";
+        if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+            try {
+                const origin = apiBase ? new URL(apiBase).origin : "http://localhost:8082";
+                return `${origin}${rawUrl}`;
+            } catch {
+                return `http://localhost:8082${rawUrl}`;
+            }
+        }
+        if (apiBase.includes("localhost") || apiBase.includes("127.0.0.1")) {
+            try {
+                const origin = new URL(apiBase).origin;
+                return `${origin}${rawUrl}`;
+            } catch {
+                return `http://localhost:8082${rawUrl}`;
+            }
+        }
         return `https://techwebcode.in${rawUrl}`;
     }
 

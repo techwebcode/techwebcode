@@ -4,6 +4,7 @@ import ArticleMeta from "./ArticleMeta";
 import CategoryBadge from "./CategoryBadge";
 import ArticleThumbnail from "./ArticleThumbnail";
 import { Wrench, ArrowRight } from "lucide-react";
+import { getPublicMediaUrl } from "@/utils/media";
 
 export interface RelatedTool {
   name: string;
@@ -21,6 +22,13 @@ export default function ArticleCard({ article, relatedTool }: Readonly<Props>) {
   const categoryName = article.category?.name || "Engineering";
   const categorySlug = article.category?.slug || "engineering";
 
+  // Resolve featured image URL via getPublicMediaUrl with media object fallbacks
+  const imageUrl = getPublicMediaUrl(
+    (article as any).featured_image_media ||
+    (article as any).featuredImageMedia ||
+    article.featured_image
+  );
+
   // Check if article object has primary_tool or primaryTool defined from database
   const toolObj = article.primary_tool || article.primaryTool;
   const toolName = relatedTool?.name || toolObj?.name;
@@ -32,7 +40,7 @@ export default function ArticleCard({ article, relatedTool }: Readonly<Props>) {
         {/* Main Clickable Header & Image */}
         <Link href={`/articles/${article.slug}`} className="group/link block">
           <ArticleThumbnail
-            src={article.featured_image}
+            src={imageUrl}
             alt={article.title || "Article thumbnail"}
             categorySlug={categorySlug}
             categoryName={categoryName}

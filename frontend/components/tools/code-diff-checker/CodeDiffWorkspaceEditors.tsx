@@ -40,17 +40,46 @@ export default function CodeDiffWorkspaceEditors({
   origEditorRef,
   modEditorRef,
 }: CodeDiffWorkspaceEditorsProps) {
+  const isSyncingRef = useRef(false);
   const localOrigRef = useRef<any>(null);
   const localModRef = useRef<any>(null);
 
   const setOrigRef = (editor: any) => {
     localOrigRef.current = editor;
     if (origEditorRef) origEditorRef.current = editor;
+
+    if (editor && editor.onDidScrollChange) {
+      editor.onDidScrollChange((e: any) => {
+        if (isSyncingRef.current) return;
+        if (localModRef.current) {
+          isSyncingRef.current = true;
+          localModRef.current.setScrollTop(e.scrollTop);
+          localModRef.current.setScrollLeft(e.scrollLeft);
+          requestAnimationFrame(() => {
+            isSyncingRef.current = false;
+          });
+        }
+      });
+    }
   };
 
   const setModRef = (editor: any) => {
     localModRef.current = editor;
     if (modEditorRef) modEditorRef.current = editor;
+
+    if (editor && editor.onDidScrollChange) {
+      editor.onDidScrollChange((e: any) => {
+        if (isSyncingRef.current) return;
+        if (localOrigRef.current) {
+          isSyncingRef.current = true;
+          localOrigRef.current.setScrollTop(e.scrollTop);
+          localOrigRef.current.setScrollLeft(e.scrollLeft);
+          requestAnimationFrame(() => {
+            isSyncingRef.current = false;
+          });
+        }
+      });
+    }
   };
 
   // Scroll and highlight editors whenever activeHunk changes
