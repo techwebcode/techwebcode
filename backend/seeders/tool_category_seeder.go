@@ -1,6 +1,7 @@
 package seeders
 
 import (
+	"errors"
 	"log"
 
 	"github.com/techwebcode/techwebcode/backend/models"
@@ -75,16 +76,43 @@ func SeedToolCategories(db *gorm.DB) error {
 		},
 	}
 
-	for _, cat := range categories {
-		var existing models.ToolCategory
-		err := db.Where("slug = ?", cat.Slug).Assign(cat).FirstOrCreate(&existing, models.ToolCategory{Slug: cat.Slug}).Error
-
-		if err != nil {
-			log.Printf("[Seeder Error] Failed to seed category %s: %v", cat.Slug, err)
-			return err
+	seenSlugs := make(map[string]bool)
+	for _, item := range categories {
+		if seenSlugs[item.Slug] {
+			return errors.New("duplicate slug in tool category seed data: " + item.Slug)
 		}
+		seenSlugs[item.Slug] = true
 	}
 
-	log.Println("[Seeder] Successfully seeded tool categories")
+	createdCount := 0
+	existingCount := 0
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		for _, cat := range categories {
+			var count int64
+			if err := tx.Model(&models.ToolCategory{}).Where("slug = ?", cat.Slug).Count(&count).Error; err != nil {
+				log.Printf("[Seeder Error] Failed to query tool category slug %s: %v", cat.Slug, err)
+				return err
+			}
+
+			if count > 0 {
+				existingCount++
+				continue
+			}
+
+			if err := tx.Create(&cat).Error; err != nil {
+				log.Printf("[Seeder Error] Failed to create tool category %s: %v", cat.Slug, err)
+				return err
+			}
+			createdCount++
+		}
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("[Seeder] Tool Categories Seeding Completed | Created: %d | Existing: %d", createdCount, existingCount)
 	return nil
 }

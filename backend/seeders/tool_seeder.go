@@ -1,6 +1,7 @@
 package seeders
 
 import (
+	"errors"
 	"log"
 
 	"github.com/techwebcode/techwebcode/backend/models"
@@ -24,9 +25,10 @@ type ToolSeedData struct {
 }
 
 func SeedTools(db *gorm.DB) error {
-	// Lookup category IDs map by slug
+	// Fetch tool categories mapping by slug
 	var categories []models.ToolCategory
 	if err := db.Find(&categories).Error; err != nil {
+		log.Printf("[Seeder Error] Failed to fetch tool categories: %v", err)
 		return err
 	}
 
@@ -35,28 +37,7 @@ func SeedTools(db *gorm.DB) error {
 		categoryMap[c.Slug] = c.ID
 	}
 
-	// Explicitly remove obsolete or duplicate tool entries if they exist in DB
-	if err := db.Where("slug IN ?", []string{"json-formatter-and-validator", "yaml-formatter-and-kubernetes-secret-tool", "base64-encoder-decoder", "url-encoder-decoder"}).Delete(&models.Tool{}).Error; err != nil {
-		log.Printf("[Seeder Warning] Failed to delete obsolete tools: %v", err)
-	}
-
-	approvedSlugs := []string{
-		"json-formatter",
-		"yaml-formatter",
-		"json-validator",
-		"json-minifier",
-		"jwt-decoder",
-		"base64",
-		"uuid-generator",
-		"timestamp-converter",
-		"url-encoder",
-		"regex-tester",
-		"sql-formatter",
-		"deployment-config-doctor",
-		"api-contract-checker",
-		"code-diff-checker",
-	}
-
+	// Complete list of built-in TechWebCode tools
 	toolsData := []ToolSeedData{
 		{
 			Name:             "JSON Formatter",
@@ -133,7 +114,6 @@ func SeedTools(db *gorm.DB) error {
 			SeoTitle:         "Free Online JWT Decoder & Inspector | TechWebCode",
 			SeoDescription:   "Decode JSON Web Tokens (JWT), inspect payload claims, and verify token expiration dates online.",
 		},
-
 		{
 			Name:             "Base64 Encoder / Decoder",
 			Slug:             "base64",
@@ -179,7 +159,6 @@ func SeedTools(db *gorm.DB) error {
 			SeoTitle:         "Free Online Unix Timestamp Converter | TechWebCode",
 			SeoDescription:   "Convert Epoch timestamps to human readable local dates, UTC, and ISO 8601 strings online.",
 		},
-
 		{
 			Name:             "URL Encoder / Decoder",
 			Slug:             "url-encoder",
@@ -272,44 +251,68 @@ func SeedTools(db *gorm.DB) error {
 		},
 	}
 
-	// Deactivate any unapproved or legacy tools in the DB safely
-	if err := db.Model(&models.Tool{}).Where("slug NOT IN ?", approvedSlugs).UpdateColumn("status", false).Error; err != nil {
-		log.Printf("[Seeder Warning] Failed to deactivate legacy unapproved tools: %v", err)
-	}
-
+	// Verify no duplicate slugs exist in seed data array
+	seenSlugs := make(map[string]bool)
 	for _, item := range toolsData {
-		catID, ok := categoryMap[item.CategorySlug]
-		if !ok || catID == 0 {
-			catID = 1
+		if seenSlugs[item.Slug] {
+			return errors.New("duplicate slug in tool seed data: " + item.Slug)
 		}
-
-		toolObj := models.Tool{
-			CategoryID:       catID,
-			Name:             item.Name,
-			Slug:             item.Slug,
-			ShortDescription: item.ShortDescription,
-			Description:      item.Description,
-			Icon:             item.Icon,
-			Featured:         item.Featured,
-			Popular:          item.Popular,
-			IsNew:            item.IsNew,
-			SortOrder:        item.SortOrder,
-			Status:           item.Status,
-			SeoTitle:         item.SeoTitle,
-			SeoDescription:   item.SeoDescription,
-		}
-
-		var existing models.Tool
-		err := db.Where("slug = ?", item.Slug).
-			Assign(toolObj).
-			FirstOrCreate(&existing, toolObj).Error
-
-		if err != nil {
-			log.Printf("[Seeder Error] Failed to seed tool %s: %v", item.Slug, err)
-			return err
-		}
+		seenSlugs[item.Slug] = true
 	}
 
-	log.Println("[Seeder] Successfully seeded developer tools")
+	createdCount := 0
+	existingCount := 0
+
+	// Idempotently insert missing built-in tools inside a database transaction
+	err := db.Transaction(func(tx *gorm.DB) error {
+		for _, item := range toolsData {
+			var count int64
+			if err := tx.Model(&models.Tool{}).Where("slug = ?", item.Slug).Count(&count).Error; err != nil {
+				log.Printf("[Seeder Error] Failed to query tool slug %s: %v", item.Slug, err)
+				return err
+			}
+
+			if count > 0 {
+				// Record already exists; do not overwrite user or admin modifications
+				existingCount++
+				continue
+			}
+
+			// Tool does not exist; insert new built-in tool record
+			catID, ok := categoryMap[item.CategorySlug]
+			if !ok || catID == 0 {
+				catID = 1
+			}
+
+			newTool := models.Tool{
+				CategoryID:       catID,
+				Name:             item.Name,
+				Slug:             item.Slug,
+				ShortDescription: item.ShortDescription,
+				Description:      item.Description,
+				Icon:             item.Icon,
+				Featured:         item.Featured,
+				Popular:          item.Popular,
+				IsNew:            item.IsNew,
+				SortOrder:        item.SortOrder,
+				Status:           item.Status,
+				SeoTitle:         item.SeoTitle,
+				SeoDescription:   item.SeoDescription,
+			}
+
+			if err := tx.Create(&newTool).Error; err != nil {
+				log.Printf("[Seeder Error] Failed to create tool %s: %v", item.Slug, err)
+				return err
+			}
+			createdCount++
+		}
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("[Seeder] Tools Seeding Completed | Created: %d | Existing: %d", createdCount, existingCount)
 	return nil
 }
