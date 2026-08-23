@@ -183,7 +183,7 @@ export default function CodeEditor({
             aria-label="Expand editor to full workspace"
           >
             <Maximize2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Expand Workspace</span>
+            <span className="inline-flex">Expand Workspace</span>
           </Button>
         </div>
       )}
