@@ -8,6 +8,7 @@ interface ToolDiagnosticsBarProps {
   error?: string;
   value?: string;
   onJumpToError?: () => void;
+  typeLabel?: string;
 }
 
 export default function ToolDiagnosticsBar({
@@ -15,6 +16,7 @@ export default function ToolDiagnosticsBar({
   error,
   value = "",
   onJumpToError,
+  typeLabel = "JSON",
 }: ToolDiagnosticsBarProps) {
   // If input is empty, don't show an intrusive alert
   if (!value.trim() && !error) {
@@ -27,7 +29,7 @@ export default function ToolDiagnosticsBar({
         <div className="flex items-center gap-2.5">
           <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <span>
-            <strong className="font-bold">✓ Valid JSON</strong> — No syntax errors found. Ready to use or format.
+            <strong className="font-bold">✓ Valid {typeLabel}</strong> — No syntax errors found. Ready to use or format.
           </span>
         </div>
       </div>
@@ -39,7 +41,7 @@ export default function ToolDiagnosticsBar({
       <div className="flex items-start sm:items-center gap-2.5 min-w-0">
         <AlertTriangle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5 sm:mt-0" />
         <span className="truncate">
-          <strong className="font-bold">✕ Invalid JSON</strong> — {error || "Syntax error detected in input payload."}
+          <strong className="font-bold">✕ Invalid {typeLabel}</strong> — {error || "Syntax error detected in input payload."}
         </span>
       </div>
 

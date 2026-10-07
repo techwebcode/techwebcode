@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { HelpCircle, ShieldCheck, Zap, Sparkles, BookOpen, ArrowRight } from "lucide-react";
 
 interface FAQItem {
@@ -43,6 +44,13 @@ export default function ToolExplanation({
     },
   ],
 }: ToolExplanationProps) {
+  const pathname = usePathname();
+
+  // On tool pages, ToolSeoSection is rendered directly on the server by ToolPage
+  if (pathname?.startsWith("/tools/")) {
+    return null;
+  }
+
   return (
     <div className="mt-16 space-y-12 border-t pt-12">
       {/* Privacy Banner */}
@@ -51,9 +59,9 @@ export default function ToolExplanation({
           <ShieldCheck className="w-6 h-6" />
         </div>
         <div>
-          <h4 className="text-sm font-bold text-foreground">100% Privacy & Security Guarantee</h4>
+          <h4 className="text-sm font-bold text-foreground">Client-Side Privacy Notice</h4>
           <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-            All data formatting, minification, and validation processing happens directly inside your web browser using client-side JavaScript. Your data never leaves your device or touches any server.
+            Your input is processed locally in your browser and is not sent to TechWebCode servers.
           </p>
         </div>
       </div>

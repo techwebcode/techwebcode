@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import ArticleService from "@/services/article";
 import ToolService from "@/services/tool.service";
+import { getCanonicalToolSlug } from "@/constants/toolSeoData";
 
 export const revalidate = 60;
 
@@ -15,13 +16,15 @@ const FALLBACK_TOOL_SLUGS = [
   "base64",
   "uuid-generator",
   "timestamp-converter",
-  "url-encoder",
+  "url-encoder-decoder",
   "regex-tester",
   "sql-formatter",
   "yaml-formatter",
   "deployment-config-doctor",
   "api-contract-checker",
   "code-diff-checker",
+  "sha1-hash-generator",
+  "comma-separator",
 ];
 
 function safeDate(inputDate?: string | Date | null): Date {
@@ -39,10 +42,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/tools`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/articles`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
     { url: `${baseUrl}/categories`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/playground`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/playground`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/html`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/css`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/javascript`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/typescript`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/python`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/java`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/c`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/cpp`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/go`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/php`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/rust`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
   ];
 
   // 2. Dynamic Published Articles, Categories & Tags
@@ -114,13 +129,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   tools
     .filter((tool) => tool.slug && (tool.status === undefined || tool.status === true))
     .forEach((tool) => {
-      existingToolSlugs.add(tool.slug);
-      toolRoutes.push({
-        url: `${baseUrl}/tools/${tool.slug}`,
-        lastModified: safeDate(tool.updated_at),
-        changeFrequency: "weekly",
-        priority: 0.9,
-      });
+      const normalizedSlug = getCanonicalToolSlug(tool.slug);
+      if (!existingToolSlugs.has(normalizedSlug)) {
+        existingToolSlugs.add(normalizedSlug);
+        toolRoutes.push({
+          url: `${baseUrl}/tools/${normalizedSlug}`,
+          lastModified: safeDate(tool.updated_at),
+          changeFrequency: "weekly",
+          priority: 0.9,
+        });
+      }
     });
 
   // Ensure Fallback Tools are included

@@ -89,6 +89,19 @@ export default function Navbar() {
                 {/* Dynamic Tools Mega-Menu (PRIMARY FEATURE) */}
                 <ToolsMegaMenu isActive={isToolsActive} categories={toolCategories} />
 
+                {/* Playground Code Runner */}
+                <Link
+                  href="/playground"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 flex items-center gap-1.5 ${
+                    pathname.startsWith("/playground") ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                  }`}
+                >
+                  <span>Playground</span>
+                  <span className="px-1.5 py-0.2 rounded bg-blue-600 text-white font-extrabold text-[9px] uppercase tracking-wide">
+                    NEW
+                  </span>
+                </Link>
+
                 {/* Articles Dropdown (SECONDARY) */}
                 <NavDropdown
                   title="Articles"

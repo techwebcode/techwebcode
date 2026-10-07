@@ -222,7 +222,7 @@ export default function UrlEncoder({ tool }: Props) {
       />
 
       {/* Interlinking Related Tools */}
-      <RelatedTools currentSlug="url-encoder" />
+      <RelatedTools currentSlug="url-encoder-decoder" />
     </div>
   );
 }

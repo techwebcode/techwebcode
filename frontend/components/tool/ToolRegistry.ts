@@ -15,6 +15,8 @@ import YamlFormatter from "@/components/tools/yaml-formatter/YamlFormatter";
 import DeploymentConfigDoctor from "@/components/tools/deployment-config-doctor/DeploymentConfigDoctor";
 import ApiContractChecker from "@/components/tools/api-contract-checker/ApiContractChecker";
 import CodeDiffChecker from "@/components/tools/code-diff-checker/CodeDiffChecker";
+import Sha1HashGenerator from "@/components/tools/sha1-hash-generator/Sha1HashGenerator";
+import CommaSeparator from "@/components/tools/comma-separator/CommaSeparator";
 
 export type ToolComponent = React.ComponentType<{ tool: Tool }>;
 
@@ -54,6 +56,14 @@ export const TOOL_REGISTRY: Record<string, ToolComponent> = {
   "code-difference-checker": CodeDiffChecker,
   "code-diff": CodeDiffChecker,
   "diff-checker": CodeDiffChecker,
+  "sha1-hash-generator": Sha1HashGenerator,
+  "sha1-generator": Sha1HashGenerator,
+  "sha-1-hash-generator": Sha1HashGenerator,
+  "sha1": Sha1HashGenerator,
+  "comma-separator": CommaSeparator,
+  "comma-separated-list": CommaSeparator,
+  "list-to-comma-separated": CommaSeparator,
+  "list-formatter": CommaSeparator,
 };
 
 export function getToolComponent(slug: string): ToolComponent | null {

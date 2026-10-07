@@ -1,8 +1,10 @@
 import HeroSection from "@/components/home/HeroSection";
+import PlaygroundPromotionalSection from "@/components/home/PlaygroundPromotionalSection";
 import DeveloperToolsSection from "@/components/home/DeveloperToolsSection";
 import BrowseCategoriesSection from "@/components/home/BrowseCategoriesSection";
 import DeveloperPlatformSpecs from "@/components/home/DeveloperPlatformSpecs";
 import FeaturedArticles from "@/components/home/FeaturedArticles";
+import HelpFeedbackSection from "@/components/home/HelpFeedbackSection";
 
 export default function HomePage() {
   // WebSite JSON-LD Schema with SearchAction for Developer Tools Search
@@ -30,7 +32,10 @@ export default function HomePage() {
         {/* 1. Hero Section (Compact, Tools-Focused Headline, ⌘K Search, Quick Access, Explore Tools CTA) */}
         <HeroSection />
 
-        {/* 2. Popular Developer Tools with Inline Category Filter Tabs */}
+        {/* 2. Featured Multi-Language Code Playground Showcase */}
+        <PlaygroundPromotionalSection />
+
+        {/* 3. Popular Developer Tools with Inline Category Filter Tabs */}
         <DeveloperToolsSection />
 
         {/* 3. Browse Developer Tools by Category with Included Utility Chips */}
@@ -41,6 +46,9 @@ export default function HomePage() {
 
         {/* 5. Developer Guides & Articles */}
         <FeaturedArticles />
+
+        {/* 6. Help & Feedback / Report a Bug Section */}
+        <HelpFeedbackSection />
       </div>
     </>
   );

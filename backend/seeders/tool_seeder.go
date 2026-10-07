@@ -161,7 +161,7 @@ func SeedTools(db *gorm.DB) error {
 		},
 		{
 			Name:             "URL Encoder / Decoder",
-			Slug:             "url-encoder",
+			Slug:             "url-encoder-decoder",
 			CategorySlug:     "text-and-encoding",
 			ShortDescription: "Percent-encode and decode URL query parameters.",
 			Description:      "Free online URL Percent Encoder and Decoder. Safely encode special characters for query strings or parse percent-encoded URL parameters.",

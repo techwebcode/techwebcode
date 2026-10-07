@@ -1,12 +1,17 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-import Container from "@/components/layout/Container";
 import ToolRenderer from "@/components/tool/ToolRenderer";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import AdBanner from "@/components/common/AdBanner";
 import ToolService from "@/services/tool.service";
 import { Tool } from "@/types/tools";
+import ToolSeoSection from "@/components/tool/ToolSeoSection";
+import {
+  getToolSeoData,
+  getCanonicalToolSlug,
+  TOOL_SEO_DATA,
+} from "@/constants/toolSeoData";
 
 interface Props {
   params: Promise<{
@@ -42,7 +47,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Compress and minify JSON data by stripping whitespace and indentation while preserving valid JSON payload structure.",
     shortDescription: "Minify and compact JSON data to reduce payload size.",
     featured: true,
-    seoTitle: "JSON Minifier Online - Compress JSON | TechWebCode",
+    seoTitle: "JSON Minifier Online - Compress JSON Payloads | TechWebCode",
     seoDescription: "Compress and minify JSON data by stripping whitespace and formatting. Optimize JSON payloads for web APIs and storage.",
   },
   "jwt-decoder": {
@@ -52,7 +57,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Decode JSON Web Tokens (JWT) online. View header algorithm, payload claims, and expiration timestamps securely in your browser.",
     shortDescription: "Decode and inspect JWT token headers and payload claims securely.",
     featured: true,
-    seoTitle: "JWT Decoder Online - Decode JWT Tokens | TechWebCode",
+    seoTitle: "JWT Decoder Online - Decode & Inspect JWT Claims | TechWebCode",
     seoDescription: "Decode JSON Web Tokens (JWT) online. View header, payload claims, and expiration date instantly. 100% private client-side decoding.",
   },
   "base64": {
@@ -67,7 +72,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
   },
   "uuid-generator": {
     id: 6,
-    name: "UUID Generator",
+    name: "UUID / GUID Generator",
     slug: "uuid-generator",
     description: "Generate cryptographically secure Version 4 UUIDs (Universally Unique Identifiers) individually or in bulk for database keys and APIs.",
     shortDescription: "Generate random Version 4 UUIDs individually or in bulk.",
@@ -85,15 +90,15 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     seoTitle: "Unix Timestamp Converter Online | TechWebCode",
     seoDescription: "Convert Epoch Unix timestamps to human-readable dates, UTC, and ISO 8601 strings online. Supports seconds and milliseconds.",
   },
-  "url-encoder": {
+  "url-encoder-decoder": {
     id: 8,
     name: "URL Encoder & Decoder",
-    slug: "url-encoder",
-    description: "Encode query parameters into percent-encoded URL format, or decode percent-encoded strings back to standard text.",
-    shortDescription: "Encode and decode percent-encoded URL query strings.",
+    slug: "url-encoder-decoder",
+    description: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
+    shortDescription: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
     featured: true,
-    seoTitle: "URL Encoder & Decoder Online | TechWebCode",
-    seoDescription: "Encode query parameters into percent-encoded URL format, or decode percent-encoded strings online.",
+    seoTitle: "URL Encoder & Decoder Online - Free Tool | TechWebCode",
+    seoDescription: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
   },
   "regex-tester": {
     id: 9,
@@ -112,7 +117,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Format and beautify raw SQL queries with proper clause indentations and capitalized SQL keywords for maximum query readability.",
     shortDescription: "Format and beautify SQL queries with proper indentation and keyword capitalization.",
     featured: true,
-    seoTitle: "SQL Formatter Online | TechWebCode",
+    seoTitle: "SQL Formatter Online - Format & Beautify SQL Queries | TechWebCode",
     seoDescription: "Format and beautify SQL queries online. Standardize keyword capitalization and indent complex clauses for maximum readability.",
   },
   "yaml-formatter": {
@@ -132,7 +137,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Analyze Docker, Kubernetes, environment, Nginx, Next.js and CI/CD configuration for deployment errors, security issues and cross-file mismatches.",
     shortDescription: "Cross-file project configuration analyzer for Docker, Kubernetes, Nginx, and .env files.",
     featured: true,
-    seoTitle: "Deployment Config Doctor — Docker, Kubernetes & Environment Checker | TechWebCode",
+    seoTitle: "Deployment Config Doctor — Docker, Kubernetes & Env Checker | TechWebCode",
     seoDescription: "Analyze Docker, Kubernetes, environment, Nginx, Next.js and CI/CD configuration for deployment errors, security issues and cross-file mismatches.",
   },
   "api-contract-checker": {
@@ -155,14 +160,35 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     seoTitle: "Code Difference Checker — Side-by-Side Code Diff Online | TechWebCode",
     seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, change navigation, and 100% client-side privacy.",
   },
+  "sha1-hash-generator": {
+    id: 19,
+    name: "SHA-1 Hash Generator",
+    slug: "sha1-hash-generator",
+    description: "Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers.",
+    shortDescription: "Generate SHA-1 hash digests from text instantly with 100% client-side browser execution.",
+    featured: true,
+    seoTitle: "SHA-1 Hash Generator Online — Generate 40-Char SHA-1 Hashes | TechWebCode",
+    seoDescription: "Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers.",
+  },
+  "comma-separator": {
+    id: 20,
+    name: "Comma Separator",
+    slug: "comma-separator",
+    description: "Quickly convert lists into comma-separated values, format delimited text, remove duplicates, and reverse comma-separated strings back to newlines with 100% client-side privacy.",
+    shortDescription: "Convert lists into comma-separated values or split delimited text into lines instantly.",
+    featured: true,
+    seoTitle: "Comma Separator Online — Convert Lists to Comma-Separated Values | TechWebCode",
+    seoDescription: "Convert newline lists into comma-separated values or split delimited text into lines online. Fast, customizable with quotes, deduplication, and 100% browser privacy.",
+  },
 };
 
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const canonicalSlug = slug.includes("yaml") || slug.includes("k8s") ? "yaml-formatter" : slug.includes("json") ? "json-formatter" : slug;
+  const canonicalSlug = getCanonicalToolSlug(slug);
   const canonicalUrl = `https://techwebcode.in/tools/${canonicalSlug}`;
+  const seoData = getToolSeoData(canonicalSlug);
 
   let tool: Tool | undefined;
 
@@ -176,11 +202,11 @@ export async function generateMetadata({
   }
 
   if (!tool) {
-    tool = DEFAULT_TOOLS[slug];
+    tool = DEFAULT_TOOLS[canonicalSlug] || DEFAULT_TOOLS[slug];
   }
 
-  const title = tool?.seoTitle || (tool ? tool.name : "Developer Tool");
-  const description = tool?.seoDescription || tool?.shortDescription || tool?.description || "Free online developer tool.";
+  const title = seoData?.seoTitle || tool?.seoTitle || (tool ? `${tool.name} | TechWebCode` : "Developer Tool | TechWebCode");
+  const description = seoData?.seoDescription || tool?.seoDescription || tool?.shortDescription || tool?.description || "Free online developer tool.";
 
   return {
     title,
@@ -189,7 +215,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${title} | TechWebCode`,
+      title,
       description,
       url: canonicalUrl,
       type: "website",
@@ -197,7 +223,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | TechWebCode`,
+      title,
       description,
     },
   };
@@ -207,6 +233,9 @@ export default async function ToolPage({
   params,
 }: Props) {
   const { slug } = await params;
+  const canonicalSlug = getCanonicalToolSlug(slug);
+  const seoData = getToolSeoData(canonicalSlug);
+
   let tool: Tool | undefined;
 
   try {
@@ -219,18 +248,18 @@ export default async function ToolPage({
   }
 
   if (!tool) {
-    tool = DEFAULT_TOOLS[slug];
+    tool = DEFAULT_TOOLS[canonicalSlug] || DEFAULT_TOOLS[slug];
   }
 
   if (!tool) {
     notFound();
   }
 
-  // JSON-LD Structured Data for SoftwareApplication Schema
-  const jsonLd = {
+  // 1. JSON-LD Structured Data for SoftwareApplication Schema
+  const softwareAppSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: tool.name,
+    name: seoData?.name || tool.name,
     operatingSystem: "All",
     applicationCategory: "DeveloperApplication",
     offers: {
@@ -238,28 +267,84 @@ export default async function ToolPage({
       price: "0",
       priceCurrency: "USD",
     },
-    description: tool.description || tool.shortDescription,
-    url: `https://techwebcode.in/tools/${tool.slug}`,
+    description: seoData?.shortDescription || tool.description || tool.shortDescription,
+    url: `https://techwebcode.in/tools/${canonicalSlug}`,
   };
+
+  // 2. JSON-LD Structured Data for BreadcrumbList Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://techwebcode.in",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Developer Tools",
+        item: "https://techwebcode.in/tools",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: seoData?.name || tool.name,
+        item: `https://techwebcode.in/tools/${canonicalSlug}`,
+      },
+    ],
+  };
+
+  // 3. JSON-LD Structured Data for FAQPage Schema (matches visible page FAQs)
+  const faqSchema =
+    seoData?.faqs && seoData.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: seoData.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   const breadcrumbItems = [
     { label: "Tools", href: "/tools" },
-    { label: tool.name },
+    { label: seoData?.name || tool.name },
   ];
 
   return (
     <div className="w-[calc(100%-24px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] max-w-[1800px] mx-auto py-6 sm:py-8 space-y-6">
-      {/* Inject JSON-LD Schema */}
+      {/* Inject Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={breadcrumbItems} />
 
       {/* Tool Interface & Workspace */}
       <ToolRenderer tool={tool} />
+
+      {/* Server-Rendered Educational SEO Guide, Examples, FAQs & Related Tools */}
+      {seoData && <ToolSeoSection data={seoData} />}
 
       {/* Non-Intrusive Bottom Ad Banner */}
       <AdBanner slot="8877665544" className="mt-8" />

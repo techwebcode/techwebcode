@@ -46,9 +46,16 @@ export function useDynamicNavData() {
           // Filter out inactive tools
           const activeTools = fetchedTools.filter(t => (t as any).status !== false);
 
-          // Deduplicate tools based on canonical key
+          // Normalize tools and deduplicate based on canonical key
+          const normalizedTools = activeTools.map((t) => {
+            if (t.slug === "url-encoder") {
+              return { ...t, slug: "url-encoder-decoder" };
+            }
+            return t;
+          });
+
           const seenKeys = new Map<string, Tool>();
-          activeTools.forEach((t) => {
+          normalizedTools.forEach((t) => {
             const canonicalKey = t.slug
               .toLowerCase()
               .replace(/-encoder-decoder/g, "")
@@ -56,9 +63,14 @@ export function useDynamicNavData() {
               .replace(/-decoder/g, "")
               .replace("unix-timestamp-converter", "timestamp-converter");
 
-            // Prefer cleaner/canonical slug
-            if (!seenKeys.has(canonicalKey) || t.slug.length < seenKeys.get(canonicalKey)!.slug.length) {
+            // Prefer preferred canonical slug
+            if (!seenKeys.has(canonicalKey)) {
               seenKeys.set(canonicalKey, t);
+            } else {
+              const existing = seenKeys.get(canonicalKey)!;
+              if (t.slug === "url-encoder-decoder" || t.slug.length < existing.slug.length) {
+                seenKeys.set(canonicalKey, t);
+              }
             }
           });
 
@@ -72,11 +84,12 @@ export function useDynamicNavData() {
             if (!groupMap[catName]) {
               groupMap[catName] = [];
             }
+            const finalSlug = t.slug === "url-encoder" ? "url-encoder-decoder" : t.slug;
             groupMap[catName].push({
               id: t.id,
               name: t.name,
-              slug: t.slug,
-              href: `/tools/${t.slug}`,
+              slug: finalSlug,
+              href: `/tools/${finalSlug}`,
               description: t.short_description || t.shortDescription || t.description || "",
               icon: t.icon,
               badge: (t.is_new || t.isNew) ? "NEW" : t.featured ? "FEATURED" : undefined,

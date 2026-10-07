@@ -116,6 +116,7 @@ export default function KubernetesSecretWorkspace({ tool }: KubernetesSecretWork
       onCopy={handleCopyProcessed}
       onDownload={handleDownloadProcessed}
       isClientSideOnly={true}
+      typeLabel={activeTab === "k8s" ? (secretInfo.isKubernetesSecret ? "Kubernetes Secret Manifest" : "YAML") : "YAML"}
     >
       <div className="space-y-4 w-full min-w-0">
         {/* Workspace Mode Selector Header */}

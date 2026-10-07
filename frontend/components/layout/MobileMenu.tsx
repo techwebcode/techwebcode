@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, Wrench, BookOpen, FolderKanban } from "lucide-react";
+import { Menu, ChevronDown, Wrench, BookOpen, FolderKanban, Code2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -67,6 +67,21 @@ export default function MobileMenu() {
             className="p-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors"
           >
             Home
+          </Link>
+
+          {/* Code Playground */}
+          <Link
+            href="/playground"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center justify-between p-2.5 rounded-xl font-bold text-sm bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Code2 className="w-4 h-4" />
+              <span>Code Playground</span>
+            </div>
+            <span className="px-1.5 py-0.2 rounded bg-blue-600 text-white font-extrabold text-[9px] uppercase">
+              NEW
+            </span>
           </Link>
 
           {/* Tools Accordion (PRIMARY NAV ITEM - OPEN BY DEFAULT) */}

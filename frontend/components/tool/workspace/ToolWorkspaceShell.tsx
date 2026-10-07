@@ -8,8 +8,6 @@ import ClientSidePrivacyNotice from "./ClientSidePrivacyNotice";
 import LeftToolsPanel from "./LeftToolsPanel";
 import RightHelpPanel from "./RightHelpPanel";
 import WorkspaceFooter from "./WorkspaceFooter";
-import RelatedTools from "@/components/tool/RelatedTools";
-import ToolExplanation from "@/components/tool/ToolExplanation";
 import FullScreenWorkspace from "./FullScreenWorkspace";
 
 interface ToolWorkspaceShellProps {
@@ -28,6 +26,7 @@ interface ToolWorkspaceShellProps {
   onCopy: () => void;
   onDownload: () => void;
   onJumpToError?: () => void;
+  typeLabel?: string;
   isClientSideOnly?: boolean;
   isFullscreen?: boolean;
   onToggleFullscreen?: (val?: boolean) => void;
@@ -50,6 +49,7 @@ export default function ToolWorkspaceShell({
   onCopy,
   onDownload,
   onJumpToError,
+  typeLabel,
   isClientSideOnly = true,
   isFullscreen: controlledIsFullscreen,
   onToggleFullscreen: controlledOnToggleFullscreen,
@@ -101,6 +101,7 @@ export default function ToolWorkspaceShell({
             error={error}
             value={input}
             onJumpToError={onJumpToError}
+            typeLabel={typeLabel}
           />
 
           {isClientSideOnly && <ClientSidePrivacyNotice />}
@@ -157,6 +158,7 @@ export default function ToolWorkspaceShell({
           error={error}
           value={input}
           onJumpToError={onJumpToError}
+          typeLabel={typeLabel}
         />
 
         {/* 3. Prominent 100% Client-Side Privacy Strip */}
@@ -183,37 +185,6 @@ export default function ToolWorkspaceShell({
 
         {/* 5. Workspace Footer */}
         <WorkspaceFooter value={output || input} isClientSideOnly={isClientSideOnly} />
-      </div>
-
-      {/* 6. Related Tools & SEO Explanation */}
-      <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-8">
-        <RelatedTools currentSlug={tool.slug} />
-        <ToolExplanation
-          title={tool.name}
-          description={tool.description || tool.shortDescription || "Practical developer tool."}
-          howToUse={[
-            "Paste or upload your raw payload into the input editor.",
-            "Click Format, Minify, or Validate to process your data.",
-            "View line-by-line syntax diagnostics if any errors occur.",
-            "Copy or download the formatted result with 1-click.",
-          ]}
-          features={[
-            "100% Client-Side Processing: Your data never leaves your browser.",
-            "Line-by-line syntax validation and diagnostic error jumping.",
-            "Monaco Code Editor with syntax highlighting and line numbers.",
-            "One-click Copy, Sample JSON loading, and File Upload / Download.",
-          ]}
-          faqs={[
-            {
-              question: `Is ${tool.name} free to use?`,
-              answer: `Yes! ${tool.name} is 100% free with no login or account required.`,
-            },
-            {
-              question: "Is my data safe and private?",
-              answer: "Absolutely. All processing happens locally in your web browser using client-side JavaScript. No data is sent to our servers.",
-            },
-          ]}
-        />
       </div>
     </div>
   );
