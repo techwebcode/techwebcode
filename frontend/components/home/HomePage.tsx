@@ -44,8 +44,8 @@ export default function HomePage() {
         {/* 4. Privacy & Platform Architecture Guarantee */}
         <DeveloperPlatformSpecs />
 
-        {/* 5. Developer Guides & Articles */}
-        <FeaturedArticles />
+        {/* 5. Developer Guides & Articles (Temporarily hidden until articles content is complete) */}
+        {/* <FeaturedArticles /> */}
 
         {/* 6. Help & Feedback / Report a Bug Section */}
         <HelpFeedbackSection />

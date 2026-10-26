@@ -177,7 +177,8 @@ export default function ToolSeoSection({ data }: ToolSeoSectionProps) {
         </div>
       )}
 
-      {/* 6. Related Engineering Tutorials & Guides */}
+      {/* 6. Related Engineering Tutorials & Guides (Temporarily hidden until articles are complete) */}
+      {/* 
       {data.relatedGuides && data.relatedGuides.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 font-bold text-lg text-foreground">
@@ -210,6 +211,7 @@ export default function ToolSeoSection({ data }: ToolSeoSectionProps) {
           </div>
         </div>
       )}
+      */}
 
       {/* 7. Closely Related Developer Tools */}
       {relatedTools && relatedTools.length > 0 && (

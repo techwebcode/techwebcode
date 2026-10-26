@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Article Categories",
   description: "Browse software engineering articles by category including Frontend, Backend, DevOps, Mobile, and System Design.",
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: "https://techwebcode.in/categories",
   },

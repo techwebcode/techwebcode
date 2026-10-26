@@ -21,11 +21,8 @@ export default function Footer() {
             <Link href="/tools" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Tools
             </Link>
-            <Link href="/articles" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Articles
-            </Link>
-            <Link href="/categories" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Categories
+            <Link href="/playground" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Playground
             </Link>
             <Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               About

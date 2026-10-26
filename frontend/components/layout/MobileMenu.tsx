@@ -147,7 +147,8 @@ export default function MobileMenu() {
             )}
           </div>
 
-          {/* Articles Accordion */}
+          {/* Temporarily hidden: Articles and Categories accordions until content is finalized */}
+          {/* 
           <div className="space-y-1">
             <button
               type="button"
@@ -181,7 +182,6 @@ export default function MobileMenu() {
             )}
           </div>
 
-          {/* Categories Accordion */}
           <div className="space-y-1">
             <button
               type="button"
@@ -214,6 +214,7 @@ export default function MobileMenu() {
               </div>
             )}
           </div>
+          */}
 
           {/* About */}
           <Link

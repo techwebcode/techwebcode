@@ -61,8 +61,8 @@ func main() {
 			"service": "TechWebCode Go Backend API",
 			"version": "1.0.0",
 			"endpoints": gin.H{
-				"health":           "/api/v1/health",
-				"tools":            "/api/v1/tools",
+				"health":          "/api/v1/health",
+				"tools":           "/api/v1/tools",
 				"tool_categories": "/api/v1/tools/categories",
 			},
 		})
@@ -80,7 +80,7 @@ func main() {
 
 	port := config.Get("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8082"
 	}
 
 	log.Printf("[Server Log] Step 8: Starting HTTP listener on 0.0.0.0:%s...\n", port)

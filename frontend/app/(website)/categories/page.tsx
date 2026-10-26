@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   title: "Explore Programming & Tech Categories | TechWebCode",
   description:
     "Browse comprehensive tutorials, coding guides, and technical explanations across web development, DevOps, algorithms, cloud computing, and developer tools.",
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: "https://techwebcode.in/categories",
   },

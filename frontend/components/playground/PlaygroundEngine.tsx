@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LanguageConfig } from "./languages.config";
@@ -82,6 +82,10 @@ export default function PlaygroundEngine({
     });
   };
 
+  // Ref to always have latest code without triggering re-runs on every keystroke
+  const codeStateRef = useRef(codeState);
+  codeStateRef.current = codeState;
+
   // Run Code Execution
   const handleRun = useCallback(async () => {
     if (isRunning) return;
@@ -90,7 +94,7 @@ export default function PlaygroundEngine({
     try {
       const res = await PlaygroundExecutionService.executeCode(
         languageConfig,
-        codeState,
+        codeStateRef.current,
         (statusLog) => {
           setLogs((prev) => [...prev.slice(-99), statusLog]);
         }
@@ -110,7 +114,7 @@ export default function PlaygroundEngine({
     } finally {
       setIsRunning(false);
     }
-  }, [languageConfig, codeState, isRunning]);
+  }, [languageConfig, isRunning]);
 
   // Intercept IFrame PostMessage logs for web languages
   useEffect(() => {
@@ -132,10 +136,14 @@ export default function PlaygroundEngine({
     return () => window.removeEventListener("message", handleMessage);
   }, [languageConfig]);
 
-  // Execute initially when code loads
+  // Execute initially once when language changes / mounts (not on typing)
   useEffect(() => {
-    handleRun();
-  }, [handleRun]);
+    const timer = setTimeout(() => {
+      handleRun();
+    }, 200);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [languageConfig.slug]);
 
   // Language Switcher Handler
   const handleSelectLanguage = (newSlug: string) => {

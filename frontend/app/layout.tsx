@@ -70,15 +70,24 @@ export default function RootLayout({
         <html
             lang="en"
             suppressHydrationWarning
+            data-scroll-behavior="smooth"
             className="font-sans"
         >
             <head>
-                <Script
+                <script
                     async
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2701940262314279"
                     crossOrigin="anonymous"
-                    strategy="afterInteractive"
                 />
+            </head>
+            <body
+                className="
+                    font-sans
+                    antialiased
+                    bg-background
+                    text-foreground
+                "
+            >
                 <Script
                     src="https://www.googletagmanager.com/gtag/js?id=G-2M3WW77PVZ"
                     strategy="afterInteractive"
@@ -92,15 +101,6 @@ export default function RootLayout({
                         gtag('config', 'G-2M3WW77PVZ');
                     `}
                 </Script>
-            </head>
-            <body
-                className="
-                    font-sans
-                    antialiased
-                    bg-background
-                    text-foreground
-                "
-            >
                 <Providers>
                     <ReadingProgress />
 

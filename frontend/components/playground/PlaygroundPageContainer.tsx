@@ -81,7 +81,7 @@ export default function PlaygroundPageContainer({
                     isActive ? "text-primary-foreground/80" : "text-muted-foreground"
                   }`}
                 >
-                  .{lang.extension} • {lang.executionType === "client" ? "Browser" : "Compiler"}
+                  .{lang.extension} • {lang.slug === "python" || lang.slug === "go" || lang.slug === "sql" ? "WebAssembly" : "Browser"}
                 </span>
               </Link>
             );

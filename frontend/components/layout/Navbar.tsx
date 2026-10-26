@@ -79,9 +79,8 @@ export default function Navbar() {
               <nav className="hidden items-center gap-5 md:flex" aria-label="Main Navigation">
                 <Link
                   href="/"
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
-                    isHomeActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${isHomeActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                    }`}
                 >
                   Home
                 </Link>
@@ -92,9 +91,8 @@ export default function Navbar() {
                 {/* Playground Code Runner */}
                 <Link
                   href="/playground"
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 flex items-center gap-1.5 ${
-                    pathname.startsWith("/playground") ? "text-blue-600 font-semibold" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 flex items-center gap-1.5 ${pathname.startsWith("/playground") ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                    }`}
                 >
                   <span>Playground</span>
                   <span className="px-1.5 py-0.2 rounded bg-blue-600 text-white font-extrabold text-[9px] uppercase tracking-wide">
@@ -102,7 +100,8 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-                {/* Articles Dropdown (SECONDARY) */}
+                {/* Temporarily hidden: Articles and Categories dropdowns until content is finalized */}
+                {/* 
                 <NavDropdown
                   title="Articles"
                   isActive={isArticlesActive}
@@ -110,7 +109,6 @@ export default function Navbar() {
                   widthClass="w-80"
                 />
 
-                {/* Dynamic Categories Dropdown */}
                 <NavDropdown
                   title="Categories"
                   isActive={isCategoriesActive}
@@ -118,21 +116,20 @@ export default function Navbar() {
                   widthClass="w-80"
                   isCategoryGrid
                 />
+                */}
 
                 <Link
                   href="/about"
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
-                    isAboutActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${isAboutActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                    }`}
                 >
                   About
                 </Link>
 
                 <Link
                   href="/contact"
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${
-                    isContactActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 rounded-lg px-2 py-2 ${isContactActive ? "text-blue-600 font-semibold" : "text-muted-foreground"
+                    }`}
                 >
                   Contact
                 </Link>

@@ -20,10 +20,6 @@ const CURATED_POPULAR_TOOLS = [
     category: "JSON & Data",
     featured: true,
     badge: "FEATURED",
-    relatedGuide: {
-      title: "Mastering JSON Formatting & Validation",
-      href: "/articles?category=tutorials",
-    },
   },
   {
     id: 2,
@@ -33,10 +29,6 @@ const CURATED_POPULAR_TOOLS = [
     icon: "CheckCircle2",
     category: "JSON & Data",
     featured: true,
-    relatedGuide: {
-      title: "How to Debug Invalid JSON Syntax",
-      href: "/articles?category=troubleshooting",
-    },
   },
   {
     id: 9,
@@ -47,10 +39,6 @@ const CURATED_POPULAR_TOOLS = [
     category: "Regex & SQL",
     featured: true,
     badge: "FEATURED",
-    relatedGuide: {
-      title: "Regex Cheat Sheet & Pattern Guide",
-      href: "/articles?category=guides",
-    },
   },
   {
     id: 10,
@@ -60,10 +48,6 @@ const CURATED_POPULAR_TOOLS = [
     icon: "Database",
     category: "Regex & SQL",
     featured: true,
-    relatedGuide: {
-      title: "Optimizing Complex SQL Queries",
-      href: "/articles?category=guides",
-    },
   },
   {
     id: 4,
@@ -73,10 +57,6 @@ const CURATED_POPULAR_TOOLS = [
     icon: "Key",
     category: "Security",
     featured: true,
-    relatedGuide: {
-      title: "Understanding JWT Authentication & Claims",
-      href: "/articles?category=devops",
-    },
   },
   {
     id: 11,
@@ -87,10 +67,6 @@ const CURATED_POPULAR_TOOLS = [
     category: "Encoding & YAML",
     featured: true,
     badge: "NEW",
-    relatedGuide: {
-      title: "Managing Secrets in Kubernetes & Helm",
-      href: "/articles?category=devops",
-    },
   },
   {
     id: 5,
@@ -191,7 +167,6 @@ export default function DeveloperToolsSection() {
               category={tool.category}
               badge={tool.badge}
               featured={tool.featured}
-              relatedGuide={tool.relatedGuide}
             />
           ))}
         </div>

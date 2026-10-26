@@ -100,10 +100,10 @@ export default function RightHelpPanel({
       {/* Footer Link */}
       <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
         <Link
-          href={`/articles?search=${encodeURIComponent(toolSlug)}`}
+          href="/tools"
           className="flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
         >
-          <span>View guides &amp; examples</span>
+          <span>Explore all developer tools</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>

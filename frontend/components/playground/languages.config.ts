@@ -268,7 +268,7 @@ console.log("Fibonacci(10) =", fibResult);`,
     iconName: "FileCode2",
     extension: "ts",
     monacoLanguage: "typescript",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
@@ -297,21 +297,22 @@ console.log("Active skills:", dev.languages.join(", "));`,
     },
     seo: {
       title: "TypeScript Online Compiler & Playground | TechWebCode",
-      description: "Write, check types, and run TypeScript code online with Monaco editor, strict type checking, and instant console output.",
+      description: "Write, check types, and run TypeScript code 100% in your browser. Monaco editor with strict type checking, zero server latency, and instant console output.",
       h1: "TypeScript Online Compiler & Playground",
-      keywords: ["TypeScript playground", "online TypeScript compiler", "TS type checker", "TypeScript sandbox"],
+      keywords: ["TypeScript playground", "online TypeScript compiler", "TS type checker", "TypeScript sandbox", "in-browser TypeScript"],
     },
     content: {
-      overview: "Write strongly-typed TypeScript code, test interface definitions, generics, and type safety features online.",
+      overview: "Write strongly-typed TypeScript code, test interface definitions, generics, and execute TypeScript directly in your browser with 100% Client-Side In-Browser execution.",
       howToUse: [
-        "Write TypeScript code using full type syntax.",
-        "Inspect Monaco editor inline type errors and autocomplete recommendations.",
-        "Click Run to execute type-checked code and view output.",
+        "Write TypeScript code using full type syntax, interfaces, and generics.",
+        "Inspect Monaco editor inline type errors and autocomplete recommendations in real-time.",
+        "Click Run or press Ctrl + Enter to transpile and execute client-side with zero server roundtrips.",
       ],
       features: [
+        "100% Client-Side In-Browser Execution with zero server roundtrips.",
         "Monaco VS Code type inference and error highlighting.",
-        "Strict mode type checking support.",
-        "Instant code snippet execution and log output.",
+        "Strict mode type checking support with instant transpile.",
+        "Console log interceptor & formatted object inspector.",
       ],
       exampleSnippets: [],
       faqs: [
@@ -335,48 +336,30 @@ console.log("Active skills:", dev.languages.join(", "));`,
     supportsConsole: true,
     supportsMultiTab: false,
     defaultCode: {
-      code: `# Python 3 Online Compiler & Playground
-def greet_developer(name, role="Fullstack Engineer"):
-    return f"Welcome, {name}! Role: {role}"
+      code: `def greet_developer(name):
+    return f"Hello, {name}! Welcome to TechWebCode."
 
-# Data structures demonstration
-skills = ["Python 3", "Go", "Docker", "PostgreSQL", "Next.js"]
-
-print("⚡ TechWebCode Python Playground")
-print(greet_developer("Rajat"))
-print("\\nFeatured Skill Set:")
-
-for idx, skill in enumerate(skills, 1):
-    print(f"  {idx}. {skill}")
-
-# Math computation example
-def fibonacci(n):
-    a, b = 0, 1
-    result = []
-    for _ in range(n):
-        result.append(a)
-        a, b = b, a + b
-    return result
-
-print("\\nFirst 10 Fibonacci Numbers:", fibonacci(10))`,
+print(greet_developer("TechWebCode User"))`,
     },
     seo: {
       title: "Python 3 Online Compiler & Playground | TechWebCode",
-      description: "Write, run, and test Python 3 code online with TechWebCode's free Python compiler. Monaco editor, zero installation, instant execution output.",
+      description: "Write, run, and test Python 3 code online with TechWebCode's client-side WebAssembly Python compiler. Monaco editor, zero server roundtrips, instant execution.",
       h1: "Python 3 Online Compiler & Playground",
-      keywords: ["Python online compiler", "Python playground", "online Python 3 runner", "Python IDE online"],
+      keywords: ["Python online compiler", "Python playground", "online Python 3 runner", "Python WebAssembly", "Pyodide playground"],
     },
     content: {
-      overview: "TechWebCode's Python 3 Online Compiler allows software developers, students, and engineers to write, run, and debug Python code instantly in their browser.",
+      overview: "TechWebCode's Python 3 Playground runs 100% inside your browser using WebAssembly (Pyodide v0.26). Zero server roundtrips, private memory execution, and instant latency.",
       howToUse: [
         "Type or paste your Python 3 script into the code editor.",
-        "Click the Run button or press Ctrl + Enter to execute.",
-        "Inspect standard output (stdout) and runtime exception logs in the Terminal window.",
+        "Click the Run button or press Ctrl + Enter to execute in browser WebAssembly.",
+        "Inspect standard output (stdout), stderr, and runtime exceptions in the Terminal window.",
       ],
       features: [
+        "100% Client-Side WebAssembly (Pyodide v0.26) execution.",
+        "Zero server roundtrips & zero latency private execution.",
         "Python 3 syntax highlighting and auto-indentation.",
         "Standard library functions and data structures support.",
-        "Instant code snippet execution & error logging.",
+        "Instant code snippet execution & terminal logging.",
       ],
       exampleSnippets: [],
       faqs: [
@@ -399,7 +382,7 @@ print("\\nFirst 10 Fibonacci Numbers:", fibonacci(10))`,
     iconName: "Coffee",
     extension: "java",
     monacoLanguage: "java",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
@@ -410,7 +393,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("⚡ TechWebCode Java Online Compiler");
+        System.out.println("TechWebCode Java Online Compiler");
+        System.out.println("==================================");
         
         List<String> techStack = Arrays.asList("Java 21", "Spring Boot", "Docker", "Kubernetes", "MySQL");
         System.out.println("Core Enterprise Stack:");
@@ -420,7 +404,7 @@ public class Main {
         }
 
         int n = 10;
-        System.out.println("\nFactorial of " + n + " = " + factorial(n));
+        System.out.println("\\nFactorial of " + n + " = " + factorial(n));
     }
 
     private static long factorial(int n) {
@@ -430,22 +414,23 @@ public class Main {
 }`,
     },
     seo: {
-      title: "Java Online Compiler & Execution Sandbox | TechWebCode",
-      description: "Write, compile, and run Java code online in your browser. Monaco editor with Java class syntax highlighting and instant terminal output.",
+      title: "Java Online Compiler & In-Browser Execution Sandbox | TechWebCode",
+      description: "Write, compile, and run Java code 100% in your browser. Monaco editor with Java class syntax highlighting, zero server latency, and instant terminal output.",
       h1: "Java Online Compiler & Execution Sandbox",
-      keywords: ["Java online compiler", "Java IDE online", "run Java code online", "Java playground"],
+      keywords: ["Java online compiler", "Java IDE online", "run Java code online", "Java playground", "in-browser Java"],
     },
     content: {
-      overview: "Write, compile, and execute Java programs online without setting up JDK or IDE configurations locally.",
+      overview: "Write, compile, and execute Java programs directly in your browser with 100% Client-Side In-Browser execution without setting up JDK or IDE configurations locally.",
       howToUse: [
         "Write your Java class with a `public static void main(String[] args)` entry point.",
-        "Click Run to compile and execute.",
-        "View compiled console output and JVM exception stack traces in the output pane.",
+        "Click Run or press Ctrl + Enter to compile and execute inside your browser.",
+        "View compiled console output and JVM diagnostics in the terminal output pane.",
       ],
       features: [
-        "Full Java OOP class structure support.",
-        "Java Standard Library utility packages support.",
-        "Detailed compiler syntax error reporting.",
+        "100% Client-Side In-Browser Execution with zero server roundtrips.",
+        "Full Java OOP class structure & method recursion support.",
+        "Java Standard Library utility packages (`Arrays`, `List`, `System.out.printf`).",
+        "Instant execution diagnostics and runtime traceback reporting.",
       ],
       exampleSnippets: [],
       faqs: [
@@ -464,7 +449,7 @@ public class Main {
     iconName: "Cpu",
     extension: "c",
     monacoLanguage: "c",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
@@ -473,7 +458,7 @@ public class Main {
 #include <stdio.h>
 
 void print_header() {
-    printf("⚡ TechWebCode C Online Compiler\\n");
+    printf("TechWebCode C Online Compiler\\n");
     printf("==================================\\n");
 }
 
@@ -497,22 +482,23 @@ int main() {
 }`,
     },
     seo: {
-      title: "C Online Compiler & Code Runner | TechWebCode",
-      description: "Write, compile, and execute C language programs online. Fast C code runner with Monaco editor and GCC compilation feedback.",
+      title: "C Online Compiler & In-Browser Code Runner | TechWebCode",
+      description: "Write, compile, and execute C language programs 100% in your browser. Fast C code runner with Monaco editor, zero server latency, and instant GCC-standard feedback.",
       h1: "C Online Compiler & Code Runner",
-      keywords: ["C online compiler", "online C runner", "C playground", "GCC compiler online"],
+      keywords: ["C online compiler", "online C runner", "C playground", "in-browser C compiler", "C WebAssembly"],
     },
     content: {
-      overview: "Compile and test C language code online. Test pointers, structs, arrays, memory management, and C standard library functions.",
+      overview: "Compile and test C language code directly in your browser with 100% Client-Side In-Browser execution. Test pointers, arrays, memory operations, and C standard library functions.",
       howToUse: [
         "Write standard C code containing `int main()`.",
-        "Click Run to build and execute.",
-        "Review compiler warnings and stdout in the terminal output.",
+        "Click Run or press Ctrl + Enter to build and execute instantly.",
+        "Review compiler diagnostics and standard stdout in the terminal output.",
       ],
       features: [
-        "GCC-compatible C compiler runtime setup.",
-        "C standard library headers (`stdio.h`, `stdlib.h`, `string.h`) support.",
-        "Memory pointers and memory allocation testing.",
+        "100% Client-Side In-Browser C AST Compiler Engine.",
+        "Zero server roundtrips with instant execution in browser memory.",
+        "Standard C library headers (`stdio.h`, `stdlib.h`, `string.h`, `math.h`).",
+        "Exit code detection and formatted terminal diagnostics.",
       ],
       exampleSnippets: [],
       faqs: [
@@ -531,60 +517,69 @@ int main() {
     iconName: "Terminal",
     extension: "cpp",
     monacoLanguage: "cpp",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
     defaultCode: {
-      code: `// C++20 Online Compiler & STL Playground
+      code: `// C++ Online Compiler & STL Playground
 #include <iostream>
-#include <vector>
-#include <string>
-#include <numeric>
-#include <algorithm>
+using namespace std;
 
 int main() {
-    std::cout << "⚡ TechWebCode C++ Online Compiler" << std::endl;
+    cout << "TechWebCode C++ Online Compiler" << endl;
+    cout << "==================================" << endl;
 
-    std::vector<std::string> features = {"STL Vectors", "Lambda Functions", "Smart Pointers", "Templates"};
-    std::cout << "\nKey C++ Features:" << std::endl;
-    for (const auto& feature : features) {
-        std::cout << "  - " << feature << std::endl;
+    char features[][30] = {"Classes & Objects", "Pointers & References", "Templates", "High Performance"};
+    int count = 4;
+    cout << "\\nKey C++ Features:" << endl;
+    for (int i = 0; i < count; i++) {
+        cout << "  - " << features[i] << endl;
     }
 
-    std::vector<int> nums = {5, 2, 9, 1, 7, 3};
-    std::sort(nums.begin(), nums.end());
+    int nums[] = {5, 2, 9, 1, 7, 3};
+    int n = 6;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (nums[j] > nums[j + 1]) {
+                int temp = nums[j];
+                nums[j] = nums[j + 1];
+                nums[j + 1] = temp;
+            }
+        }
+    }
 
-    std::cout << "\nSorted Numbers: ";
-    for (int n : nums) std::cout << n << " ";
-    std::cout << std::endl;
+    cout << "\\nSorted Numbers: ";
+    for (int i = 0; i < n; i++) cout << nums[i] << " ";
+    cout << endl;
 
     return 0;
 }`,
     },
     seo: {
-      title: "C++ Online Compiler & STL Playground | TechWebCode",
-      description: "Write, compile, and run C++ code online with modern C++20 STL support, Monaco editor, and instant terminal feedback.",
+      title: "C++ Online Compiler & In-Browser STL Playground | TechWebCode",
+      description: "Write, compile, and run C++ code 100% in your browser. Modern C++ with Monaco editor, zero server latency, and instant terminal feedback.",
       h1: "C++ Online Compiler & STL Playground",
-      keywords: ["C++ online compiler", "online C++ runner", "C++ STL playground", "g++ online"],
+      keywords: ["C++ online compiler", "online C++ runner", "C++ STL playground", "in-browser C++"],
     },
     content: {
-      overview: "Write and execute C++ programs with Standard Template Library (STL) vectors, algorithms, smart pointers, and templates.",
+      overview: "Write and execute C++ programs directly in your browser with 100% Client-Side In-Browser execution. Supports classes, pointers, loops, functions, and iostream.",
       howToUse: [
-        "Write modern C++ code using `#include <iostream>`.",
-        "Click Run to compile with g++.",
-        "Inspect standard output and compiler errors.",
+        "Write C++ code using `#include <iostream>` and `cout`.",
+        "Click Run or press Ctrl + Enter to compile and execute instantly.",
+        "Inspect standard output and compiler diagnostics in the output pane.",
       ],
       features: [
-        "Modern C++20 standard compiler syntax.",
-        "Full C++ Standard Template Library (STL) support.",
-        "Fast compilation & instant execution feedback.",
+        "100% Client-Side In-Browser C++ Engine with zero server roundtrips.",
+        "Standard iostream `cout`, `cin`, loops, functions, and arrays.",
+        "Instant compiler error reporting with line and column diagnostics.",
+        "Private local code execution in browser RAM.",
       ],
       exampleSnippets: [],
       faqs: [
         {
-          question: "Supports C++ STL vector and map?",
-          answer: "Yes! `std::vector`, `std::map`, `std::unordered_map`, `std::algorithm` and other STL utilities work seamlessly.",
+          question: "Supports C++ iostream and loops?",
+          answer: "Yes! `std::cout`, `std::endl`, loops, and standard C++ constructs work seamlessly.",
         },
       ],
     },
@@ -597,63 +592,37 @@ int main() {
     iconName: "Zap",
     extension: "go",
     monacoLanguage: "go",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
     defaultCode: {
-      code: `// Go (Golang) Online Compiler & Playground
-package main
+      code: `package main
 
-import (
-	"fmt"
-	"time"
-)
-
-type Server struct {
-	Name string
-	Port int
-}
-
-func (s Server) String() string {
-	return fmt.Sprintf("Server %s listening on port %d", s.Name, s.Port)
-}
+import "fmt"
 
 func main() {
-	fmt.Println("⚡ TechWebCode Go Online Playground")
-
-	s := Server{Name: "TechWebCode API", Port: 8080}
-	fmt.Println(s)
-
-	fmt.Println("\nGoroutine Concurrency Test:")
-	ch := make(chan string)
-
-	go func() {
-		time.Sleep(100 * time.Millisecond)
-		ch <- "Message received from concurrent goroutine! 🚀"
-	}()
-
-	msg := <-ch
-	fmt.Println(msg)
+    fmt.Println("Hello, TechWebCode Gopher!")
 }`,
     },
     seo: {
       title: "Go (Golang) Online Compiler & Playground | TechWebCode",
-      description: "Write, compile, and run Go (Golang) code online. Fast Go playground with goroutine concurrency testing and Monaco editor.",
+      description: "Write, compile, and run Go (Golang) code 100% in your browser using WebAssembly. Instant execution, zero server roundtrips, and private execution.",
       h1: "Go (Golang) Online Compiler & Playground",
-      keywords: ["Go online compiler", "Golang playground", "run Go code online", "Go language runner"],
+      keywords: ["Go online compiler", "Golang playground", "run Go code online", "Go WebAssembly", "Yaegi WASM"],
     },
     content: {
-      overview: "Compile and test Go (Golang) code online. Test structs, methods, goroutines, channels, and Go standard library packages.",
+      overview: "Compile and execute Go code directly in your browser with 100% Client-Side WebAssembly. Powered by the Yaegi Go WebAssembly engine with zero server latency.",
       howToUse: [
         "Write Go code with `package main` and `func main()`.",
-        "Click Run to compile with `go run`.",
-        "View stdout and runtime panic stack traces in the terminal.",
+        "Click Run or press Ctrl + Enter to interpret and execute inside browser WebAssembly.",
+        "View stdout, stderr, and runtime error diagnostics in the terminal.",
       ],
       features: [
-        "Go 1.22+ runtime compilation.",
-        "Goroutine and channel concurrency support.",
-        "Standard Go packages (`fmt`, `time`, `strings`, `encoding/json`).",
+        "100% Client-Side WebAssembly (Yaegi WASM) execution.",
+        "Zero server roundtrips & zero latency private execution.",
+        "Standard Go packages (`fmt`, `time`, `strings`, `math`, `encoding/json`).",
+        "Instant compiler error reporting and runtime diagnostics.",
       ],
       exampleSnippets: [],
       faqs: [
@@ -672,14 +641,14 @@ func main() {
     iconName: "Globe",
     extension: "php",
     monacoLanguage: "php",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
     defaultCode: {
       code: `<?php
 // PHP Online Compiler & Script Runner
-echo "⚡ TechWebCode PHP Online Playground\\n";
+echo "TechWebCode PHP Online Playground\\n";
 echo "====================================\\n\\n";
 
 $frameworks = [
@@ -704,28 +673,29 @@ echo json_encode($user, JSON_PRETTY_PRINT) . "\\n";
 `,
     },
     seo: {
-      title: "PHP Online Compiler & Script Runner | TechWebCode",
-      description: "Write, execute, and test PHP scripts online. Monaco editor with PHP syntax formatting and instant stdout CLI output.",
+      title: "PHP Online Compiler & In-Browser Script Runner | TechWebCode",
+      description: "Write, execute, and test PHP scripts 100% in your browser. Monaco editor with PHP syntax formatting, zero server latency, and instant stdout output.",
       h1: "PHP Online Compiler & Script Runner",
-      keywords: ["PHP online compiler", "PHP runner online", "PHP playground", "test PHP code online"],
+      keywords: ["PHP online compiler", "PHP runner online", "PHP playground", "test PHP code online", "in-browser PHP"],
     },
     content: {
-      overview: "Write and execute PHP scripts online without requiring a local web server or Apache/Nginx configuration.",
+      overview: "Write and execute PHP scripts directly in your browser with 100% Client-Side In-Browser execution without requiring a local web server or Apache/Nginx configuration.",
       howToUse: [
         "Write PHP code starting with `<?php` tag.",
-        "Click Run to execute the PHP CLI interpreter.",
-        "Inspect output string, array prints, and JSON encodings.",
+        "Click Run or press Ctrl + Enter to execute the in-browser PHP engine.",
+        "Inspect output string, array iterations, and JSON encodings in the terminal.",
       ],
       features: [
-        "PHP 8.2+ modern syntax support.",
-        "JSON manipulation and string manipulation functions.",
-        "Clean CLI output formatting.",
+        "100% Client-Side In-Browser PHP Execution Engine with zero latency.",
+        "PHP 8.2+ modern syntax and associative array manipulation.",
+        "Built-in JSON encoding/decoding, string utilities, and date functions.",
+        "Private execution running strictly inside browser memory.",
       ],
       exampleSnippets: [],
       faqs: [
         {
-          question: "Which PHP version is running?",
-          answer: "The playground uses modern PHP 8.2+ syntax.",
+          question: "Which PHP features are supported?",
+          answer: "The playground supports variables, associative arrays, loops (foreach, for, while), functions, JSON formatting, and core PHP built-in functions.",
         },
       ],
     },
@@ -738,14 +708,15 @@ echo json_encode($user, JSON_PRETTY_PRINT) . "\\n";
     iconName: "Shield",
     extension: "rs",
     monacoLanguage: "rust",
-    executionType: "server",
+    executionType: "client",
     supportsPreview: false,
     supportsConsole: true,
     supportsMultiTab: false,
     defaultCode: {
       code: `// Rust Online Compiler & Memory Safety Sandbox
 fn main() {
-    println!("⚡ TechWebCode Rust Online Playground");
+    println!("TechWebCode Rust Online Playground");
+    println!("==================================");
 
     let languages = vec!["Rust", "Go", "TypeScript", "C++"];
     println!("Languages vector: {:?}", languages);
@@ -768,28 +739,115 @@ fn calculate_status(score: u32) -> Result<String, &'static str> {
 }`,
     },
     seo: {
-      title: "Rust Online Compiler & Memory Sandbox | TechWebCode",
-      description: "Write, compile, and run Rust code online with rustc compiler safety checks, Monaco editor, and instant terminal feedback.",
+      title: "Rust Online Compiler & In-Browser Memory Sandbox | TechWebCode",
+      description: "Write, compile, and run Rust code 100% in your browser. Monaco editor with Rust syntax highlighting, pattern matching, zero server latency, and instant feedback.",
       h1: "Rust Online Compiler & Memory Sandbox",
-      keywords: ["Rust online compiler", "Rust playground", "run Rust online", "rustc compiler online"],
+      keywords: ["Rust online compiler", "Rust playground", "run Rust online", "in-browser Rust", "Rust WebAssembly"],
     },
     content: {
-      overview: "Compile and execute Rust programs online. Test borrow checker rules, ownership, pattern matching, structs, and Result types.",
+      overview: "Compile and execute Rust programs directly in your browser with 100% Client-Side In-Browser execution. Test functions, pattern matching, vectors, ranges, and Result types.",
       howToUse: [
         "Write Rust code containing `fn main()`.",
-        "Click Run to build with `rustc`.",
-        "Inspect borrow checker compiler errors or standard stdout.",
+        "Click Run or press Ctrl + Enter to execute inside browser RAM.",
+        "Inspect standard stdout and pattern matching results in the terminal output.",
       ],
       features: [
-        "Rust edition 2021 compiler support.",
-        "Borrow checker error messages and type checking.",
-        "Pattern matching and memory safety analysis.",
+        "100% Client-Side In-Browser Rust Sandbox with zero server roundtrips.",
+        "Pattern matching (`match`, `Ok`, `Err`, `Some`, `None`) support.",
+        "Vector macros (`vec![]`), ranges, iterators, and formatting specifiers.",
+        "Instant execution diagnostics with zero latency and complete privacy.",
       ],
       exampleSnippets: [],
       faqs: [
         {
-          question: "Does it test Rust memory safety and ownership?",
-          answer: "Yes! The Rust compiler (`rustc`) checks ownership rules and reports memory lifetime errors in detail.",
+          question: "Does it test Rust pattern matching and Result types?",
+          answer: "Yes! Rust pattern matching, Result (`Ok`/`Err`), and Option types execute smoothly in browser memory.",
+        },
+      ],
+    },
+  },
+
+  sql: {
+    id: "sql",
+    name: "SQL (SQLite)",
+    slug: "sql",
+    iconName: "Database",
+    extension: "sql",
+    monacoLanguage: "sql",
+    executionType: "client",
+    supportsPreview: false,
+    supportsConsole: true,
+    supportsMultiTab: false,
+    defaultCode: {
+      code: `-- ⚡ TechWebCode SQL Online Compiler (SQLite WebAssembly)
+-- 100% Client-Side In-Browser Execution | Zero Latency | Private
+
+CREATE TABLE employees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    department TEXT NOT NULL,
+    role TEXT NOT NULL,
+    salary INTEGER NOT NULL,
+    hired_year INTEGER NOT NULL
+);
+
+INSERT INTO employees (name, department, role, salary, hired_year) VALUES
+('Rajat Singh', 'Engineering', 'Staff Architect', 185000, 2021),
+('Sophia Chen', 'Engineering', 'Senior Backend Engineer', 160000, 2022),
+('Marcus Vance', 'Product', 'Principal PM', 155000, 2020),
+('Elena Rostova', 'Design', 'Lead UI/UX Designer', 140000, 2023),
+('Aarav Patel', 'Engineering', 'Fullstack Engineer', 135000, 2023),
+('Chloe Dubois', 'Marketing', 'Growth Lead', 125000, 2022);
+
+-- Query 1: Department statistics with aggregates
+SELECT 
+    department,
+    COUNT(*) AS total_staff,
+    PRINTF('$%d', AVG(salary)) AS avg_salary,
+    PRINTF('$%d', MAX(salary)) AS max_salary
+FROM employees
+GROUP BY department
+ORDER BY AVG(salary) DESC;
+
+-- Query 2: Senior engineering talent
+SELECT 
+    id,
+    name,
+    role,
+    PRINTF('$%d', salary) AS compensation,
+    hired_year
+FROM employees
+WHERE department = 'Engineering' AND salary >= 140000
+ORDER BY salary DESC;`,
+    },
+    seo: {
+      title: "SQL Online Compiler & SQLite Playground | TechWebCode",
+      description: "Run SQL queries online with 100% in-browser SQLite WebAssembly. Instant table rendering, zero server roundtrips, and private execution.",
+      h1: "SQL Online Compiler & SQLite Playground",
+      keywords: ["SQL online compiler", "SQL playground", "SQLite WebAssembly", "run SQL online", "online SQL editor", "in-browser SQL"],
+    },
+    content: {
+      overview: "Write, test, and execute SQL queries directly in your browser with 100% Client-Side WebAssembly (SQLite WASM). Create tables, insert records, run multi-table joins, and aggregate functions with instant tabular output.",
+      howToUse: [
+        "Write your SQL DDL schema statements (`CREATE TABLE`, `INSERT INTO`) or query scripts (`SELECT`, `JOIN`, `GROUP BY`).",
+        "Click the Run button or press Ctrl + Enter to execute against SQLite in browser RAM.",
+        "Inspect formatted ASCII table query results, affected row counts, and syntax diagnostics in the terminal.",
+      ],
+      features: [
+        "100% Client-Side WebAssembly (SQLite WASM) execution.",
+        "Zero server roundtrips & zero latency private memory execution.",
+        "Formatted tabular CLI output for single and multiple `SELECT` result sets.",
+        "Full support for ANSI SQL & SQLite dialect (aggregates, subqueries, CTEs, window functions).",
+      ],
+      exampleSnippets: [],
+      faqs: [
+        {
+          question: "Does my SQL code or database get uploaded to any server?",
+          answer: "No! The entire SQLite database engine runs inside your web browser RAM using WebAssembly. Your data never leaves your device.",
+        },
+        {
+          question: "Can I run multiple SELECT queries at once?",
+          answer: "Yes, TechWebCode executes your entire SQL script sequentially and formats all query results into clean terminal tables.",
         },
       ],
     },

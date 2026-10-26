@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Developer Articles & Programming Tutorials",
   description: "Explore practical software engineering guides, framework tutorials, and system design patterns for developers.",
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: "https://techwebcode.in/articles",
   },

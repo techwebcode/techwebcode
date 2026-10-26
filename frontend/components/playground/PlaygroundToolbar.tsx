@@ -65,10 +65,20 @@ export default function PlaygroundToolbar({
           >
             {Object.values(LANGUAGES).map((lang) => (
               <option key={lang.slug} value={lang.slug}>
-                {lang.name} ({lang.executionType === "client" ? "Browser" : "Compiler"})
+                {lang.name}
               </option>
             ))}
           </select>
+        </div>
+
+        {/* 100% Client-Side / WebAssembly Execution Badge */}
+        <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span>
+            {currentLanguage.slug === "python" || currentLanguage.slug === "go" || currentLanguage.slug === "sql"
+              ? "100% Client-Side WebAssembly | Zero Latency | Private"
+              : "100% Client-Side In-Browser Execution | Zero Latency | Private"}
+          </span>
         </div>
       </div>
 

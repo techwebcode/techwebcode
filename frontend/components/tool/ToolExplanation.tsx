@@ -112,6 +112,8 @@ export default function ToolExplanation({
       </div>
 
       {/* Related Engineering Articles (Tool -> Article Linking) */}
+      {/* Temporarily hidden: Related Engineering Tutorials & Guides until articles are complete */}
+      {/* 
       {relatedArticles && relatedArticles.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 font-bold text-base text-foreground">
@@ -144,6 +146,7 @@ export default function ToolExplanation({
           </div>
         </div>
       )}
+      */}
 
       {/* FAQ Section */}
       {faqs && faqs.length > 0 && (

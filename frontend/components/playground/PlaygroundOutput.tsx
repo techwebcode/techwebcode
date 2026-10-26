@@ -84,20 +84,30 @@ export default function PlaygroundOutput({
           </div>
         </>
       ) : (
-        /* Server Compiler Standard Output View */
+        /* Terminal Standard Output View */
         <div className="flex-1 flex flex-col bg-slate-950 text-slate-100 font-mono text-xs overflow-hidden">
-          <div className="flex items-center justify-between px-3 py-2 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold select-none">
-            <div className="flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-emerald-400" />
-              <span>{languageConfig.name} Compiler Output Terminal</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold select-none">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-emerald-400" />
+                <span>{languageConfig.name} Terminal</span>
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950/70 text-emerald-300 border border-emerald-800/60 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
+                {languageConfig.slug === "python" || languageConfig.slug === "go" || languageConfig.slug === "sql"
+                  ? "100% Client-Side WebAssembly | Zero Latency | Private"
+                  : "100% Client-Side In-Browser Execution | Zero Latency | Private"}
+              </span>
             </div>
             <button
               type="button"
+              id="clear-terminal-btn"
               onClick={onClearLogs}
-              className="p-1 hover:text-white rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer"
-              title="Clear Output Logs"
+              className="p-1 hover:text-white rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-2 py-1"
+              title="Clear Terminal Output"
+              aria-label="Clear Terminal"
             >
-              <Trash2 className="w-3 h-3" />
+              <Trash2 className="w-3.5 h-3.5 text-slate-400" />
               <span>Clear Terminal</span>
             </button>
           </div>
