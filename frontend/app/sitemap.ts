@@ -36,29 +36,29 @@ function safeDate(inputDate?: string | Date | null): Date {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL;
 
+  const staticDate = new Date("2026-03-01T00:00:00Z");
+
   // 1. Core Static Public Pages
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}`, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
-    { url: `${baseUrl}/tools`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    // Temporarily excluded from sitemap while marked noindex:
-    // { url: `${baseUrl}/articles`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
-    // { url: `${baseUrl}/categories`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/playground`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/html`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/css`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/javascript`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/typescript`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/python`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/java`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/c`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/cpp`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/go`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/php`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/playground/rust`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
-    { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: `${baseUrl}`, lastModified: staticDate, changeFrequency: "daily", priority: 1.0 },
+    { url: `${baseUrl}/tools`, lastModified: staticDate, changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/playground`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/html`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/css`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/javascript`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/typescript`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/python`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/java`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/c`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/cpp`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/go`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/php`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/rust`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/playground/sql`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/about`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/contact`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/privacy`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${baseUrl}/terms`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.4 },
   ];
 
   // 2. Dynamic Published Articles, Categories & Tags
@@ -147,7 +147,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (!existingToolSlugs.has(slug)) {
       toolRoutes.push({
         url: `${baseUrl}/tools/${slug}`,
-        lastModified: new Date(),
+        lastModified: staticDate,
         changeFrequency: "weekly",
         priority: 0.9,
       });

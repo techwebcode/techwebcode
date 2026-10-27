@@ -8,19 +8,25 @@ import AdBanner from "@/components/common/AdBanner";
 import { INITIAL_TOOLS, INITIAL_TOOL_CATEGORIES } from "@/constants/toolSeoData";
 
 export const metadata: Metadata = {
-  title: "Free Developer Tools Suite — JSON, JWT, Base64, SQL, YAML & Regex | TechWebCode",
+  title: "Free Online Developer Tools for JSON, JWT & SQL",
   description:
-    "Explore fast, free, privacy-first developer tools. Format JSON, decode JWT, test Regex, convert timestamps, generate UUIDs, format SQL, inspect Kubernetes manifests, and compare code diffs with 100% client-side execution.",
+    "Explore free, privacy-first developer tools. Format JSON, decode JWT tokens, test Regex, convert timestamps, generate UUIDs, and format SQL in your browser.",
   alternates: {
     canonical: "https://techwebcode.in/tools",
   },
   openGraph: {
-    title: "Free Developer Tools Suite — TechWebCode",
+    title: "Free Online Developer Tools for JSON, JWT & SQL | TechWebCode",
     description:
-      "Explore fast, free, privacy-first developer tools. Format JSON, decode JWT, test Regex, convert timestamps, and format SQL with client-side execution.",
+      "Explore free, privacy-first developer tools. Format JSON, decode JWT tokens, test Regex, convert timestamps, generate UUIDs, and format SQL in your browser.",
     url: "https://techwebcode.in/tools",
     siteName: "TechWebCode",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Online Developer Tools for JSON, JWT & SQL | TechWebCode",
+    description:
+      "Explore free, privacy-first developer tools. Format JSON, decode JWT tokens, test Regex, convert timestamps, generate UUIDs, and format SQL in your browser.",
   },
 };
 

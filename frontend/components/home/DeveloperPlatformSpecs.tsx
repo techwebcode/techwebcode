@@ -12,9 +12,9 @@ export default function DeveloperPlatformSpecs() {
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
                 <span>Developer Platform Architecture</span>
               </div>
-              <h3 className="mt-1.5 text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-                Designed for Speed, Security & Developer Privacy
-              </h3>
+              <h2 className="mt-1.5 text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+                Designed for Speed, Security &amp; Developer Privacy
+              </h2>
               <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 TechWebCode tools execute 100% client-side in your browser. Your sensitive code snippets, API keys, JSON tokens, and database queries are never uploaded or recorded on external servers.
               </p>

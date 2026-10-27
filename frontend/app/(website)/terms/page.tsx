@@ -5,19 +5,25 @@ import { FileText, ShieldAlert, CheckCircle, Scale } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | TechWebCode",
+  title: "Terms of Service",
   description:
-    "Read the TechWebCode Terms of Service governing the use of our developer tools, coding tutorials, and online resources.",
+    "Review the TechWebCode Terms of Service governing the use of our online developer tools, code playgrounds, tutorials, and resources.",
   alternates: {
     canonical: "https://techwebcode.in/terms",
   },
   openGraph: {
     title: "Terms of Service | TechWebCode",
     description:
-      "Read the TechWebCode Terms of Service governing the use of our developer tools, coding tutorials, and online resources.",
+      "Review the TechWebCode Terms of Service governing the use of our online developer tools, code playgrounds, tutorials, and resources.",
     url: "https://techwebcode.in/terms",
     siteName: "TechWebCode",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Service | TechWebCode",
+    description:
+      "Review the TechWebCode Terms of Service governing the use of our online developer tools, code playgrounds, tutorials, and resources.",
   },
 };
 

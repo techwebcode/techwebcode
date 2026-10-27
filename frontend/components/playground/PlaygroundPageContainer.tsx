@@ -48,6 +48,7 @@ export default function PlaygroundPageContainer({
 
       {/* Main Interactive Playground Engine */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <h2 className="sr-only">Interactive {languageConfig.name} Online Code Editor</h2>
         <PlaygroundEngine languageConfig={languageConfig} />
       </div>
 
@@ -58,10 +59,10 @@ export default function PlaygroundPageContainer({
 
       {/* Related Languages Navigation Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-4 pt-4">
-        <div className="flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-muted-foreground">
+        <h2 className="flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-muted-foreground">
           <Code2 className="w-4 h-4 text-blue-500" />
-          <span>Explore Other Online Playgrounds & Compilers</span>
-        </div>
+          <span>Explore Other Online Playgrounds &amp; Compilers</span>
+        </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {Object.values(LANGUAGES).map((lang) => {
             const isActive = lang.slug === languageConfig.slug;

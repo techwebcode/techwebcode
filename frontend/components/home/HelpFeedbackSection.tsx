@@ -17,9 +17,9 @@ export default function HelpFeedbackSection() {
                   <MessageSquare className="h-3.5 w-3.5 text-blue-500" />
                   <span>Help &amp; Feedback</span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Found a Bug or Have Feedback?
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
                   Notice a broken tool, incorrect output, or visual glitch? Help us make TechWebCode better by reporting issues directly to our engineering team.
                 </p>

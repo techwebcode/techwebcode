@@ -17,11 +17,11 @@ export default function ToolHero({ onSearch }: ToolHeroProps) {
         </span>
 
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-foreground">
-          Developer Tools
+          Free Online Developer Tools
         </h1>
 
         <p className="mx-auto max-w-2xl text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Fast, privacy-first developer tools that run directly in your browser.
+          Fast, privacy-first developer tools for formatting, validation, encoding, and debugging with 100% client-side browser execution.
         </p>
 
         <div className="pt-2 max-w-xl mx-auto">

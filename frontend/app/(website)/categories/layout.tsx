@@ -7,9 +7,6 @@ export const metadata: Metadata = {
     index: false,
     follow: true,
   },
-  alternates: {
-    canonical: "https://techwebcode.in/categories",
-  },
   openGraph: {
     title: "Article Categories | TechWebCode",
     description: "Browse software engineering articles by category including Frontend, Backend, DevOps, Mobile, and System Design.",

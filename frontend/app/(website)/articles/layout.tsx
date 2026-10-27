@@ -7,9 +7,6 @@ export const metadata: Metadata = {
     index: false,
     follow: true,
   },
-  alternates: {
-    canonical: "https://techwebcode.in/articles",
-  },
   openGraph: {
     title: "Developer Articles & Programming Tutorials | TechWebCode",
     description: "Explore practical software engineering guides, framework tutorials, and system design patterns for developers.",

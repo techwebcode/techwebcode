@@ -8,18 +8,25 @@ import { Mail, MapPin, Wrench, HelpCircle } from "lucide-react";
 import { ContactFormCard } from "./ContactFormContent";
 
 export const metadata: Metadata = {
-  title: "Contact TechWebCode — Developer Tools & Technical Support",
+  title: "Contact Us — Technical Support & Inquiries",
   description:
-    "Contact TechWebCode for technical support, bug reports, feature requests, developer tool feedback, and business inquiries. Get in touch with our engineering team.",
-  openGraph: {
-    title: "Contact TechWebCode — Developer Tools & Technical Support",
-    description:
-      "Contact TechWebCode for technical questions, bug reports, feature requests, developer tool feedback, and business inquiries.",
-    url: "https://techwebcode.in/contact",
-    type: "website",
-  },
+    "Contact TechWebCode for technical support, bug reports, feature requests, and developer tool feedback. Get in touch with our engineering team.",
   alternates: {
     canonical: "https://techwebcode.in/contact",
+  },
+  openGraph: {
+    title: "Contact Us — Technical Support & Inquiries | TechWebCode",
+    description:
+      "Contact TechWebCode for technical support, bug reports, feature requests, and developer tool feedback. Get in touch with our engineering team.",
+    url: "https://techwebcode.in/contact",
+    siteName: "TechWebCode",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us — Technical Support & Inquiries | TechWebCode",
+    description:
+      "Contact TechWebCode for technical support, bug reports, feature requests, and developer tool feedback. Get in touch with our engineering team.",
   },
 };
 

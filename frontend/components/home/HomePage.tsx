@@ -8,12 +8,12 @@ import HelpFeedbackSection from "@/components/home/HelpFeedbackSection";
 
 export default function HomePage() {
   // WebSite JSON-LD Schema with SearchAction for Developer Tools Search
-  const jsonLd = {
+  const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "TechWebCode",
     url: "https://techwebcode.in",
-    description: "Developer tools that just get the job done. Fast, practical, privacy-first tools for formatting, validating, encoding, debugging, and modern web engineering.",
+    description: "Free online developer tools and WebAssembly code compilers. Fast, practical, privacy-first tools for formatting, validating, encoding, debugging, and running modern code.",
     potentialAction: {
       "@type": "SearchAction",
       target: "https://techwebcode.in/tools?search={search_term_string}",
@@ -21,11 +21,26 @@ export default function HomePage() {
     },
   };
 
+  // Organization JSON-LD Schema for TechWebCode Identity
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "TechWebCode",
+    url: "https://techwebcode.in",
+    logo: "https://techwebcode.in/icon.png",
+    description: "Free developer tools and multi-language online WebAssembly code compilers.",
+    email: "contact@techwebcode.in",
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
 
       <div className="flex flex-col min-h-screen">

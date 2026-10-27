@@ -55,16 +55,15 @@ export default function HeroSection() {
 
         {/* Tools-First Headline */}
         <h1 className="mt-5 text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl lg:text-6xl max-w-4xl leading-[1.15]">
-          Developer tools that{" "}
+          Free Developer Tools &amp;{" "}
           <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-300 bg-clip-text text-transparent">
-            just get the job done.
+            Online Code Compilers
           </span>
         </h1>
 
         {/* Supporting Copy */}
         <p className="mt-4 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-          Fast, practical, privacy-first tools for formatting, validating, encoding,
-          debugging, and working with modern development data.
+          Fast, practical, privacy-first developer utilities and WebAssembly compilers for formatting, validating, encoding, debugging, and running modern code.
         </p>
 
         {/* Search Box */}

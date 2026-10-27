@@ -3,10 +3,10 @@ export const SITE = {
 
   shortName: "TWC",
 
-  title: "TechWebCode — Developer Tools That Just Get The Job Done",
+  title: "Free Online Developer Tools & Code Compilers | TechWebCode",
 
   description:
-    "Fast, practical, privacy-first developer tools for formatting, validating, encoding, debugging, and working with modern development data.",
+    "Fast, free, privacy-first online developer tools and WebAssembly code compilers. Format JSON, decode JWT, test Regex, convert timestamps, format SQL, and run code in 10+ languages.",
 
   url: "https://techwebcode.in",
 

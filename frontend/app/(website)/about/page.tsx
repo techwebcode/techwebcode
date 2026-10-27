@@ -5,19 +5,25 @@ import { Code2, Cpu, Globe, Zap, ShieldCheck, HeartHandshake, Terminal, Layers }
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = {
-  title: "About TechWebCode — Platform Mission & Architecture",
+  title: "About Us — Developer Platform & Mission",
   description:
-    "Learn more about TechWebCode, our developer-first mission, privacy principles, and client-side web utility engineering.",
+    "Learn about TechWebCode, our developer-first mission, privacy principles, and client-side web utility engineering.",
   alternates: {
     canonical: "https://techwebcode.in/about",
   },
   openGraph: {
-    title: "About TechWebCode — Platform Mission & Architecture",
+    title: "About Us — Developer Platform & Mission | TechWebCode",
     description:
-      "Learn more about TechWebCode, our developer-first mission, privacy principles, and client-side web utility engineering.",
+      "Learn about TechWebCode, our developer-first mission, privacy principles, and client-side web utility engineering.",
     url: "https://techwebcode.in/about",
     siteName: "TechWebCode",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us — Developer Platform & Mission | TechWebCode",
+    description:
+      "Learn about TechWebCode, our developer-first mission, privacy principles, and client-side web utility engineering.",
   },
 };
 
@@ -200,7 +206,7 @@ export default function AboutPage() {
                 <div key={tech.name} className="flex items-center gap-3 p-4 rounded-xl border bg-background/50">
                   <Icon className="h-5 w-5 text-primary" />
                   <div>
-                    <h4 className="font-semibold text-sm text-foreground">{tech.name}</h4>
+                    <h3 className="font-semibold text-sm text-foreground">{tech.name}</h3>
                     <span className="text-xs text-muted-foreground">{tech.category}</span>
                   </div>
                 </div>

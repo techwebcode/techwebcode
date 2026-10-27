@@ -36,7 +36,7 @@ export default function PlaygroundPromotionalSection() {
 
             <div className="space-y-3">
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-                Code Playground
+                Multi-Language Online Code Playground &amp; Compilers
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 Write, run, and experiment with code directly in your browser. Zero setup, zero installation, and 100% client-side privacy guarantee.

@@ -22,9 +22,9 @@ export default function ClientSidePrivacyNotice({
         </div>
 
         <div className="space-y-0.5 min-w-0">
-          <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+          <div className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
             <span>🛡 100% Client-Side Privacy</span>
-          </h3>
+          </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 leading-normal">
             Your data stays in your browser. Nothing is uploaded, logged, or stored on TechWebCode servers.
           </p>

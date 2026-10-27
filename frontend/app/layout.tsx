@@ -31,6 +31,9 @@ export const metadata: Metadata = {
         images: [
             {
                 url: SITE.defaultImage,
+                width: 1200,
+                height: 630,
+                alt: "TechWebCode — Free Online Developer Tools & Code Compilers",
             },
         ],
         locale: SITE.locale,

@@ -205,17 +205,19 @@ export async function generateMetadata({
     tool = DEFAULT_TOOLS[canonicalSlug] || DEFAULT_TOOLS[slug];
   }
 
-  const title = seoData?.seoTitle || tool?.seoTitle || (tool ? `${tool.name} | TechWebCode` : "Developer Tool | TechWebCode");
+  const rawTitle = seoData?.seoTitle || tool?.seoTitle || (tool ? `${tool.name}` : "Developer Tool");
+  const cleanTitle = rawTitle.replace(/\s*\|\s*TechWebCode$/i, "").trim();
   const description = seoData?.seoDescription || tool?.seoDescription || tool?.shortDescription || tool?.description || "Free online developer tool.";
+  const fullTitle = `${cleanTitle} | TechWebCode`;
 
   return {
-    title,
+    title: cleanTitle,
     description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       url: canonicalUrl,
       type: "website",
@@ -223,7 +225,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
     },
   };
@@ -340,8 +342,13 @@ export default async function ToolPage({
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={breadcrumbItems} />
 
-      {/* Tool Interface & Workspace */}
-      <ToolRenderer tool={tool} />
+      {/* Tool Interface & Workspace with Optimized Primary H1 */}
+      <ToolRenderer
+        tool={{
+          ...tool,
+          name: seoData?.h1 || tool.name,
+        }}
+      />
 
       {/* Server-Rendered Educational SEO Guide, Examples, FAQs & Related Tools */}
       {seoData && <ToolSeoSection data={seoData} />}

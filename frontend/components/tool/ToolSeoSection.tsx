@@ -31,9 +31,9 @@ export default function ToolSeoSection({ data }: ToolSeoSectionProps) {
           <ShieldCheck className="w-6 h-6" />
         </div>
         <div className="space-y-0.5">
-          <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">
+          <div className="text-sm font-bold text-foreground flex items-center gap-1.5">
             <span>🛡 Client-Side Privacy Guarantee</span>
-          </h3>
+          </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
             Your tool input is processed locally in your browser and is not sent to TechWebCode servers. All formatting, parsing, encoding, and validation computations run directly inside your client browser memory.
           </p>

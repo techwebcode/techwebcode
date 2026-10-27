@@ -90,10 +90,10 @@ export default function ToolsDirectoryClient({
             {/* Featured & Popular Tools Section */}
             {featuredTools.length > 0 && !selectedCategory && !search && (
               <div className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>Featured & Popular Tools</span>
-                </h3>
+                  <span>Featured &amp; Popular Tools</span>
+                </h2>
                 <ToolGrid tools={featuredTools} />
               </div>
             )}
@@ -101,9 +101,9 @@ export default function ToolsDirectoryClient({
             {/* All Developer Tools Section */}
             <div className="space-y-4">
               {featuredTools.length > 0 && !selectedCategory && !search && (
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   All Developer Tools
-                </h3>
+                </h2>
               )}
               <ToolGrid tools={regularTools.length > 0 ? regularTools : tools} />
             </div>

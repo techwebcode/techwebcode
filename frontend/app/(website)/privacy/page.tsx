@@ -5,19 +5,25 @@ import { Lock, Mail, Server, Cookie } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | TechWebCode",
+  title: "Privacy Policy",
   description:
-    "Learn about TechWebCode privacy practices, client-side browser processing, cookies, and contact information handling.",
+    "Read the TechWebCode Privacy Policy. Understand our client-side browser processing guarantee, cookie usage, and data handling practices.",
   alternates: {
     canonical: "https://techwebcode.in/privacy",
   },
   openGraph: {
     title: "Privacy Policy | TechWebCode",
     description:
-      "Learn about TechWebCode privacy practices, client-side browser processing, and contact information handling.",
+      "Read the TechWebCode Privacy Policy. Understand our client-side browser processing guarantee, cookie usage, and data handling practices.",
     url: "https://techwebcode.in/privacy",
     siteName: "TechWebCode",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | TechWebCode",
+    description:
+      "Read the TechWebCode Privacy Policy. Understand our client-side browser processing guarantee, cookie usage, and data handling practices.",
   },
 };
 
