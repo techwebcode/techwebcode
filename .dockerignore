@@ -9,6 +9,8 @@
 # Compiled local Go binaries (exact names)
 /backend/server
 /backend/server_app
+/backend/main
+backend/main
 
 # Local environment secrets
 **/.env

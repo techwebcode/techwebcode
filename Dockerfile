@@ -1,21 +1,28 @@
 # Build stage
-FROM golang:1.23-alpine AS builder
+FROM golang:alpine AS builder
 
 WORKDIR /app
 
-# Download dependencies
-COPY go.mod go.sum ./
+ENV GOTOOLCHAIN=auto
+
+RUN apk add --no-cache git ca-certificates tzdata gcc musl-dev
+
+COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
-# Copy source code and build statically linked binary
-COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o server .
+COPY backend/ .
+
+RUN CGO_ENABLED=1 GOOS=linux \
+    go build \
+    -ldflags="-s -w" \
+    -o /app/server ./cmd/server
 
 # Final lean runtime image
-FROM alpine:3.20
+FROM alpine:3.22
 
-WORKDIR /root/
-RUN apk --no-cache add ca-certificates
+WORKDIR /app
+
+RUN apk add --no-cache ca-certificates tzdata
 
 COPY --from=builder /app/server .
 
