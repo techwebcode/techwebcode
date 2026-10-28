@@ -2,7 +2,9 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV PNPM_CONFIG_MINIMUM_RELEASE_AGE=0
+
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
 COPY frontend/package.json frontend/pnpm-lock.yaml* ./
 RUN pnpm install
