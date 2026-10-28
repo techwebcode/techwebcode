@@ -1,5 +1,6 @@
 # Binaries & Executables
 main
+server_app
 *.exe
 *.exe?
 *.dll

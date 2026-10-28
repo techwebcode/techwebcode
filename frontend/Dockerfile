@@ -2,14 +2,18 @@ FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-RUN npm ci
+COPY package.json pnpm-lock.yaml* ./
+
+RUN pnpm install
 
 
 FROM node:22-alpine AS builder
 
 WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 COPY --from=deps /app/node_modules ./node_modules
 
@@ -19,7 +23,7 @@ ARG NEXT_PUBLIC_API_URL
 
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
-RUN npm run build
+RUN pnpm run build
 
 
 FROM node:22-alpine AS runner

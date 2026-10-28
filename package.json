@@ -1,0 +1,27 @@
+{
+  "name": "techwebcode",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev:all": "pnpm --parallel dev",
+    "build": "pnpm --filter frontend build",
+    "build:frontend": "pnpm --filter frontend build",
+    "build:admin": "pnpm --filter admin build",
+    "build:all": "pnpm run build:frontend && pnpm run build:admin",
+    "start": "pnpm --filter frontend start",
+    "start:frontend": "pnpm --filter frontend start",
+    "start:admin": "pnpm --filter admin start",
+    "lint": "pnpm --filter frontend lint",
+    "lint:frontend": "pnpm --filter frontend lint",
+    "lint:admin": "pnpm --filter admin lint",
+    "lint:all": "pnpm run lint:frontend && pnpm run lint:admin",
+    "typecheck": "pnpm --filter frontend typecheck",
+    "typecheck:frontend": "pnpm --filter frontend typecheck",
+    "typecheck:admin": "pnpm --filter admin typecheck",
+    "typecheck:all": "pnpm run typecheck:frontend && pnpm run typecheck:admin"
+  }
+}
+
