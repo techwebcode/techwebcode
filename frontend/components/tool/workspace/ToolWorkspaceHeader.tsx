@@ -100,15 +100,15 @@ export default function ToolWorkspaceHeader({
           </Button>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-slate-100">
+            <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-slate-100">
               {title}
-            </h1>
+            </span>
             <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase">
               {badge}
             </span>
             <span
               className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-bold"
-              title="100% Client-Side: Processed locally in your browser"
+              title="Client-Side: Processed locally in your browser"
             >
               <ShieldCheck className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
               <span>Client-Side</span>

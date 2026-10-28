@@ -5,39 +5,42 @@ import { ShieldCheck, Zap, Lock, UserCheck, Terminal, Sparkles } from "lucide-re
 
 const QUICK_UTILITIES = [
   { name: "JSON Formatter", href: "/tools/json-formatter", tag: "Format & Validate" },
+  { name: "JSON Validator", href: "/tools/json-validator", tag: "RFC 8259" },
   { name: "JWT Decoder", href: "/tools/jwt-decoder", tag: "Inspect Claims" },
+  { name: "Base64 Encoder", href: "/tools/base64", tag: "Encode & Decode" },
   { name: "Regex Tester", href: "/tools/regex-tester", tag: "Test Patterns" },
   { name: "SQL Formatter", href: "/tools/sql-formatter", tag: "Beautify Queries" },
-  { name: "Base64", href: "/tools/base64", tag: "Encode & Decode" },
+  { name: "Timestamp Converter", href: "/tools/timestamp-converter", tag: "Epoch to Date" },
   { name: "UUID Generator", href: "/tools/uuid-generator", tag: "v4 Bulk" },
+  { name: "Online Code Playground", href: "/playground", tag: "10+ Compilers" },
 ];
 
 const HIGHLIGHTED_PILLS = [
   {
     icon: ShieldCheck,
-    title: "100% Client-Side",
-    desc: "Processed in your browser",
+    title: "In-Browser Execution",
+    desc: "Tool inputs processed locally",
     color: "text-emerald-600 dark:text-emerald-400",
     bg: "bg-emerald-500/10 border-emerald-500/20",
   },
   {
     icon: Zap,
-    title: "Zero Latency",
-    desc: "Instant local execution",
+    title: "Instant Results",
+    desc: "Fast client-side parsing",
     color: "text-blue-600 dark:text-blue-400",
     bg: "bg-blue-500/10 border-blue-500/20",
   },
   {
     icon: Lock,
-    title: "Privacy First",
-    desc: "Zero server data logs",
+    title: "No Payload Storage",
+    desc: "Your data stays in your session",
     color: "text-purple-600 dark:text-purple-400",
     bg: "bg-purple-500/10 border-purple-500/20",
   },
   {
     icon: UserCheck,
     title: "No Signup Required",
-    desc: "100% free forever",
+    desc: "Free instant developer access",
     color: "text-amber-600 dark:text-amber-400",
     bg: "bg-amber-500/10 border-amber-500/20",
   },
@@ -63,7 +66,7 @@ export default function HeroSection() {
 
         {/* Supporting Copy */}
         <p className="mt-4 max-w-2xl text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-          Fast, practical, privacy-first developer utilities and WebAssembly compilers for formatting, validating, encoding, debugging, and running modern code.
+          Format, validate, convert, debug, and run code online with practical tools built for developers. Fast, browser-based utilities with zero setup required.
         </p>
 
         {/* Search Box */}
@@ -72,7 +75,7 @@ export default function HeroSection() {
         </div>
 
         {/* 1-Click Quick Access Utility Chips */}
-        <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2 max-w-2xl text-xs">
+        <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2 max-w-3xl text-xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1 flex items-center gap-1">
             <Sparkles className="h-3 w-3 text-blue-500" /> Quick Access:
           </span>
@@ -81,6 +84,7 @@ export default function HeroSection() {
               key={u.name}
               href={u.href}
               className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-2.5 py-1 font-medium text-slate-700 dark:text-slate-300 shadow-2xs hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-all"
+              title={`Open ${u.name}`}
             >
               <span>{u.name}</span>
             </Link>

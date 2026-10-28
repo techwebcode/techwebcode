@@ -99,9 +99,9 @@ export default function CodeDiffToolbar({
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-slate-100">
+            <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-slate-100">
               Code Difference Checker
-            </h1>
+            </span>
             <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase">
               Free Tool
             </span>

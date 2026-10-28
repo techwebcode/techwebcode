@@ -46,13 +46,13 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
     category: "JSON & Data",
     h1: "JSON Formatter & Beautifier Online",
     seoTitle: "JSON Formatter & Beautifier Online | TechWebCode",
-    seoDescription: "Format, beautify, and validate JSON online with customizable 2, 4, or 8 space indentation. Parse nested objects and debug API payloads with 100% browser privacy.",
+    seoDescription: "Format, beautify, and validate JSON online with customizable 2, 4, or 8 space indentation. Parse nested objects and debug API payloads with in-browser processing.",
     shortDescription: "Format and beautify JSON online. Make nested objects and API payloads structured, readable, and easy to debug.",
     summary: "JSON (JavaScript Object Notation, RFC 8259) is the universal data exchange standard for modern web APIs, microservices, and databases. Unformatted JSON payloads from REST API endpoints or server logs often arrive as a single dense line, making nested structures and syntax errors difficult to read. TechWebCode's JSON Formatter formats, beautifies, and indents JSON instantly in your browser with zero latency and zero server transmission.",
     technicalSpecs: [
       "RFC 8259 & ECMA-404 JSON standard compliant parsing",
       "Configurable indentation spacing: 2 spaces, 4 spaces, or 8 spaces",
-      "100% client-side JavaScript execution — zero server uploads",
+      "Client-side JavaScript execution — zero server uploads",
       "Integrated Monaco Editor with syntax colorization, folding, and line numbers",
     ],
     keyFeatures: [
@@ -61,7 +61,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
       "Minification toggle to compact JSON payloads to a single line for production transfer.",
       "Integrated Monaco Code Editor with code folding, bracket pair colorization, and auto-indentation.",
       "One-click Copy to clipboard, formatted .json file download, and sample payload loading.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your raw or minified JSON string into the left editor, or click 'Upload' to select a .json file.",
@@ -146,14 +146,14 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
       "Strict RFC 8259 JSON grammar validation",
       "Line-by-line syntax error identification",
       "Sample valid & invalid payload loading for rapid testing",
-      "Zero network transmission — 100% client-side validation",
+      "Zero network transmission — client-side validation",
     ],
     keyFeatures: [
       "Instant syntax verification against RFC 8259 specifications.",
       "Clear line and column error indicators pinpointing misplaced commas, unclosed brackets, and unquoted keys.",
       "Preloaded valid and invalid sample payloads for quick demonstration and testing.",
       "Keyboard shortcut support: Press Ctrl+Enter (or Cmd+Enter) to trigger validation immediately.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your JSON payload into the code editor.",
@@ -221,7 +221,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
       "Live compression metrics showing original payload size, compressed size, and percentage saved.",
       "Syntax validation during compression to prevent minifying corrupted or invalid data.",
       "File upload and download support for large JSON configuration files.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your formatted JSON payload into the input editor, or upload a .json file.",
@@ -277,8 +277,8 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
     name: "JWT Decoder",
     category: "Security & Auth",
     h1: "JWT Decoder — Decode JSON Web Tokens Online",
-    seoTitle: "JWT Decoder Online - Decode & Inspect JWT Claims | TechWebCode",
-    seoDescription: "Decode JSON Web Tokens (JWT) online. View header algorithm, payload claims, and expiration timestamps securely in your browser with 100% client-side privacy.",
+    seoTitle: "JWT Decoder Online - Inspect JWT Claims | TechWebCode",
+    seoDescription: "Decode JSON Web Tokens (JWT) online. View header algorithm, payload claims, and expiration timestamps securely in your browser with client-side token parsing.",
     shortDescription: "Decode and inspect JSON Web Token (JWT) headers and payload claims securely without transmitting tokens to any server.",
     summary: "JSON Web Tokens (JWT, RFC 7519) are compact, URL-safe credentials widely used for OAuth 2.0, OpenID Connect, and API authentication. A JWT consists of three Base64URL-encoded segments separated by dots: Header, Payload, and Signature. Developers frequently need to inspect payload claims (such as user ID, role, permissions, and expiration dates) to debug authentication workflows. TechWebCode's JWT Decoder decodes tokens client-side in your browser memory.",
     technicalSpecs: [
@@ -292,7 +292,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
       "Automatic expiration inspector converting 'exp' Unix timestamps into human-readable local and UTC times.",
       "Visual status banner indicating whether the token is currently ACTIVE or EXPIRED.",
       "1-click copy buttons for isolated Header or Payload JSON data.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your encoded JWT string (e.g. eyJhbGciOi...) into the token input field.",
@@ -350,21 +350,21 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
     category: "Text & Encoding",
     h1: "Base64 Encoder & Decoder Online",
     seoTitle: "Base64 Encoder & Decoder Online | TechWebCode",
-    seoDescription: "Encode text to Base64 format or decode Base64 strings back to plain text online with UTF-8 Unicode support and 100% browser privacy.",
+    seoDescription: "Encode text to Base64 or decode Base64 strings online with this free Base64 tool. Fast, simple, and easy to use.",
     shortDescription: "Encode text to Base64 format or decode Base64 strings into readable text with full UTF-8 Unicode character support.",
     summary: "Base64 (RFC 4648) is a binary-to-text encoding scheme that represents binary data in an ASCII string format by translating it into a radix-64 representation. It is standard across web development for transmitting binary data in HTTP headers, Basic Authentication credentials, email attachments, and Data URLs. TechWebCode's Base64 tool provides bidirectional encoding and decoding with UTF-8 Unicode support.",
     technicalSpecs: [
       "RFC 4648 Base64 encoding and decoding standard",
       "Full UTF-8 Unicode handling for non-ASCII characters and emojis",
       "Instant bidirectional swap for testing encode/decode roundtrips",
-      "100% client-side browser processing",
+      "Client-side browser processing",
     ],
     keyFeatures: [
       "Bidirectional conversion: Encode plain text to Base64 or decode Base64 strings back to plain text.",
       "Full UTF-8 support: Properly handles emojis, foreign language scripts, and special symbols without character corruption.",
       "1-click Swap Direction button to quickly verify encoded output.",
       "Download converted result to file (.b64 or .txt).",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Select 'Encode to Base64' or 'Decode from Base64' using the mode selector buttons.",
@@ -424,7 +424,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoItem> = {
       "Batch generation support: generate 1, 5, 10, 20, 50, or 100 UUIDs in one click.",
       "Formatting options: Toggle uppercase casing and hyphenation inclusion.",
       "Download generated list to a text file for database seeding or testing.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Select the desired quantity of UUIDs (from 1 to 100) using the dropdown.",
@@ -488,7 +488,7 @@ e8f1a2b3-c4d5-4e6f-8a1b-2c3d4e5f6a7b
       "Smart auto-detection: seamlessly converts both 10-digit second timestamps and 13-digit millisecond timestamps.",
       "Bidirectional conversion: Epoch to human date, and calendar date picker to Epoch seconds and milliseconds.",
       "Outputs formatted in Local browser timezone, UTC (GMT), and ISO 8601 standard strings.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Choose 'Timestamp → Human Date' or 'Human Date → Timestamp' mode.",
@@ -535,8 +535,8 @@ UTC String:  Sun, 15 Mar 2026 00:00:00 GMT`,
     name: "URL Encoder & Decoder",
     category: "Text & Encoding",
     h1: "URL Encoder & Decoder Online",
-    seoTitle: "URL Encoder & Decoder Online - Free Tool | TechWebCode",
-    seoDescription: "Encode or decode URLs and query parameters online using percent-encoding. Supports encodeURIComponent and encodeURI modes with 100% browser privacy.",
+    seoTitle: "URL Encoder & Decoder Online | TechWebCode",
+    seoDescription: "Encode URLs or decode URL-encoded text online. Use this free URL encoding and decoding tool for quick, reliable results.",
     shortDescription: "Encode or decode URLs and query string parameters using standard RFC 3986 percent-encoding.",
     summary: "URL encoding (also referred to as percent-encoding, RFC 3986) converts reserved and unsafe characters into a format that can be safely transmitted over HTTP query strings and URLs. Characters with special syntactical meaning (like spaces, question marks, slashes, and ampersands) are replaced by '%' followed by their two-digit hexadecimal ASCII representation. TechWebCode's URL Encoder/Decoder supports Component mode and Full URL mode.",
     technicalSpecs: [
@@ -550,7 +550,7 @@ UTC String:  Sun, 15 Mar 2026 00:00:00 GMT`,
       "Bidirectional conversion: URL encode plain text or decode percent-encoded strings back to readable characters.",
       "1-click Swap Direction button to test roundtrip encode and decode results.",
       "Full UTF-8 support: correctly encodes special symbols and emojis (e.g. space to %20, 🚀 to %F0%9F%9A%80).",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Select 'URL Encode' or 'URL Decode' mode.",
@@ -595,7 +595,7 @@ UTC String:  Sun, 15 Mar 2026 00:00:00 GMT`,
     name: "Regex Tester & Explainer",
     category: "Regex & SQL",
     h1: "Regex Tester & Explainer — Test & Debug Regex Online",
-    seoTitle: "Regex Tester & Explainer — Test, Debug & Understand Regex | TechWebCode",
+    seoTitle: "Regex Tester & Explainer Online | TechWebCode",
     seoDescription: "Test regular expressions, highlight matches, inspect capture groups, and understand regex patterns with detailed explanations. Supports multiple regex flavors.",
     shortDescription: "Test, debug, and understand regular expressions in real-time with match highlighting, group extraction, and AST token breakdown.",
     summary: "Regular Expressions (RegEx) are powerful character patterns used across software development for input validation, search-and-replace, log parsing, and data extraction. However, complex regular expressions with lookaheads, nested groups, and quantifiers can be notoriously difficult to debug. TechWebCode's Regex Tester & Explainer provides real-time match evaluation, numbered and named capture group inspection, AST token breakdown, and plain-English pattern summaries.",
@@ -611,7 +611,7 @@ UTC String:  Sun, 15 Mar 2026 00:00:00 GMT`,
       "AST Token Breakdown table explaining characters, quantifiers, and assertions in plain English.",
       "Automated diagnostics engine analyzing why an input failed to match.",
       "Searchable regex cheat sheet with one-click insertion of common tokens (\\d, \\w, \\b, etc.).",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Enter your regular expression pattern between the forward slashes `/pattern/`.",
@@ -665,65 +665,90 @@ Match #2: "2026-12-31" [Range: 30-40]
 
   "sql-formatter": {
     slug: "sql-formatter",
-    name: "SQL Formatter",
+    name: "SQL Formatter & Validator",
     category: "Regex & SQL",
-    h1: "SQL Query Formatter Online",
-    seoTitle: "SQL Formatter Online - Format & Beautify SQL Queries | TechWebCode",
-    seoDescription: "Format and beautify raw SQL queries online with standardized keyword capitalization and clause indentations for MySQL, PostgreSQL, and SQLite.",
-    shortDescription: "Format and beautify SQL queries online with standardized keyword capitalization and clause line breaks for maximum readability.",
-    summary: "SQL (Structured Query Language, ANSI/ISO) is the standard language for relational database management systems like PostgreSQL, MySQL, SQLite, and MariaDB. Raw SQL queries extracted from ORM logs or legacy procedures are often dense, unformatted strings that are difficult to review and debug. TechWebCode's SQL Formatter automatically capitalizes SQL keywords and structures major clauses (SELECT, FROM, WHERE, JOIN) onto separate lines.",
+    h1: "SQL Formatter & Validator Online",
+    seoTitle: "SQL Formatter & Validator Online — Format, Validate & Minify | TechWebCode",
+    seoDescription: "Format, validate, and minify SQL queries online. Standardize keyword capitalization, verify syntax grammar across MySQL, PostgreSQL, SQLite, and SQL Server.",
+    shortDescription: "Format, validate, and minify SQL queries online with dialect-aware AST syntax validation.",
+    summary: "SQL (Structured Query Language, ANSI/ISO) is the standard language for relational database management systems like PostgreSQL, MySQL, SQLite, and SQL Server. TechWebCode's SQL Formatter & Validator allows developers to format complex queries with standardized keyword capitalization and indentation, validate syntax grammar using a genuine AST parser, and minify queries for efficient transfer.",
     technicalSpecs: [
-      "Standard ANSI SQL keyword capitalization (SELECT, INSERT, UPDATE, DELETE, JOIN, WHERE)",
-      "Clause indentation and newline alignment for subqueries and filters",
-      "Compatible with MySQL, PostgreSQL, MariaDB, SQLite, Oracle, and SQL Server dialects",
-      "100% client-side browser formatting",
+      "Standard ANSI SQL, PostgreSQL, MySQL, SQLite, and SQL Server (T-SQL) dialect support",
+      "Genuine AST syntax validation with line and column error diagnostics",
+      "Semantic SQL minification preserving string literals, quotes, and punctuation",
+      "Customizable indentation (2 or 4 spaces) and keyword casing (UPPERCASE, lowercase, preserve)",
+      "100% Client-side in-browser execution with zero network latency and complete privacy",
     ],
     keyFeatures: [
-      "Automatic SQL keyword uppercase formatting (SELECT, FROM, WHERE, GROUP BY, ORDER BY).",
-      "Clause line breaks for JOINs, subqueries, and conditional WHERE filters.",
-      "Instant real-time formatting as you type or paste.",
-      "Download formatted query to formatted.sql or copy with 1 click.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "Dialect-aware SQL formatting with clause indentation and keyword capitalization.",
+      "Dedicated 'Validate SQL' action with AST-based syntax checking and error line pointers.",
+      "Semantic 'Minify SQL' action to strip comments and redundant whitespace safely.",
+      "Support for Common Table Expressions (CTEs), CASE expressions, and multi-statement scripts.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
-      "Paste your raw single-line SQL query into the left editor.",
-      "Keyword capitalization and clause formatting apply automatically.",
-      "Review the structured SQL query in the right output panel.",
-      "Click 'Copy' or 'Download' to export formatted.sql to your project.",
+      "Paste your raw SQL queries into the left editor.",
+      "Choose your target dialect: Standard SQL, PostgreSQL, MySQL, SQLite, or SQL Server.",
+      "Click 'Format SQL' (or press ⌘+Enter / Ctrl+Enter) to beautify the query.",
+      "Click 'Validate SQL' to inspect query grammar and verify syntax.",
+      "Click 'Minify SQL' to produce a compact production payload.",
+      "Click 'Copy' or 'Download' to export the processed SQL file.",
     ],
     examples: [
       {
-        title: "Formatting Raw Multi-Table JOIN Query",
-        scenario: "Structuring a single-line query from an ORM log into clean, readable SQL.",
+        title: "Formatting and Validating Complex JOIN with CTE",
+        scenario: "Structuring a multi-clause analytical query with CTEs and conditional CASE statements.",
         beforeLabel: "Unformatted Raw Query (Before)",
-        beforeCode: `select u.id, u.username, count(o.id) as total_orders from users u left join orders o on u.id = o.user_id where u.active = true and o.created_at >= '2026-01-01' group by u.id, u.username order by total_orders desc limit 10;`,
+        beforeCode: `with top_cust as (select c.id, c.name, sum(o.amount) as total from customers c join orders o on c.id = o.customer_id where o.status = 'COMPLETED' group by c.id, c.name) select id, name, total, case when total > 1000 then 'VIP' else 'REG' end as tier from top_cust order by total desc limit 10;`,
         afterLabel: "Formatted SQL Query (After)",
-        afterCode: `SELECT u.id, u.username, count(o.id) AS total_orders 
-FROM users u 
-LEFT JOIN orders o ON u.id = o.user_id 
-WHERE u.active = true AND o.created_at >= '2026-01-01' 
-GROUP BY u.id, u.username 
-ORDER BY total_orders desc 
-LIMIT 10;`,
-        explanation: "Capitalized keywords and clause line breaks make table relationships and conditional filters immediately obvious.",
+        afterCode: `WITH
+  top_cust AS (
+    SELECT
+      c.id,
+      c.name,
+      sum(o.amount) AS total
+    FROM
+      customers c
+      JOIN orders o ON c.id = o.customer_id
+    WHERE
+      o.status = 'COMPLETED'
+    GROUP BY
+      c.id,
+      c.name
+  )
+SELECT
+  id,
+  name,
+  total,
+  CASE
+    WHEN total > 1000 THEN 'VIP'
+    ELSE 'REG'
+  END AS tier
+FROM
+  top_cust
+ORDER BY
+  total DESC
+LIMIT
+  10;`,
+        explanation: "Indentation and line breaks make the CTE scope, JOIN condition, and CASE expression clean and readable.",
       },
     ],
     faqs: [
       {
-        question: "Does SQL formatting change query execution performance?",
-        answer: "No. SQL formatting only modifies whitespace, newlines, and keyword capitalization. The underlying database query planner produces the exact same execution plan regardless of formatting.",
+        question: "Does SQL syntax validation guarantee query execution success?",
+        answer: "Syntax validation verifies that the query adheres to the formal grammar rules of the selected SQL dialect. However, successful database execution also requires that the referenced tables, columns, constraints, and data types exist in your database schema.",
       },
       {
         question: "Which database SQL dialects are supported?",
-        answer: "Our formatter handles standard ANSI SQL syntax used across PostgreSQL, MySQL, MariaDB, SQLite, Oracle, Microsoft SQL Server, and Amazon Redshift.",
+        answer: "The tool supports Standard ANSI SQL, PostgreSQL, MySQL / MariaDB, SQLite, and Microsoft SQL Server (T-SQL) with dialect-specific quoting (backticks, brackets, and double quotes).",
       },
       {
-        question: "Why should SQL keywords be uppercase?",
-        answer: "Capitalizing SQL keywords (SELECT, FROM, WHERE) while leaving table and column names in lowercase creates strong visual contrast, making complex queries significantly easier to read and audit.",
+        question: "How does the semantic SQL minifier work?",
+        answer: "The SQL minifier tokenizes your query to collapse unnecessary whitespace and safely strip line (--) and block (/* */) comments, while strictly preserving string literals, quoted identifiers, and essential keyword separators.",
       },
       {
         question: "Are database queries or table names sent to any server?",
-        answer: "No. Your tool input is processed locally in your browser and is not sent to TechWebCode servers. Formatting runs entirely in your browser using client-side JavaScript.",
+        answer: "No. Your tool input is processed locally in your browser and is not sent to TechWebCode servers. Formatting and validation run entirely in your browser using client-side JavaScript and AST parsing.",
       },
     ],
     relatedSlugs: ["json-formatter", "yaml-formatter", "regex-tester", "code-diff-checker"],
@@ -735,7 +760,7 @@ LIMIT 10;`,
     category: "DevOps & Cloud",
     h1: "YAML Formatter & Kubernetes Secret Tool Online",
     seoTitle: "YAML Formatter & Kubernetes Secret Tool | TechWebCode",
-    seoDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret values online with 100% browser privacy and manifest preservation.",
+    seoDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret values online with in-browser parsing and manifest preservation.",
     shortDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret manifests with client-side Base64 processing.",
     summary: "YAML (YAML Ain't Markup Language, YAML 1.2) is the de facto standard configuration format for DevOps pipelines, Docker Compose, GitHub Actions, and Kubernetes manifests. Because YAML relies strictly on whitespace indentation rather than brackets, formatting mistakes frequently break CI/CD pipelines. Furthermore, Kubernetes Secret manifests require sensitive credentials to be Base64-encoded under 'data' or plain text under 'stringData'. TechWebCode's YAML Formatter & Kubernetes Secret Tool formats YAML documents and provides specialized decoding and encoding for Kubernetes Secret manifests.",
     technicalSpecs: [
@@ -751,7 +776,7 @@ LIMIT 10;`,
       "Safe Base64 decoding & encoding for manifest 'data' and 'stringData' attributes with AST structure preservation.",
       "Sensitive credentials masking mode to hide secret values when sharing screens.",
       "Double-encoding detection alert warning you if values are already Base64 encoded.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your YAML document or Kubernetes Secret manifest into the left editor.",
@@ -813,7 +838,7 @@ data:
     name: "Deployment Config Doctor",
     category: "DevOps & Cloud",
     h1: "Deployment Config Doctor — Cross-File Config Analyzer",
-    seoTitle: "Deployment Config Doctor — Docker, Kubernetes & Env Checker | TechWebCode",
+    seoTitle: "Deployment Config Doctor — Docker & K8s Checker | TechWebCode",
     seoDescription: "Analyze Docker, Kubernetes, environment variables, Nginx, Next.js, and CI/CD configuration for deployment errors, security issues, and cross-file mismatches.",
     shortDescription: "Cross-file project configuration analyzer diagnosing Docker, Kubernetes, Nginx, Next.js, and environment variable mismatches.",
     summary: "Deploying modern web applications requires coordinating configurations across multiple distinct files: .env environment variables, Dockerfiles, docker-compose.yml services, Nginx reverse proxy directives, Next.js configuration, and Kubernetes manifests. When port numbers mismatch, environment variables are missing, or credentials are leaked in Docker images, deployments fail in production. TechWebCode's Deployment Config Doctor analyzes cross-file configuration topologies locally in your browser.",
@@ -829,7 +854,7 @@ data:
       "Missing environment variable checks matching `.env.example` keys against code requirements.",
       "Interactive visual relationship graph mapping services, containers, and ports.",
       "Exportable Markdown and JSON audit reports for team review.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Drag and drop your project configuration files (or a ZIP archive) into the upload zone.",
@@ -903,7 +928,7 @@ services:
       "OpenAPI 3.0 / 3.1 & Swagger Spec Checker: Parse API specifications, list endpoints, and resolve local schema references.",
       "JSON Schema Validator & Comparator: Test payloads against schemas with Request vs Response mode compatibility rules.",
       "Contract-to-Response Validator: Validate live API responses directly against your OpenAPI contract schema.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "In Tab 1, paste your baseline v1 API response on the left and candidate v2 response on the right.",
@@ -949,7 +974,7 @@ services:
       },
       {
         question: "Is my proprietary API schema uploaded anywhere?",
-        answer: "No. Your tool input is processed locally in your browser and is not sent to TechWebCode servers. All contract comparisons and schema validations run 100% locally in your browser.",
+        answer: "No. Your tool input is processed locally in your browser and is not sent to TechWebCode servers. All contract comparisons and schema validations run locally in your browser.",
       },
     ],
     relatedSlugs: ["deployment-config-doctor", "json-validator", "json-formatter", "code-diff-checker"],
@@ -960,10 +985,10 @@ services:
     name: "Code Difference Checker",
     category: "JSON & Data",
     h1: "Code Difference Checker — Side-by-Side Code Diff Online",
-    seoTitle: "Code Difference Checker — Side-by-Side Code Diff Online | TechWebCode",
-    seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, and 100% client privacy.",
+    seoTitle: "Code Difference Checker — Side-by-Side Diff Online | TechWebCode",
+    seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, and fast diffing.",
     shortDescription: "Compare two versions of code side-by-side or unified online to instantly spot additions, deletions, and modifications.",
-    summary: "Reviewing code changes between versions, configuration releases, or documentation snippets is a daily task for software engineers. Missing a single character or indentation level can cause runtime errors. TechWebCode's Code Difference Checker provides side-by-side and unified git-style visual diffing with word-level difference highlighting, hunk merging, and synchronized scrolling—executed 100% client-side with complete code privacy.",
+    summary: "Reviewing code changes between versions, configuration releases, or documentation snippets is a daily task for software engineers. Missing a single character or indentation level can cause runtime errors. TechWebCode's Code Difference Checker provides side-by-side and unified git-style visual diffing with word-level difference highlighting, hunk merging, and synchronized scrolling—executed locally in your browser with fast client-side diffing.",
     technicalSpecs: [
       "Myers diff algorithm implementation with word-level difference resolution",
       "Side-by-side dual Monaco editor with synchronized scrolling",
@@ -975,7 +1000,7 @@ services:
       "Interactive change navigation: Step through individual modified hunks with next/previous buttons.",
       "Bidirectional hunk transfer: Merge individual changes from Modified into Original or vice versa.",
       "File export options: Export unified git diff, original document, modified document, or JSON summary.",
-      "100% Client-Side Privacy: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
+      "In-Browser Processing: Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your baseline code into the left editor and your updated code into the right editor.",
@@ -1027,15 +1052,15 @@ LOG_LEVEL=info`,
     name: "SHA-1 Hash Generator",
     category: "Security & Cryptography",
     h1: "SHA-1 Hash Generator Online",
-    seoTitle: "SHA-1 Hash Generator Online — Generate 40-Char SHA-1 Hashes | TechWebCode",
+    seoTitle: "SHA-1 Hash Generator Online | TechWebCode",
     seoDescription: "Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers.",
-    shortDescription: "Generate SHA-1 hash digests from text instantly with 100% client-side browser execution.",
+    shortDescription: "Generate SHA-1 hash digests from text instantly with client-side browser execution.",
     summary: "The SHA-1 Hash Generator computes a 160-bit (20-byte) cryptographic digest formatted as a 40-character hexadecimal string from any plain text or Unicode payload. SHA-1 (Secure Hash Algorithm 1) was designed by the United States National Security Agency (NSA) and published as a U.S. Federal Information Processing Standard (FIPS PUB 180-1). It operates as a deterministic, one-way mathematical function: given the same input text, it will always produce the identical 40-character hexadecimal output. However, hashing is NOT encryption; it cannot be decrypted back into the original input. Importantly, SHA-1 is considered cryptographically broken against collision attacks (demonstrated by the 2017 Google SHAttered attack) and must NOT be used for digital certificates, password hashing, or new security-critical implementations. It remains widely used in legacy systems, Git commit identification, torrent file verification, and deduplication checksums.",
     technicalSpecs: [
       "Standard: FIPS PUB 180-4 / RFC 3174 (Secure Hash Algorithm 1)",
       "Digest Length: 160-bit hash (40 hexadecimal characters)",
       "Collision Resistance: Cryptographically broken (vulnerable to collision attacks)",
-      "Execution: 100% Client-side Web Crypto API (SubtleCrypto.digest)",
+      "Execution: Client-side Web Crypto API (SubtleCrypto.digest)",
       "Encoding: UTF-8 Unicode byte stream preservation",
     ],
     keyFeatures: [
@@ -1106,16 +1131,16 @@ LOG_LEVEL=info`,
     name: "Comma Separator",
     category: "Utilities",
     h1: "Comma Separator & List Formatter Online",
-    seoTitle: "Comma Separator Online — Convert Lists to Comma-Separated Values | TechWebCode",
-    seoDescription: "Convert newline lists into comma-separated values or split delimited text into lines online. Fast, customizable with quotes, deduplication, and 100% browser privacy.",
+    seoTitle: "Comma Separator & List Formatter Online | TechWebCode",
+    seoDescription: "Convert newline lists into comma-separated values or split delimited text into lines online. Fast, customizable with quotes, deduplication, and in-browser processing.",
     shortDescription: "Convert lists into comma-separated values or split delimited text into lines instantly.",
-    summary: "The Comma Separator and List Formatter is a practical developer utility designed to transform line-by-line lists into comma-separated strings and vice versa. Software engineers frequently need to convert lists of IDs from spreadsheets, database dumps, or logs into comma-separated values for SQL queries (e.g. IN clauses), JSON arrays, or API query parameters. This tool supports custom delimiters (commas, semicolons, pipes, tabs), optional item quoting (single quotes, double quotes, backticks), automatic whitespace trimming, empty line elimination, case-insensitive deduplication, and alphabetical sorting. All transformations run 100% locally in your browser memory.",
+    summary: "The Comma Separator and List Formatter is a practical developer utility designed to transform line-by-line lists into comma-separated strings and vice versa. Software engineers frequently need to convert lists of IDs from spreadsheets, database dumps, or logs into comma-separated values for SQL queries (e.g. IN clauses), JSON arrays, or API query parameters. This tool supports custom delimiters (commas, semicolons, pipes, tabs), optional item quoting (single quotes, double quotes, backticks), automatic whitespace trimming, empty line elimination, case-insensitive deduplication, and alphabetical sorting. All transformations run locally in your browser memory.",
     technicalSpecs: [
       "Input Formats: Multi-line text lists, comma-delimited strings, CSV snippets",
       "Delimiters: Comma (,), Semicolon (;), Pipe (|), Space, Tab (\\t), or Custom string",
       "Quoting Modes: None, Single quotes ('item'), Double quotes (\"item\"), Backticks (`item`)",
       "Cleanup Tools: Trim whitespace, remove blank entries, deduplicate items, sort A-Z / Z-A",
-      "Processing: 100% Client-side JavaScript execution with zero server transmission",
+      "Processing: Client-side JavaScript execution with zero server transmission",
     ],
     keyFeatures: [
       "Bidirectional conversion: List to Comma-Separated and Comma-Separated to List.",
@@ -1124,7 +1149,7 @@ LOG_LEVEL=info`,
       "Item quoting options for SQL IN-clauses ('value') and JSON arrays (\"value\").",
       "Real-time cleanup filters: Remove duplicates, trim whitespace, and eliminate empty lines.",
       "Live statistics: Track total items, character count, duplicates removed, and blank lines skipped.",
-      "100% client-side privacy: No list data or IDs are ever sent over the network.",
+      "In-Browser Processing: No list data or IDs are sent to TechWebCode servers.",
     ],
     howToUse: [
       "Paste your line-separated list (or comma-separated string) into the input editor.",
@@ -1388,7 +1413,7 @@ export const INITIAL_TOOLS: Tool[] = [
     id: 18,
     name: "Code Difference Checker",
     slug: "code-diff-checker",
-    description: "Compare two versions of code side-by-side or unified with syntax highlighting and 100% browser privacy.",
+    description: "Compare two versions of code side-by-side or unified with syntax highlighting and client-side diffing.",
     shortDescription: "Compare two code versions side-by-side or unified to spot additions and deletions.",
     icon: "arrow-left-right",
     featured: true,
@@ -1400,7 +1425,7 @@ export const INITIAL_TOOLS: Tool[] = [
     id: 19,
     name: "SHA-1 Hash Generator",
     slug: "sha1-hash-generator",
-    description: "Generate SHA-1 cryptographic hash digests from text instantly in your browser with 100% client-side Web Crypto execution.",
+    description: "Generate SHA-1 cryptographic hash digests from text instantly in your browser with client-side Web Crypto execution.",
     shortDescription: "Generate SHA-1 hash digests from text instantly with client-side browser execution.",
     icon: "hash",
     featured: true,

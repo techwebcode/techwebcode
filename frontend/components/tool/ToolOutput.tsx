@@ -79,6 +79,7 @@ export default function ToolOutput({
             onClick={handleCopy}
             className="h-7 text-xs px-2.5 text-muted-foreground hover:text-foreground"
             title="Copy Output"
+            aria-label="Copy Output"
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 mr-1 text-emerald-500" />
@@ -96,6 +97,7 @@ export default function ToolOutput({
             onClick={handleDownload}
             className="h-7 text-xs px-2 text-muted-foreground hover:text-foreground"
             title="Download File"
+            aria-label="Download Output File"
           >
             <Download className="w-3.5 h-3.5" />
           </Button>
@@ -115,6 +117,7 @@ export default function ToolOutput({
         readOnly
         value={value}
         placeholder={placeholder}
+        aria-label={label || "Output Result"}
         className={`w-full ${minHeight} max-h-[500px] p-4 bg-muted/20 font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60 editor-scroll-area`}
       />
     </div>

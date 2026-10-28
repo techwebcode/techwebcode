@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Tool } from "@/types/tools";
+import ToolHeader from "@/components/tool/ToolHeader";
 import KubernetesSecretWorkspace from "./KubernetesSecretWorkspace";
 
 interface Props {
@@ -9,5 +10,10 @@ interface Props {
 }
 
 export default function YamlFormatter({ tool }: Props) {
-  return <KubernetesSecretWorkspace tool={tool} />;
+  return (
+    <div className="space-y-6 w-full">
+      <ToolHeader tool={tool} />
+      <KubernetesSecretWorkspace tool={tool} />
+    </div>
+  );
 }

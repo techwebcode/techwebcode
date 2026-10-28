@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import CodeEditor from "@/components/tool/CodeEditor";
-import ToolExplanation from "@/components/tool/ToolExplanation";
-import RelatedTools from "@/components/tool/RelatedTools";
 import { Tool } from "@/types/tools";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,10 +102,12 @@ export default function JsonFormatter({ tool }: Props) {
     }
   };
 
-  // Auto-format on input or indent change
+  const debouncedInput = useDebounce(input, 250);
+
+  // Auto-format on debounced input or indent change to keep typing responsive
   useEffect(() => {
-    handleFormat(input, indent);
-  }, [input, indent]);
+    handleFormat(debouncedInput, indent);
+  }, [debouncedInput, indent]);
 
   // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter -> Format
   useEffect(() => {
@@ -395,50 +396,6 @@ export default function JsonFormatter({ tool }: Props) {
           onDownload={handleDownload}
         />
       </div>
-
-      {/* SEO Rich Explanation Content */}
-      <ToolExplanation
-        title="JSON Formatter & Beautifier"
-        description="JSON (JavaScript Object Notation) is the standard data format for modern web APIs, microservices, and databases. Our free online JSON Formatter allows software engineers to format, validate, beautify, and inspect JSON payloads instantly in the browser."
-        howToUse={[
-          "Paste your unformatted JSON data into the left code editor, or click Upload to select a .json file.",
-          "Select your preferred indentation spacing (2, 4, or 8 spaces). Formatting applies instantly.",
-          "Check the validation indicator to confirm syntax validity. Any parsing errors will highlight exact error details.",
-          "Click Copy to copy the formatted result, or click Download to save formatted.json to your computer.",
-        ]}
-        features={[
-          "Instant client-side formatting with zero latency or API roundtrips.",
-          "Monaco Code Editor integration with syntax highlighting, line numbers, and error detection.",
-          "Minify option to strip whitespace for production payloads.",
-          "File upload and download support for large JSON datasets.",
-          "100% private: Data never leaves your web browser.",
-        ]}
-        faqs={[
-          {
-            question: "Why should I use a JSON Formatter?",
-            answer:
-              "Minified or raw API JSON responses are often printed on a single dense line, making them hard to read and debug. Formatting adds structured indentation and line breaks for effortless inspection.",
-          },
-          {
-            question: "Is my JSON data secure when using TechWebCode?",
-            answer:
-              "Yes, absolutely! All JSON parsing, formatting, and minification runs entirely inside your browser's JavaScript engine. No data is transmitted to external servers.",
-          },
-          {
-            question: "What happens if my JSON has syntax errors?",
-            answer:
-              "The tool identifies syntax errors with precise error messages so you can fix unquoted keys, trailing commas, or unmatched brackets instantly.",
-          },
-          {
-            question: "Does formatting change the JSON data structure?",
-            answer:
-              "No. Formatting only adjusts whitespace and indentation to make the payload human-readable. Object key-value pairs and array values remain completely unchanged.",
-          },
-        ]}
-      />
-
-      {/* Interlinking Related Tools */}
-      <RelatedTools currentSlug="json-formatter" />
     </div>
   );
 }

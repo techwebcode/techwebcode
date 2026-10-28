@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import CodeEditor from "@/components/tool/CodeEditor";
 import ToolExplanation from "@/components/tool/ToolExplanation";
@@ -85,9 +86,12 @@ export default function JsonMinifier({ tool }: Props) {
     }
   };
 
+  const debouncedInput = useDebounce(input, 250);
+
+  // Debounce minification and blob byte calculation to keep typing responsive
   useEffect(() => {
-    minifyJson(input);
-  }, [input]);
+    minifyJson(debouncedInput);
+  }, [debouncedInput]);
 
   // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter -> Minify JSON
   useEffect(() => {

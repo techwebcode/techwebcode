@@ -1804,91 +1804,101 @@ except Exception:
   public static async executeCode(
     config: LanguageConfig,
     codeState: { html?: string; css?: string; js?: string; code?: string },
-    onStatusLog?: (log: LogItem) => void
+    onStatusLog?: (log: LogItem) => void,
+    signal?: AbortSignal
   ): Promise<ExecutionResult> {
     const startTime = performance.now();
 
-    // Python 3 Client-Side WebAssembly Runner
-    if (config.slug === "python") {
-      return this.executePython(codeState.code || "", onStatusLog);
+    if (signal?.aborted) {
+      throw new Error("Execution cancelled by user.");
     }
 
-    // Go Client-Side WebAssembly Runner (Yaegi WASM)
-    if (config.slug === "go") {
-      return this.executeGo(codeState.code || "", onStatusLog);
-    }
+    const abortPromise = new Promise<never>((_, reject) => {
+      if (signal?.aborted) {
+        reject(new Error("Execution cancelled by user."));
+        return;
+      }
+      signal?.addEventListener("abort", () => {
+        reject(new Error("Execution cancelled by user."));
+      });
+    });
 
-    // SQL Client-Side WebAssembly Runner (SQLite WASM)
-    if (config.slug === "sql") {
-      return this.executeSql(codeState.code || "", onStatusLog);
-    }
+    const executionPromise: Promise<ExecutionResult> = (async (): Promise<ExecutionResult> => {
+      // Python 3 Client-Side WebAssembly Runner
+      if (config.slug === "python") {
+        return this.executePython(codeState.code || "", onStatusLog);
+      }
 
-    // TypeScript Client-Side In-Browser Runner
-    if (config.slug === "typescript") {
-      return this.executeTypeScript(codeState.code || "", onStatusLog);
-    }
+      // Go Client-Side WebAssembly Runner (Yaegi WASM)
+      if (config.slug === "go") {
+        return this.executeGo(codeState.code || "", onStatusLog);
+      }
 
-    // C Client-Side In-Browser Runner (JSCPP)
-    if (config.slug === "c") {
-      return this.executeC(codeState.code || "", onStatusLog);
-    }
+      // SQL Client-Side WebAssembly Runner (SQLite WASM)
+      if (config.slug === "sql") {
+        return this.executeSql(codeState.code || "", onStatusLog);
+      }
 
-    // C++ Client-Side In-Browser Runner (JSCPP)
-    if (config.slug === "cpp") {
-      return this.executeCpp(codeState.code || "", onStatusLog);
-    }
+      // TypeScript Client-Side In-Browser Runner
+      if (config.slug === "typescript") {
+        return this.executeTypeScript(codeState.code || "", onStatusLog);
+      }
 
-    // PHP Client-Side In-Browser Runner
-    if (config.slug === "php") {
-      return this.executePhp(codeState.code || "", onStatusLog);
-    }
+      // C Client-Side In-Browser Runner (JSCPP)
+      if (config.slug === "c") {
+        return this.executeC(codeState.code || "", onStatusLog);
+      }
 
-    // Java Client-Side In-Browser Runner
-    if (config.slug === "java") {
-      return this.executeJava(codeState.code || "", onStatusLog);
-    }
+      // C++ Client-Side In-Browser Runner (JSCPP)
+      if (config.slug === "cpp") {
+        return this.executeCpp(codeState.code || "", onStatusLog);
+      }
 
-    // Rust Client-Side In-Browser Runner
-    if (config.slug === "rust") {
-      return this.executeRust(codeState.code || "", onStatusLog);
-    }
+      // PHP Client-Side In-Browser Runner
+      if (config.slug === "php") {
+        return this.executePhp(codeState.code || "", onStatusLog);
+      }
 
-    if (config.executionType === "client") {
-      const srcDoc = this.compileClientCode(
-        codeState.html || "",
-        codeState.css || "",
-        codeState.js || ""
-      );
+      // Java Client-Side In-Browser Runner
+      if (config.slug === "java") {
+        return this.executeJava(codeState.code || "", onStatusLog);
+      }
+
+      // Rust Client-Side In-Browser Runner
+      if (config.slug === "rust") {
+        return this.executeRust(codeState.code || "", onStatusLog);
+      }
+
+      if (config.executionType === "client") {
+        const srcDoc = this.compileClientCode(
+          codeState.html || "",
+          codeState.css || "",
+          codeState.js || ""
+        );
+
+        return {
+          status: "success" as const,
+          logs: [
+            {
+              id: Math.random().toString(36).substring(2, 9),
+              type: "info",
+              message: "Preview updated successfully.",
+              timestamp: new Date().toLocaleTimeString(),
+            },
+          ],
+          srcDoc,
+          executionTimeMs: Math.round(performance.now() - startTime),
+        };
+      }
 
       return {
-        status: "success",
-        logs: [
-          {
-            id: Math.random().toString(36).substring(2, 9),
-            type: "info",
-            message: `Compiled ${config.name} payload in ${Math.round(
-              performance.now() - startTime
-            )}ms`,
-            timestamp: new Date().toLocaleTimeString(),
-          },
-        ],
-        srcDoc,
-        executionTimeMs: Math.round(performance.now() - startTime),
+        status: "error" as const,
+        logs: [],
+        rawOutput: "Unsupported language runner.",
+        executionTimeMs: 0,
       };
-    }
+    })();
 
-    return {
-      status: "success",
-      logs: [
-        {
-          id: Math.random().toString(36).substring(2, 9),
-          type: "info",
-          message: `${config.name} execution engine completed.`,
-          timestamp: new Date().toLocaleTimeString(),
-        },
-      ],
-      rawOutput: "[Execution Complete]",
-      executionTimeMs: Math.round(performance.now() - startTime),
-    };
+    return Promise.race([executionPromise, abortPromise]);
   }
 }

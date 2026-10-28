@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useRef } from "react";
-import { Terminal, Maximize2, Trash2 } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { Terminal, Maximize2, Trash2, Copy, Check } from "lucide-react";
 import { LanguageConfig } from "./languages.config";
 import { LogItem } from "./PlaygroundExecutionService";
 import FullScreenWorkspace from "@/components/tool/workspace/FullScreenWorkspace";
+import { toast } from "sonner";
 
 interface PlaygroundOutputProps {
   languageConfig: LanguageConfig;
@@ -25,8 +26,27 @@ export default function PlaygroundOutput({
   isFullscreenPreview,
   onToggleFullscreenPreview,
 }: PlaygroundOutputProps) {
+  const [copied, setCopied] = useState(false);
   const previewFrameRef = useRef<HTMLIFrameElement>(null);
   const isClientLanguage = languageConfig.supportsPreview;
+
+  const handleCopyOutput = () => {
+    let textToCopy = rawOutput || "";
+    if (logs.length > 0) {
+      const logsText = logs.map((l) => `[${l.timestamp}] ${l.type.toUpperCase()}: ${l.message}`).join("\n");
+      textToCopy = textToCopy ? `${textToCopy}\n\n${logsText}` : logsText;
+    }
+
+    if (!textToCopy.trim()) {
+      toast.info("No output to copy");
+      return;
+    }
+
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    toast.success("Output copied to clipboard!");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="flex flex-col bg-background overflow-hidden h-full relative">
@@ -99,17 +119,33 @@ export default function PlaygroundOutput({
                   : "100% Client-Side In-Browser Execution | Zero Latency | Private"}
               </span>
             </div>
-            <button
-              type="button"
-              id="clear-terminal-btn"
-              onClick={onClearLogs}
-              className="p-1 hover:text-white rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-2 py-1"
-              title="Clear Terminal Output"
-              aria-label="Clear Terminal"
-            >
-              <Trash2 className="w-3.5 h-3.5 text-slate-400" />
-              <span>Clear Terminal</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={handleCopyOutput}
+                className="p-1 hover:text-white rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-2 py-1"
+                title="Copy Terminal Output"
+                aria-label="Copy Terminal Output"
+              >
+                {copied ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5 text-slate-400" />
+                )}
+                <span>{copied ? "Copied" : "Copy"}</span>
+              </button>
+              <button
+                type="button"
+                id="clear-terminal-btn"
+                onClick={onClearLogs}
+                className="p-1 hover:text-white rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-2 py-1"
+                title="Clear Terminal Output"
+                aria-label="Clear Terminal"
+              >
+                <Trash2 className="w-3.5 h-3.5 text-slate-400" />
+                <span>Clear Terminal</span>
+              </button>
+            </div>
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto space-y-3 font-mono leading-relaxed">
@@ -157,15 +193,32 @@ export default function PlaygroundOutput({
               <Terminal className="w-3.5 h-3.5 text-cyan-400" />
               <span>Console Log ({logs.length})</span>
             </div>
-            <button
-              type="button"
-              onClick={onClearLogs}
-              className="p-1 hover:text-foreground rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer"
-              title="Clear Console Logs"
-            >
-              <Trash2 className="w-3 h-3" />
-              <span>Clear</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={handleCopyOutput}
+                className="p-1 hover:text-foreground rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-1.5 py-0.5"
+                title="Copy Console Logs"
+                aria-label="Copy Console Logs"
+              >
+                {copied ? (
+                  <Check className="w-3 h-3 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3 h-3 text-slate-400" />
+                )}
+                <span>{copied ? "Copied" : "Copy"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={onClearLogs}
+                className="p-1 hover:text-foreground rounded transition-colors flex items-center gap-1 text-[11px] cursor-pointer hover:bg-slate-800 px-1.5 py-0.5"
+                title="Clear Console Logs"
+                aria-label="Clear Console Logs"
+              >
+                <Trash2 className="w-3 h-3" />
+                <span>Clear</span>
+              </button>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto p-2.5 space-y-1">

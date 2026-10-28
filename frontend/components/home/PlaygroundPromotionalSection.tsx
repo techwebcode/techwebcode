@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Code2, Play, Sparkles, Terminal, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Code2, Play, Sparkles, Terminal } from "lucide-react";
 import Container from "@/components/layout/Container";
 
 const SUPPORTED_LANGUAGES = [
@@ -39,7 +39,7 @@ export default function PlaygroundPromotionalSection() {
                 Multi-Language Online Code Playground &amp; Compilers
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                Write, run, and experiment with code directly in your browser. Zero setup, zero installation, and 100% client-side privacy guarantee.
+                Write, run, and experiment with code directly in your browser. Zero setup, zero installation, with fast in-browser execution.
               </p>
             </div>
 
@@ -47,7 +47,7 @@ export default function PlaygroundPromotionalSection() {
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between text-xs font-bold text-muted-foreground tracking-wider uppercase">
                 <span>10+ Languages Supported</span>
-                <span className="text-blue-500 font-semibold">Browser & Compiler Runtimes</span>
+                <span className="text-blue-500 font-semibold">Browser &amp; Compiler Runtimes</span>
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -56,6 +56,7 @@ export default function PlaygroundPromotionalSection() {
                     key={lang.slug}
                     href={`/playground/${lang.slug}`}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card hover:bg-blue-600 hover:text-white text-foreground border border-border/80 text-xs font-bold transition-all hover:scale-105 shadow-2xs group"
+                    title={`Open ${lang.name} online code playground`}
                   >
                     <span>{lang.name}</span>
                     <span className="text-[10px] text-muted-foreground group-hover:text-white/80 font-normal">
@@ -71,6 +72,7 @@ export default function PlaygroundPromotionalSection() {
               <Link
                 href="/playground"
                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-600/25 transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm"
+                aria-label="Open Online Code Playground"
               >
                 <span>Open Playground</span>
                 <ArrowRight className="w-4 h-4" />
@@ -79,6 +81,7 @@ export default function PlaygroundPromotionalSection() {
               <Link
                 href="/playground/python"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2"
+                aria-label="Try Python Online in playground"
               >
                 <span>Try Python Online →</span>
               </Link>
@@ -90,7 +93,8 @@ export default function PlaygroundPromotionalSection() {
             <Link
               href="/playground/python"
               className="block group relative rounded-2xl border border-slate-700/80 bg-slate-950 shadow-2xl overflow-hidden transition-all duration-300 hover:border-blue-500/50 hover:shadow-blue-500/10"
-              title="Click to Open Python Playground"
+              title="Open Python Online Playground"
+              aria-label="Open Python in interactive code playground"
             >
               {/* Mini Window Bar */}
               <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
@@ -127,7 +131,7 @@ export default function PlaygroundPromotionalSection() {
                   <span className="text-slate-600 select-none w-4 text-right">2</span>
                   <span className="pl-4">
                     <span className="text-purple-400 font-bold">return</span>{" "}
-                    <span className="text-emerald-300">f"Hello, &#123;name&#125;! Welcome to TechWebCode."</span>
+                    <span className="text-emerald-300">f&quot;Hello, &#123;name&#125;! Welcome to TechWebCode.&quot;</span>
                   </span>
                 </div>
                 <div className="flex gap-4">
@@ -138,7 +142,7 @@ export default function PlaygroundPromotionalSection() {
                   <span className="text-slate-600 select-none w-4 text-right">4</span>
                   <span>
                     <span className="text-yellow-300">print</span>(greet_developer(
-                    <span className="text-emerald-300">"TechWebCode User"</span>))
+                    <span className="text-emerald-300">&quot;TechWebCode User&quot;</span>))
                   </span>
                 </div>
               </div>

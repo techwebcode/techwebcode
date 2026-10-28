@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import CodeEditor from "@/components/tool/CodeEditor";
 import ToolExplanation from "@/components/tool/ToolExplanation";
@@ -191,23 +192,29 @@ export default function ApiContractChecker({ tool }: Props) {
   const [valActualResponseJson, setValActualResponseJson] = useState(SAMPLE_CURRENT_API_RESPONSE);
   const [valReport, setValReport] = useState<any | null>(null);
 
+  const debouncedPrevJson = useDebounce(previousJson, 250);
+  const debouncedCurrJson = useDebounce(currentJson, 250);
+  const debouncedOpenApi = useDebounce(openApiSpecInput, 250);
+  const debouncedPrevSchema = useDebounce(prevSchemaInput, 250);
+  const debouncedCurrSchema = useDebounce(currSchemaInput, 250);
+
   // --- TAB 1 COMPARISON ENGINE EXECUTION ---
   useEffect(() => {
-    const res = compareApiResponses(previousJson, currentJson);
+    const res = compareApiResponses(debouncedPrevJson, debouncedCurrJson);
     setReport(res);
-  }, [previousJson, currentJson]);
+  }, [debouncedPrevJson, debouncedCurrJson]);
 
   // --- TAB 2 OPENAPI ANALYZER EXECUTION ---
   useEffect(() => {
-    const res = parseAndAnalyzeOpenApi(openApiSpecInput);
+    const res = parseAndAnalyzeOpenApi(debouncedOpenApi);
     setOpenApiReport(res);
-  }, [openApiSpecInput]);
+  }, [debouncedOpenApi]);
 
   // --- TAB 3 SCHEMA COMPARATOR EXECUTION ---
   useEffect(() => {
-    const res = compareJsonSchemas(prevSchemaInput, currSchemaInput, schemaMode);
+    const res = compareJsonSchemas(debouncedPrevSchema, debouncedCurrSchema, schemaMode);
     setSchemaCompReport(res);
-  }, [prevSchemaInput, currSchemaInput, schemaMode]);
+  }, [debouncedPrevSchema, debouncedCurrSchema, schemaMode]);
 
   // --- TAB 4 CONTRACT RESPONSE VALIDATOR EXECUTION ---
   const handleValidateContractResponse = () => {

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import CodeEditor from "@/components/tool/CodeEditor";
 import ToolExplanation from "@/components/tool/ToolExplanation";
@@ -92,20 +93,22 @@ export default function JsonValidator({ tool }: Props) {
   const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  // Diagnostic engine computation
+  const debouncedInput = useDebounce(input, 250);
+
+  // Diagnostic engine computation with debouncing for fast typing
   const validationResult: JsonValidationResult = useMemo(() => {
-    if (!input.trim()) {
+    if (!debouncedInput.trim()) {
       return { isValid: null };
     }
 
     try {
-      const parsed = JSON.parse(input);
-      const stats = calculateJsonStats(parsed, input);
+      const parsed = JSON.parse(debouncedInput);
+      const stats = calculateJsonStats(parsed, debouncedInput);
 
       // Duplicate key detection in strict mode
       let duplicateKeys: DuplicateKeyError[] = [];
       if (strictDuplicateCheck) {
-        duplicateKeys = findDuplicateKeys(input);
+        duplicateKeys = findDuplicateKeys(debouncedInput);
       }
 
       return {
@@ -115,7 +118,7 @@ export default function JsonValidator({ tool }: Props) {
       };
     } catch (err: any) {
       const { line, column, suggestion, lineSnippet, pointerSnippet } =
-        analyzeJsonSyntaxError(input, err);
+        analyzeJsonSyntaxError(debouncedInput, err);
 
       return {
         isValid: false,
@@ -128,7 +131,7 @@ export default function JsonValidator({ tool }: Props) {
         pointerSnippet,
       };
     }
-  }, [input, strictDuplicateCheck]);
+  }, [debouncedInput, strictDuplicateCheck]);
 
   // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter
   useEffect(() => {
@@ -501,11 +504,7 @@ export default function JsonValidator({ tool }: Props) {
   return (
     <div className="space-y-6">
       {/* Tool Header */}
-      <ToolHeader
-        tool={tool}
-        title="JSON Validator"
-        description="Validate JSON syntax against strict RFC 8259 specifications with exact line and character error diagnostics, duplicate key detection, and instant formatting."
-      />
+      <ToolHeader tool={tool} />
 
       {/* Main Workspace */}
       {renderWorkspace()}

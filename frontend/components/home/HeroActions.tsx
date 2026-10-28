@@ -15,6 +15,7 @@ export default function HeroActions({
       <Link
         href={primaryHref}
         className="group inline-flex items-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-500 px-6 py-3 text-sm font-extrabold text-white shadow-md hover:shadow-blue-500/20 transition-all duration-200 hover:bg-blue-700 dark:hover:bg-blue-600 active:scale-95"
+        title="Explore all developer tools"
       >
         <Wrench className="h-4 w-4" />
         <span>Explore Developer Tools</span>
@@ -24,6 +25,7 @@ export default function HeroActions({
       <Link
         href={secondaryHref}
         className="group inline-flex items-center gap-2 rounded-xl border border-slate-300/90 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 px-5 py-3 text-sm font-bold text-slate-700 dark:text-slate-300 transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
+        title="Open online code playground"
       >
         <Code2 className="h-4 w-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
         <span>Open Code Playground</span>

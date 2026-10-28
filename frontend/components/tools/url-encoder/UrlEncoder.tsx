@@ -1,153 +1,284 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import ToolInput from "@/components/tool/ToolInput";
 import ToolOutput from "@/components/tool/ToolOutput";
-import ToolExplanation from "@/components/tool/ToolExplanation";
-import RelatedTools from "@/components/tool/RelatedTools";
 import { Tool } from "@/types/tools";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight, FileText, Trash2 } from "lucide-react";
+import { ArrowLeftRight, FileText, Trash2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
   tool: Tool;
 }
 
-const SAMPLE_PLAIN = "https://techwebcode.in/search?q=developer tools&category=web development";
-const SAMPLE_ENCODED = "https%3A%2F%2Ftechwebcode.in%2Fsearch%3Fq%3Ddeveloper%20tools%26category%3Dweb%20development";
+const SAMPLE_COMPONENT_PLAIN = "search query with spaces & special characters: \"hello\" + 'world' / 2026? 🚀";
+const SAMPLE_COMPONENT_ENCODED = "search%20query%20with%20spaces%20%26%20special%20characters%3A%20%22hello%22%20%2B%20%27world%27%20%2F%202026%3F%20%F0%9F%9A%80";
+
+const SAMPLE_FULL_PLAIN = "https://techwebcode.in/search?q=developer tools & category=web development 🚀";
+const SAMPLE_FULL_ENCODED = "https://techwebcode.in/search?q=developer%20tools%20&%20category=web%20development%20%F0%9F%9A%80";
 
 export default function UrlEncoder({ tool }: Props) {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
-  const [encodeType, setEncodeType] = useState<"component" | "full">("component");
-  const [input, setInput] = useState(SAMPLE_PLAIN);
-  const [output, setOutput] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [encodeScope, setEncodeScope] = useState<"component" | "full">("component");
+  const [input, setInput] = useState<string>(SAMPLE_COMPONENT_PLAIN);
+  const [output, setOutput] = useState<string>(() => encodeURIComponent(SAMPLE_COMPONENT_PLAIN));
+  const [status, setStatus] = useState<"idle" | "success" | "error">("success");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const processUrl = (text: string, currentMode: "encode" | "decode", type: "component" | "full") => {
-    if (!text.trim()) {
-      setOutput("");
-      setStatus("idle");
-      setErrorMsg("");
-      return;
-    }
-
-    try {
-      if (currentMode === "encode") {
-        const result = type === "component" ? encodeURIComponent(text) : encodeURI(text);
-        setOutput(result);
-      } else {
-        const result = type === "component" ? decodeURIComponent(text) : decodeURI(text);
-        setOutput(result);
+  const processUrl = useCallback(
+    (text: string, currentMode: "encode" | "decode", scope: "component" | "full") => {
+      if (!text.trim()) {
+        setOutput("");
+        setStatus("idle");
+        setErrorMsg("");
+        return;
       }
-      setStatus("success");
-      setErrorMsg("");
-    } catch (err: any) {
-      setOutput("");
-      setStatus("error");
-      setErrorMsg(err.message || "Failed to process URL string");
+
+      try {
+        let result = "";
+        if (currentMode === "encode") {
+          result = scope === "component" ? encodeURIComponent(text) : encodeURI(text);
+        } else {
+          result = scope === "component" ? decodeURIComponent(text) : decodeURI(text);
+        }
+        setOutput(result);
+        setStatus("success");
+        setErrorMsg("");
+      } catch (err: unknown) {
+        setOutput("");
+        setStatus("error");
+        const msg = err instanceof Error ? err.message : "Malformed URI sequence";
+        if (msg.toLowerCase().includes("malformed")) {
+          setErrorMsg(
+            "Malformed percent-encoded URI: invalid escape sequence detected. Verify that percent characters (%) are followed by valid two-digit hexadecimal codes (e.g. %20 for space)."
+          );
+        } else {
+          setErrorMsg(msg);
+        }
+      }
+    },
+    []
+  );
+
+  const debouncedInput = useDebounce(input, 200);
+
+  useEffect(() => {
+    processUrl(debouncedInput, mode, encodeScope);
+  }, [debouncedInput, mode, encodeScope, processUrl]);
+
+  // Mode change handler
+  const handleModeChange = (newMode: "encode" | "decode") => {
+    setMode(newMode);
+    // Switch to corresponding sample if currently showing sample
+    if (newMode === "decode") {
+      if (input === SAMPLE_COMPONENT_PLAIN) {
+        setInput(SAMPLE_COMPONENT_ENCODED);
+        processUrl(SAMPLE_COMPONENT_ENCODED, "decode", encodeScope);
+      } else if (input === SAMPLE_FULL_PLAIN) {
+        setInput(SAMPLE_FULL_ENCODED);
+        processUrl(SAMPLE_FULL_ENCODED, "decode", encodeScope);
+      } else {
+        processUrl(input, newMode, encodeScope);
+      }
+    } else {
+      if (input === SAMPLE_COMPONENT_ENCODED) {
+        setInput(SAMPLE_COMPONENT_PLAIN);
+        processUrl(SAMPLE_COMPONENT_PLAIN, "encode", encodeScope);
+      } else if (input === SAMPLE_FULL_ENCODED) {
+        setInput(SAMPLE_FULL_PLAIN);
+        processUrl(SAMPLE_FULL_PLAIN, "encode", encodeScope);
+      } else {
+        processUrl(input, newMode, encodeScope);
+      }
     }
   };
 
-  useEffect(() => {
-    processUrl(input, mode, encodeType);
-  }, [input, mode, encodeType]);
+  // Scope change handler (Component vs Full URL)
+  const handleScopeChange = (newScope: "component" | "full") => {
+    setEncodeScope(newScope);
+    // If showing component sample, switch to full url sample and vice-versa
+    if (newScope === "full" && (input === SAMPLE_COMPONENT_PLAIN || input === SAMPLE_COMPONENT_ENCODED)) {
+      const sample = mode === "encode" ? SAMPLE_FULL_PLAIN : SAMPLE_FULL_ENCODED;
+      setInput(sample);
+      processUrl(sample, mode, "full");
+    } else if (newScope === "component" && (input === SAMPLE_FULL_PLAIN || input === SAMPLE_FULL_ENCODED)) {
+      const sample = mode === "encode" ? SAMPLE_COMPONENT_PLAIN : SAMPLE_COMPONENT_ENCODED;
+      setInput(sample);
+      processUrl(sample, mode, "component");
+    } else {
+      processUrl(input, mode, newScope);
+    }
+    toast.info(`Switched to ${newScope === "component" ? "Component Mode (encodeURIComponent)" : "Full URL Mode (encodeURI)"}`);
+  };
 
+  // Swap Direction Handler
   const handleSwap = () => {
     const nextMode = mode === "encode" ? "decode" : "encode";
+    const defaultSample =
+      encodeScope === "component"
+        ? nextMode === "encode"
+          ? SAMPLE_COMPONENT_PLAIN
+          : SAMPLE_COMPONENT_ENCODED
+        : nextMode === "encode"
+        ? SAMPLE_FULL_PLAIN
+        : SAMPLE_FULL_ENCODED;
+
+    const nextInput = output || defaultSample;
     setMode(nextMode);
-    setInput(output || (nextMode === "encode" ? SAMPLE_PLAIN : SAMPLE_ENCODED));
+    setInput(nextInput);
+    processUrl(nextInput, nextMode, encodeScope);
     toast.info(`Swapped to URL ${nextMode === "encode" ? "Encoder" : "Decoder"}`);
   };
 
+  // Clear Handler
   const handleClear = () => {
     setInput("");
     setOutput("");
     setStatus("idle");
     setErrorMsg("");
+    toast.info("Cleared editor input and output.");
+  };
+
+  // Load Example Handler
+  const handleLoadExample = () => {
+    let example = "";
+    if (encodeScope === "component") {
+      example = mode === "encode" ? SAMPLE_COMPONENT_PLAIN : SAMPLE_COMPONENT_ENCODED;
+    } else {
+      example = mode === "encode" ? SAMPLE_FULL_PLAIN : SAMPLE_FULL_ENCODED;
+    }
+    setInput(example);
+    processUrl(example, mode, encodeScope);
+    toast.info(`Loaded ${mode === "encode" ? "Plain" : "Percent-encoded"} ${encodeScope} example.`);
+  };
+
+  // Action Click Handler
+  const handleActionClick = () => {
+    processUrl(input, mode, encodeScope);
+    if (!input.trim()) {
+      toast.info(`Please enter text to ${mode === "encode" ? "encode" : "decode"}.`);
+    } else {
+      toast.success(`URL ${mode === "encode" ? "encoded" : "decoded"} successfully!`);
+    }
   };
 
   return (
     <div className="space-y-6">
-      <ToolHeader tool={tool} />
+      {/* Tool Header */}
+      <ToolHeader
+        tool={tool}
+        title="URL Encoder & Decoder"
+        description="Encode URLs or decode URL-encoded text online. Use this free URL encoding and decoding tool for quick, reliable results."
+      />
 
-      {/* Toolbar Controls */}
+      {/* Main Mode & Scope Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/40 p-3 rounded-2xl border border-border">
         <div className="flex flex-wrap items-center gap-2">
-          <Button
-            type="button"
-            variant={mode === "encode" ? "default" : "outline"}
-            size="sm"
-            onClick={() => {
-              setMode("encode");
-              setInput(SAMPLE_PLAIN);
-            }}
-            className="h-8 text-xs font-semibold"
-          >
-            URL Encode
-          </Button>
+          {/* Segmented Control: Mode */}
+          <div className="flex items-center gap-1 p-1 bg-muted/80 rounded-xl border border-border/60">
+            <button
+              type="button"
+              onClick={() => handleModeChange("encode")}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                mode === "encode"
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={mode === "encode"}
+            >
+              URL Encode
+            </button>
 
-          <Button
-            type="button"
-            variant={mode === "decode" ? "default" : "outline"}
-            size="sm"
-            onClick={() => {
-              setMode("decode");
-              setInput(SAMPLE_ENCODED);
-            }}
-            className="h-8 text-xs font-semibold"
-          >
-            URL Decode
-          </Button>
+            <button
+              type="button"
+              onClick={() => handleModeChange("decode")}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                mode === "decode"
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={mode === "decode"}
+            >
+              URL Decode
+            </button>
+          </div>
 
           <div className="h-4 w-px bg-border mx-1 hidden sm:block" />
 
-          {/* Encode Type Selection */}
+          {/* Segmented Control: Scope */}
+          <div className="flex items-center gap-1 p-1 bg-muted/80 rounded-xl border border-border/60">
+            <button
+              type="button"
+              onClick={() => handleScopeChange("component")}
+              className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-all cursor-pointer ${
+                encodeScope === "component"
+                  ? "bg-background text-foreground shadow-xs font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Encodes all reserved characters (encodeURIComponent) - ideal for query parameter values"
+              aria-pressed={encodeScope === "component"}
+            >
+              Component Mode
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleScopeChange("full")}
+              className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-all cursor-pointer ${
+                encodeScope === "full"
+                  ? "bg-background text-foreground shadow-xs font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Preserves URL protocol, domain, and structure (encodeURI) - ideal for entire links"
+              aria-pressed={encodeScope === "full"}
+            >
+              Full URL Mode
+            </button>
+          </div>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-2">
+          {/* Primary Action Button */}
           <Button
             type="button"
-            variant={encodeType === "component" ? "secondary" : "ghost"}
+            variant="default"
             size="sm"
-            onClick={() => setEncodeType("component")}
-            className="h-8 text-xs text-muted-foreground"
+            onClick={handleActionClick}
+            className="h-8 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white gap-1.5 cursor-pointer"
+            aria-label={mode === "encode" ? "Encode URL string" : "Decode URL string"}
           >
-            Component Mode
+            <span>{mode === "encode" ? "Encode URL" : "Decode URL"}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Button>
 
           <Button
             type="button"
-            variant={encodeType === "full" ? "secondary" : "ghost"}
-            size="sm"
-            onClick={() => setEncodeType("full")}
-            className="h-8 text-xs text-muted-foreground"
-          >
-            Full URL Mode
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleSwap}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1.5"
-            title="Swap Direction"
+            className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1.5 cursor-pointer"
+            title="Swap input and output values and switch mode"
+            aria-label="Swap input and output direction"
           >
             <ArrowLeftRight className="w-3.5 h-3.5" />
             <span>Swap</span>
           </Button>
-        </div>
 
-        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            onClick={() => setInput(mode === "encode" ? SAMPLE_PLAIN : SAMPLE_ENCODED)}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={handleLoadExample}
+            className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+            title="Load sample URL"
+            aria-label="Load sample"
           >
-            <FileText className="w-3.5 h-3.5 mr-1" />
-            <span>Sample</span>
+            <FileText className="w-3.5 h-3.5" />
+            <span>Example</span>
           </Button>
 
           <Button
@@ -155,7 +286,9 @@ export default function UrlEncoder({ tool }: Props) {
             variant="ghost"
             size="sm"
             onClick={handleClear}
-            className="h-8 text-xs text-muted-foreground hover:text-destructive"
+            className="h-8 text-xs text-muted-foreground hover:text-destructive cursor-pointer"
+            title="Clear all fields"
+            aria-label="Clear all fields"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </Button>
@@ -165,15 +298,34 @@ export default function UrlEncoder({ tool }: Props) {
       {/* Grid: Input vs Output */}
       <div className="grid gap-6 lg:grid-cols-2">
         <ToolInput
-          label={mode === "encode" ? "Raw URL / Component Input" : "Percent-Encoded String Input"}
+          label={
+            mode === "encode"
+              ? encodeScope === "component"
+                ? "Query Parameter / Component Input"
+                : "Full URL Input"
+              : "Percent-Encoded String Input"
+          }
           value={input}
           onChange={setInput}
-          placeholder={mode === "encode" ? "Enter URL or query parameters to encode..." : "Enter percent-encoded string..."}
-          onLoadSample={() => setInput(mode === "encode" ? SAMPLE_PLAIN : SAMPLE_ENCODED)}
+          placeholder={
+            mode === "encode"
+              ? encodeScope === "component"
+                ? "Enter query parameter or text to encode (e.g. search query & params)..."
+                : "Enter full URL to encode (e.g. https://techwebcode.in/search?q=developer tools)..."
+              : "Enter percent-encoded string (e.g. search%20query%26params)..."
+          }
+          onLoadSample={handleLoadExample}
+          onClear={handleClear}
         />
 
         <ToolOutput
-          label={mode === "encode" ? "Percent-Encoded Output" : "Decoded Plain URL"}
+          label={
+            mode === "encode"
+              ? "Percent-Encoded Output Result"
+              : encodeScope === "component"
+              ? "Decoded Parameter Value"
+              : "Decoded Full URL"
+          }
           value={output}
           status={status}
           errorMessage={errorMsg}
@@ -181,48 +333,17 @@ export default function UrlEncoder({ tool }: Props) {
         />
       </div>
 
-      {/* SEO Rich Explanation Content */}
-      <ToolExplanation
-        title="URL Encoder & Decoder"
-        description="URL encoding (also known as percent-encoding) converts characters into a format that can be transmitted over the Internet securely via HTTP GET query parameters. Reserved characters like spaces, question marks, and ampersands are replaced by '%20', '%3F', '%26'."
-        howToUse={[
-          "Select 'URL Encode' or 'URL Decode' mode.",
-          "Choose 'Component Mode' (encodeURIComponent for query params) or 'Full URL Mode' (encodeURI for full links).",
-          "Paste or type string into the input field.",
-          "Click 'Swap' to quickly test reverse decoding.",
-        ]}
-        features={[
-          "100% Client-Side percent-encoding with zero latency.",
-          "Supports both encodeURIComponent (all special chars) and encodeURI (preserves URL scheme).",
-          "One-click Swap Direction for instant verification.",
-          "Download output result.",
-        ]}
-        faqs={[
-          {
-            question: "What is the difference between Component Mode and Full URL Mode?",
-            answer:
-              "Component Mode (encodeURIComponent) encodes all special characters including ':', '/', '?', and '&', making it ideal for query string parameter values. Full URL Mode (encodeURI) preserves URL protocol and domain syntax (https://) while encoding spaces.",
-          },
-          {
-            question: "Why are spaces encoded as %20 or + in URLs?",
-            answer:
-              "In standard URI percent-encoding (RFC 3986), spaces are encoded as `%20`. In HTML form POST data (`application/x-www-form-urlencoded`), spaces are often encoded as `+`.",
-          },
-          {
-            question: "What characters are reserved in URLs?",
-            answer:
-              "Reserved characters include `:`, `/`, `?`, `#`, `[`, `]`, `@`, `!`, `$`, `&`, `'`, `(`, `)`, `*`, `+`, `,`, `;`, `=`. They have special syntactical meaning in URIs and must be percent-encoded when passed as parameter values.",
-          },
-          {
-            question: "Does URL encoding support Unicode and emojis?",
-            answer:
-              "Yes. UTF-8 multi-byte characters and emojis are converted into hexadecimal byte sequences prefixed by `%` (e.g. `%F0%9F%9A%80` for 🚀).",
-          },
-        ]}
-      />
-
-      {/* Interlinking Related Tools */}
-      <RelatedTools currentSlug="url-encoder-decoder" />
+      {/* Scope Explanation Banner */}
+      <div className="p-3 bg-muted/30 rounded-xl border border-border/60 text-xs text-muted-foreground flex items-center justify-between flex-wrap gap-2">
+        <span className="font-mono text-foreground font-semibold">
+          Active JavaScript Engine: {encodeScope === "component" ? (mode === "encode" ? "encodeURIComponent()" : "decodeURIComponent()") : (mode === "encode" ? "encodeURI()" : "decodeURI()")}
+        </span>
+        <span>
+          {encodeScope === "component"
+            ? "Encodes all reserved delimiters (:, /, ?, #, &, =)—best for individual query string parameters."
+            : "Preserves URL protocols, domain, and path structure (https://, /path, ?)—best for complete links."}
+        </span>
+      </div>
     </div>
   );
 }

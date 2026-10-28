@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Braces,
   Code2,
-  KeyRound,
   Binary,
   Hash,
   Clock3,
@@ -76,6 +75,7 @@ const TOOL_SPECS: Record<string, { specTag: string; ioPill: string }> = {
   "yaml-formatter": { specTag: "YAML 1.2", ioPill: "YAML ➔ K8s Manifest" },
   base64: { specTag: "RFC 4648", ioPill: "Raw Text ↔ Base64" },
   "uuid-generator": { specTag: "RFC 4122 v4", ioPill: "Crypto UUID Generator" },
+  "timestamp-converter": { specTag: "RFC 3339", ioPill: "Epoch ↔ ISO Date" },
 };
 
 export interface RelatedGuide {

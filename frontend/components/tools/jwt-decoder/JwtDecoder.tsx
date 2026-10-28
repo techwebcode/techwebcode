@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import CodeEditor from "@/components/tool/CodeEditor";
 import ToolExplanation from "@/components/tool/ToolExplanation";
@@ -89,9 +90,11 @@ export default function JwtDecoder({ tool }: Props) {
     }
   };
 
+  const debouncedToken = useDebounce(token, 200);
+
   useEffect(() => {
-    decodeJwt(token);
-  }, [token]);
+    decodeJwt(debouncedToken);
+  }, [debouncedToken]);
 
   const handleCopyPayload = () => {
     if (!payload) return;

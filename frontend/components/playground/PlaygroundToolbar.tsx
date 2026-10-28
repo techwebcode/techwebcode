@@ -12,6 +12,7 @@ import {
   Maximize2,
   Code2,
   Loader2,
+  Square,
 } from "lucide-react";
 import { LANGUAGES, LanguageConfig } from "./languages.config";
 
@@ -19,6 +20,7 @@ interface PlaygroundToolbarProps {
   currentLanguage: LanguageConfig;
   onSelectLanguage: (slug: string) => void;
   onRun: () => void;
+  onStop?: () => void;
   isRunning?: boolean;
   onReset: () => void;
   onCopy: () => void;
@@ -33,6 +35,7 @@ export default function PlaygroundToolbar({
   currentLanguage,
   onSelectLanguage,
   onRun,
+  onStop,
   isRunning = false,
   onReset,
   onCopy,
@@ -84,22 +87,43 @@ export default function PlaygroundToolbar({
 
       {/* Right: Controls & Actions */}
       <div className="flex items-center gap-2">
-        {/* Run Button */}
-        <button
-          type="button"
-          onClick={onRun}
-          disabled={isRunning}
-          className={`flex items-center gap-1.5 text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg shadow-sm transition-all active:scale-95 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed`}
-          title={isRunning ? "Executing code..." : "Run Code (Ctrl + Enter)"}
-          aria-label={isRunning ? "Executing code" : "Run Code"}
-        >
-          {isRunning ? (
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-          ) : (
+        {/* Run / Stop Controls */}
+        {isRunning ? (
+          <div className="flex items-center gap-1.5">
+            <div
+              className="flex items-center gap-1.5 text-xs font-bold bg-blue-600/90 text-white px-3 py-1.5 rounded-lg shadow-sm select-none"
+              aria-live="polite"
+              aria-label="Executing code in progress"
+            >
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <span>Running...</span>
+            </div>
+
+            {onStop && (
+              <button
+                type="button"
+                onClick={onStop}
+                className="flex items-center gap-1.5 text-xs font-extrabold bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg shadow-sm transition-all active:scale-95 cursor-pointer animate-in fade-in duration-150"
+                title="Stop Execution (Cancel)"
+                aria-label="Stop execution"
+              >
+                <Square className="w-3 h-3 fill-current" />
+                <span>Stop</span>
+              </button>
+            )}
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={onRun}
+            className="flex items-center gap-1.5 text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg shadow-sm transition-all active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            title="Run Code (Ctrl + Enter)"
+            aria-label="Run Code (Ctrl + Enter)"
+          >
             <Play className="w-3.5 h-3.5 fill-current" />
-          )}
-          <span>{isRunning ? "Running..." : "Run"}</span>
-        </button>
+            <span>Run</span>
+          </button>
+        )}
 
         {/* Reset Button */}
         <button

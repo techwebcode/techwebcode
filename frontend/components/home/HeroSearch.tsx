@@ -109,20 +109,6 @@ export default function HeroSearch({
     }
   }, []);
 
-  // Global ⌘ K / Ctrl+K keyboard shortcut listener
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        inputRef.current?.focus();
-        setIsOpen(true);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   // Handle outside click to close dropdown
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -215,9 +201,10 @@ export default function HeroSearch({
         {/* Keyboard Shortcut Indicator */}
         <button
           type="button"
-          onClick={() => inputRef.current?.focus()}
-          className="hidden sm:flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700"
-          title="Press ⌘K to search"
+          onClick={() => window.dispatchEvent(new CustomEvent("open-command-search"))}
+          className="hidden sm:flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
+          title="Open Command Palette (⌘K)"
+          aria-label="Open Command Palette"
         >
           {isMac ? (
             <>

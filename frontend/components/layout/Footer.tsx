@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-100 dark:border-slate-800/80 py-5 text-center text-xs text-slate-500 dark:text-slate-400">
-          © {new Date().getFullYear()} TechWebCode. All rights reserved. 100% Client-Side Privacy First Tools.
+          © {new Date().getFullYear()} TechWebCode. All rights reserved. Free Online Developer Tools & Code Compilers.
         </div>
       </Container>
     </footer>

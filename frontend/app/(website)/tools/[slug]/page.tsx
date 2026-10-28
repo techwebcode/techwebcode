@@ -1,22 +1,26 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Metadata } from "next";
 
 import ToolRenderer from "@/components/tool/ToolRenderer";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
-import AdBanner from "@/components/common/AdBanner";
+import ToolPageLayout from "@/components/tool/ToolPageLayout";
 import ToolService from "@/services/tool.service";
 import { Tool } from "@/types/tools";
-import ToolSeoSection from "@/components/tool/ToolSeoSection";
 import {
   getToolSeoData,
   getCanonicalToolSlug,
-  TOOL_SEO_DATA,
+  CANONICAL_TOOL_SLUGS,
 } from "@/constants/toolSeoData";
 
 interface Props {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export function generateStaticParams() {
+  return CANONICAL_TOOL_SLUGS.map((slug) => ({
+    slug,
+  }));
 }
 
 const DEFAULT_TOOLS: Record<string, Tool> = {
@@ -57,8 +61,8 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Decode JSON Web Tokens (JWT) online. View header algorithm, payload claims, and expiration timestamps securely in your browser.",
     shortDescription: "Decode and inspect JWT token headers and payload claims securely.",
     featured: true,
-    seoTitle: "JWT Decoder Online - Decode & Inspect JWT Claims | TechWebCode",
-    seoDescription: "Decode JSON Web Tokens (JWT) online. View header, payload claims, and expiration date instantly. 100% private client-side decoding.",
+    seoTitle: "JWT Decoder Online - Inspect JWT Claims | TechWebCode",
+    seoDescription: "Decode JSON Web Tokens (JWT) online. View header, payload claims, and expiration date instantly with client-side token parsing.",
   },
   "base64": {
     id: 5,
@@ -68,7 +72,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     shortDescription: "Encode text into Base64 format or decode Base64 strings into text.",
     featured: true,
     seoTitle: "Base64 Encoder & Decoder Online | TechWebCode",
-    seoDescription: "Encode text to Base64 format or decode Base64 strings back to plain text online. Fast, secure, and privacy-first.",
+    seoDescription: "Encode text to Base64 or decode Base64 strings online with this free Base64 tool. Fast, simple, and easy to use.",
   },
   "uuid-generator": {
     id: 6,
@@ -94,11 +98,11 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     id: 8,
     name: "URL Encoder & Decoder",
     slug: "url-encoder-decoder",
-    description: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
-    shortDescription: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
+    description: "Encode URLs or decode URL-encoded text online. Use this free URL encoding and decoding tool for quick, reliable results.",
+    shortDescription: "Encode URLs or decode URL-encoded text online with Component and Full URL mode support.",
     featured: true,
-    seoTitle: "URL Encoder & Decoder Online - Free Tool | TechWebCode",
-    seoDescription: "Free online URL Encoder and Decoder. Encode or decode URLs and query parameters using percent-encoding directly in your browser.",
+    seoTitle: "URL Encoder & Decoder Online | TechWebCode",
+    seoDescription: "Encode URLs or decode URL-encoded text online. Use this free URL encoding and decoding tool for quick, reliable results.",
   },
   "regex-tester": {
     id: 9,
@@ -107,28 +111,28 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Test regular expressions, highlight matches, inspect capture groups, and understand regex patterns with detailed explanations. Supports multiple regex flavors.",
     shortDescription: "Test, debug, and understand regular expressions with token breakdown and diagnostics.",
     featured: true,
-    seoTitle: "Regex Tester & Explainer — Test, Debug & Understand Regex | TechWebCode",
+    seoTitle: "Regex Tester & Explainer Online | TechWebCode",
     seoDescription: "Test regular expressions, highlight matches, inspect capture groups, and understand regex patterns with detailed explanations. Supports multiple regex flavors.",
   },
   "sql-formatter": {
     id: 10,
-    name: "SQL Formatter",
+    name: "SQL Formatter & Validator",
     slug: "sql-formatter",
-    description: "Format and beautify raw SQL queries with proper clause indentations and capitalized SQL keywords for maximum query readability.",
-    shortDescription: "Format and beautify SQL queries with proper indentation and keyword capitalization.",
+    description: "Format, validate, and minify SQL queries online with standardized keyword capitalization and dialect-aware AST syntax validation.",
+    shortDescription: "Format, validate, and minify SQL queries online.",
     featured: true,
-    seoTitle: "SQL Formatter Online - Format & Beautify SQL Queries | TechWebCode",
-    seoDescription: "Format and beautify SQL queries online. Standardize keyword capitalization and indent complex clauses for maximum readability.",
+    seoTitle: "SQL Formatter & Validator Online — Format, Validate & Minify | TechWebCode",
+    seoDescription: "Format, validate, and minify SQL queries online. Standardize keyword capitalization and verify syntax grammar across MySQL, PostgreSQL, SQLite, and SQL Server.",
   },
   "yaml-formatter": {
     id: 11,
     name: "YAML Formatter & Kubernetes Secret Tool",
     slug: "yaml-formatter",
-    description: "Format and validate YAML files, and encode or decode Kubernetes Secret values online. Free, fast, and privacy-first browser tool.",
+    description: "Format and validate YAML files, and encode or decode Kubernetes Secret values online with in-browser parsing.",
     shortDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret values online.",
     featured: true,
     seoTitle: "YAML Formatter & Kubernetes Secret Tool | TechWebCode",
-    seoDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret values online. Free, fast, and privacy-first browser tool.",
+    seoDescription: "Format and validate YAML files, and encode or decode Kubernetes Secret values online with in-browser parsing and manifest preservation.",
   },
   "deployment-config-doctor": {
     id: 16,
@@ -137,7 +141,7 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     description: "Analyze Docker, Kubernetes, environment, Nginx, Next.js and CI/CD configuration for deployment errors, security issues and cross-file mismatches.",
     shortDescription: "Cross-file project configuration analyzer for Docker, Kubernetes, Nginx, and .env files.",
     featured: true,
-    seoTitle: "Deployment Config Doctor — Docker, Kubernetes & Env Checker | TechWebCode",
+    seoTitle: "Deployment Config Doctor — Docker & K8s Checker | TechWebCode",
     seoDescription: "Analyze Docker, Kubernetes, environment, Nginx, Next.js and CI/CD configuration for deployment errors, security issues and cross-file mismatches.",
   },
   "api-contract-checker": {
@@ -154,31 +158,31 @@ const DEFAULT_TOOLS: Record<string, Tool> = {
     id: 18,
     name: "Code Difference Checker",
     slug: "code-diff-checker",
-    description: "Compare two versions of code side-by-side or unified online. Instantly highlight added, removed, and modified lines with 100% client-side browser privacy.",
+    description: "Compare two versions of code side-by-side or unified online. Instantly highlight added, removed, and modified lines with fast in-browser diffing.",
     shortDescription: "Compare two versions of code side-by-side or unified to instantly spot additions, deletions, and modifications.",
     featured: true,
-    seoTitle: "Code Difference Checker — Side-by-Side Code Diff Online | TechWebCode",
-    seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, change navigation, and 100% client-side privacy.",
+    seoTitle: "Code Difference Checker — Side-by-Side Diff Online | TechWebCode",
+    seoDescription: "Compare two versions of code online with TechWebCode's Code Difference Checker. Side-by-side view, git-style unified diff, word-level diff, and change navigation.",
   },
   "sha1-hash-generator": {
     id: 19,
     name: "SHA-1 Hash Generator",
     slug: "sha1-hash-generator",
     description: "Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers.",
-    shortDescription: "Generate SHA-1 hash digests from text instantly with 100% client-side browser execution.",
+    shortDescription: "Generate SHA-1 hash digests from text instantly with client-side browser execution.",
     featured: true,
-    seoTitle: "SHA-1 Hash Generator Online — Generate 40-Char SHA-1 Hashes | TechWebCode",
+    seoTitle: "SHA-1 Hash Generator Online | TechWebCode",
     seoDescription: "Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers.",
   },
   "comma-separator": {
     id: 20,
     name: "Comma Separator",
     slug: "comma-separator",
-    description: "Quickly convert lists into comma-separated values, format delimited text, remove duplicates, and reverse comma-separated strings back to newlines with 100% client-side privacy.",
+    description: "Quickly convert lists into comma-separated values, format delimited text, remove duplicates, and reverse comma-separated strings back to newlines with fast in-browser execution.",
     shortDescription: "Convert lists into comma-separated values or split delimited text into lines instantly.",
     featured: true,
-    seoTitle: "Comma Separator Online — Convert Lists to Comma-Separated Values | TechWebCode",
-    seoDescription: "Convert newline lists into comma-separated values or split delimited text into lines online. Fast, customizable with quotes, deduplication, and 100% browser privacy.",
+    seoTitle: "Comma Separator & List Formatter Online | TechWebCode",
+    seoDescription: "Convert newline lists into comma-separated values or split delimited text into lines online. Fast, customizable with quotes, deduplication, and in-browser processing.",
   },
 };
 
@@ -236,6 +240,11 @@ export default async function ToolPage({
 }: Props) {
   const { slug } = await params;
   const canonicalSlug = getCanonicalToolSlug(slug);
+
+  if (slug !== canonicalSlug) {
+    permanentRedirect(`/tools/${canonicalSlug}`);
+  }
+
   const seoData = getToolSeoData(canonicalSlug);
 
   let tool: Tool | undefined;
@@ -257,64 +266,64 @@ export default async function ToolPage({
     notFound();
   }
 
-  // 1. JSON-LD Structured Data for SoftwareApplication Schema
-  const softwareAppSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: seoData?.name || tool.name,
-    operatingSystem: "All",
-    applicationCategory: "DeveloperApplication",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+  // Unified JSON-LD Structured Data Graph
+  const graphEntities: Record<string, unknown>[] = [
+    {
+      "@type": "SoftwareApplication",
+      name: seoData?.name || tool.name,
+      operatingSystem: "All",
+      applicationCategory: "DeveloperApplication",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description: seoData?.shortDescription || tool.description || tool.shortDescription,
+      url: `https://techwebcode.in/tools/${canonicalSlug}`,
     },
-    description: seoData?.shortDescription || tool.description || tool.shortDescription,
-    url: `https://techwebcode.in/tools/${canonicalSlug}`,
-  };
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://techwebcode.in",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Developer Tools",
+          item: "https://techwebcode.in/tools",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: seoData?.name || tool.name,
+          item: `https://techwebcode.in/tools/${canonicalSlug}`,
+        },
+      ],
+    },
+  ];
 
-  // 2. JSON-LD Structured Data for BreadcrumbList Schema
-  const breadcrumbSchema = {
+  if (seoData?.faqs && seoData.faqs.length > 0) {
+    graphEntities.push({
+      "@type": "FAQPage",
+      mainEntity: seoData.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    });
+  }
+
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://techwebcode.in",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Developer Tools",
-        item: "https://techwebcode.in/tools",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: seoData?.name || tool.name,
-        item: `https://techwebcode.in/tools/${canonicalSlug}`,
-      },
-    ],
+    "@graph": graphEntities,
   };
-
-  // 3. JSON-LD Structured Data for FAQPage Schema (matches visible page FAQs)
-  const faqSchema =
-    seoData?.faqs && seoData.faqs.length > 0
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: seoData.faqs.map((faq) => ({
-            "@type": "Question",
-            name: faq.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: faq.answer,
-            },
-          })),
-        }
-      : null;
 
   const breadcrumbItems = [
     { label: "Tools", href: "/tools" },
@@ -322,39 +331,33 @@ export default async function ToolPage({
   ];
 
   return (
-    <div className="w-[calc(100%-24px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] max-w-[1800px] mx-auto py-6 sm:py-8 space-y-6">
-      {/* Inject Structured Data */}
+    <>
+      {/* Consolidated Structured Data Graph */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
 
-      {/* Breadcrumb Navigation */}
-      <Breadcrumbs items={breadcrumbItems} />
-
-      {/* Tool Interface & Workspace with Optimized Primary H1 */}
-      <ToolRenderer
-        tool={{
-          ...tool,
-          name: seoData?.h1 || tool.name,
+      {/* Tool-First Reusable Page Layout */}
+      <ToolPageLayout
+        breadcrumbs={breadcrumbItems}
+        title={seoData?.h1 || tool.name}
+        badge={seoData?.category || (tool as any).category?.name}
+        description={seoData?.shortDescription || tool.shortDescription || tool.description}
+        seoData={seoData}
+        privacyNotice={{
+          isClientSide: true,
+          title: "100% Client-Side:",
+          description: "Your tool input is processed locally in your browser and is not sent to TechWebCode servers.",
         }}
-      />
-
-      {/* Server-Rendered Educational SEO Guide, Examples, FAQs & Related Tools */}
-      {seoData && <ToolSeoSection data={seoData} />}
-
-      {/* Non-Intrusive Bottom Ad Banner */}
-      <AdBanner slot="8877665544" className="mt-8" />
-    </div>
+      >
+        <ToolRenderer
+          tool={{
+            ...tool,
+            name: seoData?.h1 || tool.name,
+          }}
+        />
+      </ToolPageLayout>
+    </>
   );
 }

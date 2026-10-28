@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useRef } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Tool } from "@/types/tools";
 import ToolHeader from "@/components/tool/ToolHeader";
 import RelatedTools from "@/components/tool/RelatedTools";
@@ -49,16 +50,19 @@ export default function CodeDiffChecker({ tool }: CodeDiffCheckerProps) {
   const origEditorRef = useRef<any>(null);
   const modEditorRef = useRef<any>(null);
 
+  const debouncedOriginal = useDebounce(original, 250);
+  const debouncedModified = useDebounce(modified, 250);
+
   // Automatically detect language if set to "auto"
   const activeLanguage = useMemo(() => {
     if (options.language !== "auto") return options.language;
-    return detectLanguage(original || modified);
-  }, [options.language, original, modified]);
+    return detectLanguage(debouncedOriginal || debouncedModified);
+  }, [options.language, debouncedOriginal, debouncedModified]);
 
-  // Compute live pure client-side diff
+  // Compute live pure client-side diff with debounced inputs for responsive editing
   const diffResult = useMemo(() => {
-    return computeDiff(original, modified, options);
-  }, [original, modified, options]);
+    return computeDiff(debouncedOriginal, debouncedModified, options);
+  }, [debouncedOriginal, debouncedModified, options]);
 
   const activeHunk = useMemo(() => {
     if (diffResult.changes.length === 0) return null;

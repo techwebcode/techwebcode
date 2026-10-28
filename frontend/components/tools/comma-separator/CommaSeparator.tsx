@@ -17,6 +17,8 @@ import {
   SlidersHorizontal,
   CheckSquare,
   Square,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -47,6 +49,7 @@ export default function CommaSeparator({ tool }: Props) {
   const [removeEmpty, setRemoveEmpty] = useState<boolean>(true);
   const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(false);
   const [sortOrder, setSortOrder] = useState<SortType>("none");
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
   const [copied, setCopied] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -118,28 +121,15 @@ export default function CommaSeparator({ tool }: Props) {
   };
 
   const renderWorkspaceContent = () => (
-    <div className="space-y-6">
-      {/* 1. Client-Side Privacy Notice */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/5 text-xs text-foreground">
-        <div className="flex items-center gap-2 font-medium">
-          <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span>
-            <strong>100% Client-Side:</strong> Your input is processed locally in your browser and is not sent to TechWebCode servers.
-          </span>
-        </div>
-        <span className="text-[11px] text-muted-foreground font-mono bg-background/80 px-2 py-0.5 rounded border">
-          Zero Network Overhead
-        </span>
-      </div>
-
-      {/* 2. Direction Switcher & Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-2xl bg-muted/40 border">
+    <div className="space-y-4">
+      {/* 1. Primary Direction Switcher & Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 p-2 rounded-2xl bg-muted/40 border">
         {/* Direction Switcher */}
         <div className="flex items-center gap-1.5 p-1 rounded-xl bg-background border text-xs">
           <button
             type="button"
             onClick={() => setDirection("list-to-delimited")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               direction === "list-to-delimited"
                 ? "bg-blue-600 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -150,7 +140,7 @@ export default function CommaSeparator({ tool }: Props) {
           <button
             type="button"
             onClick={() => setDirection("delimited-to-list")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               direction === "delimited-to-list"
                 ? "bg-blue-600 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -167,11 +157,11 @@ export default function CommaSeparator({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={handleSwap}
-            className="gap-1.5 text-xs rounded-xl"
+            className="gap-1.5 text-xs rounded-xl cursor-pointer"
             title="Move output to input and reverse conversion direction"
           >
             <ArrowLeftRight className="w-3.5 h-3.5 text-blue-500" />
-            <span>Swap Direction</span>
+            <span>Swap</span>
           </Button>
 
           <Button
@@ -181,7 +171,7 @@ export default function CommaSeparator({ tool }: Props) {
             onClick={() => {
               setInput(direction === "list-to-delimited" ? SAMPLE_FRUITS : SAMPLE_COMMA_TEXT);
             }}
-            className="gap-1 text-xs rounded-xl"
+            className="gap-1 text-xs rounded-xl cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Sample: Fruits</span>
@@ -195,7 +185,7 @@ export default function CommaSeparator({ tool }: Props) {
               setInput(SAMPLE_NUMERIC_IDS);
               setDirection("list-to-delimited");
             }}
-            className="gap-1 text-xs rounded-xl hidden md:inline-flex"
+            className="gap-1 text-xs rounded-xl hidden md:inline-flex cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Sample: IDs</span>
@@ -206,7 +196,7 @@ export default function CommaSeparator({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={handleClear}
-            className="gap-1 text-xs rounded-xl text-muted-foreground hover:text-rose-500"
+            className="gap-1 text-xs rounded-xl text-muted-foreground hover:text-rose-500 cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Clear</span>
@@ -217,7 +207,7 @@ export default function CommaSeparator({ tool }: Props) {
             variant="outline"
             size="sm"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="gap-1 text-xs rounded-xl ml-auto sm:ml-0"
+            className="gap-1 text-xs rounded-xl ml-auto sm:ml-0 cursor-pointer"
           >
             <Maximize2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Fullscreen</span>
@@ -225,21 +215,16 @@ export default function CommaSeparator({ tool }: Props) {
         </div>
       </div>
 
-      {/* 3. Settings & Options Panel */}
-      <div className="rounded-2xl border bg-card p-4 space-y-4 shadow-xs">
-        <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-muted-foreground border-b pb-2.5">
-          <SlidersHorizontal className="w-3.5 h-3.5" />
-          <span>Formatting & Delimiter Options</span>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-center text-xs">
-          {/* Separator Type */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Delimiter</label>
+      {/* 2. Compact Primary Formatting Options Bar */}
+      <div className="rounded-xl border bg-card p-3 shadow-xs space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          {/* Delimiter Selector */}
+          <div className="flex items-center gap-2">
+            <label className="font-semibold text-foreground shrink-0">Delimiter:</label>
             <select
               value={separatorType}
               onChange={(e) => setSeparatorType(e.target.value as SeparatorType)}
-              className="w-full h-9 rounded-xl border border-input bg-background px-3 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs"
+              className="h-8 rounded-lg border border-input bg-background px-2.5 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs cursor-pointer"
             >
               <option value="comma">Comma ( , )</option>
               <option value="semicolon">Semicolon ( ; )</option>
@@ -248,147 +233,172 @@ export default function CommaSeparator({ tool }: Props) {
               <option value="tab">Tab ( \t )</option>
               <option value="custom">Custom Character</option>
             </select>
-          </div>
 
-          {/* Custom Delimiter (if chosen) */}
-          {separatorType === "custom" && (
-            <div className="space-y-1.5">
-              <label className="font-semibold text-foreground">Custom String</label>
+            {separatorType === "custom" && (
               <input
                 type="text"
                 value={customSeparator}
                 onChange={(e) => setCustomSeparator(e.target.value)}
-                placeholder="e.g. :: or ->"
-                className="w-full h-9 rounded-xl border border-input bg-background px-3 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g. ::"
+                className="w-20 h-8 rounded-lg border border-input bg-background px-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary"
               />
-            </div>
-          )}
-
-          {/* Quote Wrapping */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Item Quotes (SQL / JSON)</label>
-            <select
-              value={quoteType}
-              onChange={(e) => setQuoteType(e.target.value as QuoteType)}
-              disabled={direction === "delimited-to-list"}
-              className="w-full h-9 rounded-xl border border-input bg-background px-3 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs disabled:opacity-50"
-            >
-              <option value="none">No Quotes (raw values)</option>
-              <option value="single">Single Quotes (&apos;value&apos;)</option>
-              <option value="double">Double Quotes (&quot;value&quot;)</option>
-              <option value="backtick">Backticks (`value`)</option>
-            </select>
+            )}
           </div>
 
-          {/* Sort Order */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Sort Order</label>
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as SortType)}
-              className="w-full h-9 rounded-xl border border-input bg-background px-3 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs"
+          {/* Quick Frequent Toggles */}
+          <div className="flex flex-wrap items-center gap-4">
+            {direction === "list-to-delimited" && separatorType !== "space" && separatorType !== "tab" && (
+              <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={spaceAfterSeparator}
+                  onClick={() => setSpaceAfterSeparator(!spaceAfterSeparator)}
+                  className="text-primary hover:opacity-80 cursor-pointer"
+                >
+                  {spaceAfterSeparator ? (
+                    <CheckSquare className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  ) : (
+                    <Square className="w-3.5 h-3.5 text-muted-foreground" />
+                  )}
+                </button>
+                <span className="text-foreground font-medium text-xs">Space after separator</span>
+              </label>
+            )}
+
+            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={removeDuplicates}
+                onClick={() => setRemoveDuplicates(!removeDuplicates)}
+                className="text-primary hover:opacity-80 cursor-pointer"
+              >
+                {removeDuplicates ? (
+                  <CheckSquare className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                ) : (
+                  <Square className="w-3.5 h-3.5 text-muted-foreground" />
+                )}
+              </button>
+              <span className="text-foreground font-medium text-xs">Remove duplicates</span>
+            </label>
+
+            {/* Advanced Options Toggle */}
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="h-7 px-2 text-xs font-semibold text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
             >
-              <option value="none">Preserve Original Order</option>
-              <option value="asc">Alphabetical (A ➔ Z)</option>
-              <option value="desc">Reverse (Z ➔ A)</option>
-            </select>
+              <SlidersHorizontal className="w-3 h-3 text-primary" />
+              <span>Advanced Options</span>
+              {showAdvanced ? (
+                <ChevronUp className="w-3 h-3" />
+              ) : (
+                <ChevronDown className="w-3 h-3" />
+              )}
+            </Button>
           </div>
         </div>
 
-        {/* Checkbox Cleanup Toggles */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 border-t text-xs">
-          {direction === "list-to-delimited" && separatorType !== "space" && separatorType !== "tab" && (
+        {/* Collapsible Advanced Options Section */}
+        {showAdvanced && (
+          <div className="pt-3 border-t grid gap-3 sm:grid-cols-2 lg:grid-cols-4 items-center text-xs animate-in fade-in duration-150">
+            {/* Item Quotes */}
+            <div className="space-y-1">
+              <label className="font-semibold text-foreground">Item Quotes (SQL/JSON)</label>
+              <select
+                value={quoteType}
+                onChange={(e) => setQuoteType(e.target.value as QuoteType)}
+                disabled={direction === "delimited-to-list"}
+                className="w-full h-8 rounded-lg border border-input bg-background px-2.5 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs disabled:opacity-50 cursor-pointer"
+              >
+                <option value="none">No Quotes (raw values)</option>
+                <option value="single">Single Quotes (&apos;value&apos;)</option>
+                <option value="double">Double Quotes (&quot;value&quot;)</option>
+                <option value="backtick">Backticks (`value`)</option>
+              </select>
+            </div>
+
+            {/* Sort Order */}
+            <div className="space-y-1">
+              <label className="font-semibold text-foreground">Sort Order</label>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as SortType)}
+                className="w-full h-8 rounded-lg border border-input bg-background px-2.5 font-medium focus:outline-none focus:ring-2 focus:ring-primary text-xs cursor-pointer"
+              >
+                <option value="none">Preserve Original Order</option>
+                <option value="asc">Alphabetical (A ➔ Z)</option>
+                <option value="desc">Reverse (Z ➔ A)</option>
+              </select>
+            </div>
+
+            {/* Trim Item Whitespace */}
+            <label className="flex items-center gap-2 cursor-pointer select-none pt-4 sm:pt-0">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={trimWhitespace}
+                onClick={() => setTrimWhitespace(!trimWhitespace)}
+                className="text-primary hover:opacity-80 cursor-pointer"
+              >
+                {trimWhitespace ? (
+                  <CheckSquare className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                ) : (
+                  <Square className="w-3.5 h-3.5 text-muted-foreground" />
+                )}
+              </button>
+              <span className="text-foreground font-medium text-xs">Trim item whitespace</span>
+            </label>
+
+            {/* Remove Empty Lines/Items */}
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <button
                 type="button"
                 role="checkbox"
-                aria-checked={spaceAfterSeparator}
-                onClick={() => setSpaceAfterSeparator(!spaceAfterSeparator)}
-                className="text-primary hover:opacity-80"
+                aria-checked={removeEmpty}
+                onClick={() => setRemoveEmpty(!removeEmpty)}
+                className="text-primary hover:opacity-80 cursor-pointer"
               >
-                {spaceAfterSeparator ? (
-                  <CheckSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                {removeEmpty ? (
+                  <CheckSquare className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground" />
+                  <Square className="w-3.5 h-3.5 text-muted-foreground" />
                 )}
               </button>
-              <span className="text-foreground font-medium">Space after separator (e.g. &quot;a, b&quot;)</span>
+              <span className="text-foreground font-medium text-xs">Remove empty lines</span>
             </label>
-          )}
-
-          <label className="flex items-center gap-2 cursor-pointer select-none">
-            <button
-              type="button"
-              role="checkbox"
-              aria-checked={trimWhitespace}
-              onClick={() => setTrimWhitespace(!trimWhitespace)}
-              className="text-primary hover:opacity-80"
-            >
-              {trimWhitespace ? (
-                <CheckSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              ) : (
-                <Square className="w-4 h-4 text-muted-foreground" />
-              )}
-            </button>
-            <span className="text-foreground font-medium">Trim item whitespace</span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer select-none">
-            <button
-              type="button"
-              role="checkbox"
-              aria-checked={removeEmpty}
-              onClick={() => setRemoveEmpty(!removeEmpty)}
-              className="text-primary hover:opacity-80"
-            >
-              {removeEmpty ? (
-                <CheckSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              ) : (
-                <Square className="w-4 h-4 text-muted-foreground" />
-              )}
-            </button>
-            <span className="text-foreground font-medium">Remove empty lines/items</span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer select-none">
-            <button
-              type="button"
-              role="checkbox"
-              aria-checked={removeDuplicates}
-              onClick={() => setRemoveDuplicates(!removeDuplicates)}
-              className="text-primary hover:opacity-80"
-            >
-              {removeDuplicates ? (
-                <CheckSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              ) : (
-                <Square className="w-4 h-4 text-muted-foreground" />
-              )}
-            </button>
-            <span className="text-foreground font-medium">Remove duplicates</span>
-          </label>
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* 4. Live Statistics Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl border bg-card p-3 text-center space-y-1">
-          <span className="text-xs text-muted-foreground font-medium">Total Items</span>
-          <p className="text-lg font-bold text-foreground font-mono">{result.totalItems}</p>
+      {/* 3. Compact Live Statistics Strip */}
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-muted/20 border text-xs text-muted-foreground font-mono">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span>
+            Input: <strong className="text-foreground">{input.trim() ? input.split("\n").filter(Boolean).length : 0}</strong> lines ({input.length} chars)
+          </span>
+          <span className="text-border">•</span>
+          <span>
+            Output: <strong className="text-foreground">{result.totalItems}</strong> items ({result.characterCount} chars)
+          </span>
         </div>
-        <div className="rounded-xl border bg-card p-3 text-center space-y-1">
-          <span className="text-xs text-muted-foreground font-medium">Characters</span>
-          <p className="text-lg font-bold text-foreground font-mono">{result.characterCount}</p>
-        </div>
-        <div className="rounded-xl border bg-card p-3 text-center space-y-1">
-          <span className="text-xs text-muted-foreground font-medium">Duplicates Removed</span>
-          <p className="text-lg font-bold text-blue-600 dark:text-blue-400 font-mono">
-            {result.duplicatesRemoved}
-          </p>
-        </div>
-        <div className="rounded-xl border bg-card p-3 text-center space-y-1">
-          <span className="text-xs text-muted-foreground font-medium">Empty Filtered</span>
-          <p className="text-lg font-bold text-muted-foreground font-mono">{result.emptyItemsRemoved}</p>
-        </div>
+        {(result.duplicatesRemoved > 0 || result.emptyItemsRemoved > 0) && (
+          <div className="flex items-center gap-2 text-[11px]">
+            {result.duplicatesRemoved > 0 && (
+              <span className="text-blue-600 dark:text-blue-400 font-semibold">
+                ✓ {result.duplicatesRemoved} duplicate{result.duplicatesRemoved > 1 ? "s" : ""} removed
+              </span>
+            )}
+            {result.emptyItemsRemoved > 0 && (
+              <span className="text-muted-foreground">
+                • {result.emptyItemsRemoved} blank item{result.emptyItemsRemoved > 1 ? "s" : ""} skipped
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 5. Main Two-Column / Stacked Workspace */}
@@ -503,11 +513,7 @@ export default function CommaSeparator({ tool }: Props) {
   return (
     <div className="space-y-6">
       {/* Tool Header */}
-      <ToolHeader
-        tool={tool}
-        title="Comma Separator"
-        description="Quickly convert lists into comma-separated values, format delimited text, remove duplicates, and reverse comma-separated strings back to newlines with 100% client-side privacy."
-      />
+      <ToolHeader tool={tool} />
 
       {/* Main Workspace */}
       {renderWorkspaceContent()}

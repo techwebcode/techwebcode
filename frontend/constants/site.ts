@@ -6,7 +6,7 @@ export const SITE = {
   title: "Free Online Developer Tools & Code Compilers | TechWebCode",
 
   description:
-    "Fast, free, privacy-first online developer tools and WebAssembly code compilers. Format JSON, decode JWT, test Regex, convert timestamps, format SQL, and run code in 10+ languages.",
+    "Fast, free online developer tools and code compilers. Format JSON, decode JWT, test Regex, convert timestamps, and run code in 10+ languages with browser-based execution.",
 
   url: "https://techwebcode.in",
 
@@ -27,7 +27,8 @@ export const SITE = {
     "JSON Validator",
     "JSON Minifier",
     "JWT Decoder",
-    "Base64 Encoder",
+    "Base64 Encoder & Decoder",
+    "URL Encoder & Decoder",
     "UUID Generator",
     "Timestamp Converter",
     "Regex Tester",

@@ -64,6 +64,7 @@ export default function ToolInput({
               onClick={onFormat}
               className="h-7 text-xs px-2.5 text-primary hover:text-primary hover:bg-primary/10"
               title="Format Input"
+              aria-label="Format Input"
             >
               <Sparkles className="w-3.5 h-3.5 mr-1" />
               <span>Format</span>
@@ -78,6 +79,7 @@ export default function ToolInput({
               onClick={onLoadSample}
               className="h-7 text-xs px-2.5 text-muted-foreground hover:text-foreground"
               title="Load Sample Data"
+              aria-label="Load Sample Data"
             >
               <FileText className="w-3.5 h-3.5 mr-1" />
               <span>Sample</span>
@@ -91,6 +93,7 @@ export default function ToolInput({
             onClick={handlePaste}
             className="h-7 text-xs px-2 text-muted-foreground hover:text-foreground"
             title="Paste Clipboard"
+            aria-label="Paste Clipboard"
           >
             <Clipboard className="w-3.5 h-3.5" />
           </Button>
@@ -102,6 +105,7 @@ export default function ToolInput({
             onClick={handleClear}
             className="h-7 text-xs px-2 text-muted-foreground hover:text-destructive"
             title="Clear Input"
+            aria-label="Clear Input"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </Button>
@@ -114,6 +118,7 @@ export default function ToolInput({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         readOnly={readOnly}
+        aria-label={label || "Input Data"}
         className={`w-full ${minHeight} max-h-[500px] p-4 bg-transparent font-mono text-sm resize-y outline-none leading-relaxed border-none focus:ring-0 text-foreground placeholder:text-muted-foreground/60 editor-scroll-area`}
       />
     </div>

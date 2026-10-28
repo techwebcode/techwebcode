@@ -8,6 +8,7 @@ import Providers from "@/providers/Providers";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ReadingProgress from "@/components/article/ReadingProgress";
+import CommandSearchDialog from "@/components/common/CommandSearchDialog";
 
 export const metadata: Metadata = {
     metadataBase: new URL(SITE.url),
@@ -16,7 +17,6 @@ export const metadata: Metadata = {
         template: `%s | ${SITE.name}`,
     },
     description: SITE.description,
-    keywords: [...SITE.keywords],
     authors: [
         {
             name: SITE.author.name,
@@ -106,6 +106,7 @@ export default function RootLayout({
                 </Script>
                 <Providers>
                     <ReadingProgress />
+                    <CommandSearchDialog />
 
                     <div className="flex min-h-screen flex-col">
                         <Navbar />

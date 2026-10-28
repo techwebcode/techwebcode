@@ -1,31 +1,11 @@
 import { MetadataRoute } from "next";
 import ArticleService from "@/services/article";
 import ToolService from "@/services/tool.service";
-import { getCanonicalToolSlug } from "@/constants/toolSeoData";
+import { getCanonicalToolSlug, CANONICAL_TOOL_SLUGS } from "@/constants/toolSeoData";
 
 export const revalidate = 60;
 
 const BASE_URL = "https://techwebcode.in";
-
-// Primary Built-in Fallback Tool Slugs
-const FALLBACK_TOOL_SLUGS = [
-  "json-formatter",
-  "json-validator",
-  "json-minifier",
-  "jwt-decoder",
-  "base64",
-  "uuid-generator",
-  "timestamp-converter",
-  "url-encoder-decoder",
-  "regex-tester",
-  "sql-formatter",
-  "yaml-formatter",
-  "deployment-config-doctor",
-  "api-contract-checker",
-  "code-diff-checker",
-  "sha1-hash-generator",
-  "comma-separator",
-];
 
 function safeDate(inputDate?: string | Date | null): Date {
   if (!inputDate) return new Date();
@@ -142,8 +122,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     });
 
-  // Ensure Fallback Tools are included
-  FALLBACK_TOOL_SLUGS.forEach((slug) => {
+  // Ensure Canonical Tools are included
+  CANONICAL_TOOL_SLUGS.forEach((slug) => {
     if (!existingToolSlugs.has(slug)) {
       toolRoutes.push({
         url: `${baseUrl}/tools/${slug}`,

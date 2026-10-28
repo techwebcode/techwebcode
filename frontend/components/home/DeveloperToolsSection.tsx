@@ -2,11 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import SectionHeading from "./SectionHeading";
-import ToolGrid from "@/components/tool/ToolGrid";
 import ToolCard from "@/components/tool/ToolCard";
-import { useFeaturedTools } from "@/hooks/useTools";
-import { Tool } from "@/types/tools";
 import { ArrowRight, Wrench, Layers } from "lucide-react";
 
 // Curated tools list mapping catalog items with related guides for cross-linking
@@ -86,6 +82,15 @@ const CURATED_POPULAR_TOOLS = [
     category: "Generators",
     featured: true,
   },
+  {
+    id: 7,
+    name: "Timestamp Converter",
+    slug: "timestamp-converter",
+    description: "Convert Unix epoch timestamps to UTC, ISO dates, and human-readable dates.",
+    icon: "Clock",
+    category: "Date & Time",
+    featured: true,
+  },
 ];
 
 const FILTER_TABS = [
@@ -94,11 +99,11 @@ const FILTER_TABS = [
   { id: "Regex & SQL", label: "Regex & SQL" },
   { id: "Security", label: "Security & JWT" },
   { id: "Encoding & YAML", label: "Encoding & YAML" },
+  { id: "Date & Time", label: "Date & Time" },
 ];
 
 export default function DeveloperToolsSection() {
   const [activeTab, setActiveTab] = useState("all");
-  const { data } = useFeaturedTools();
 
   const filteredTools = CURATED_POPULAR_TOOLS.filter((tool) => {
     if (activeTab === "all") return true;
@@ -118,7 +123,7 @@ export default function DeveloperToolsSection() {
               Popular Developer Tools
             </h2>
             <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400 max-w-2xl">
-              Fast, private, client-side tools designed to format, validate, encode, and debug data in seconds.
+              Fast, practical browser-based tools designed to format, validate, encode, and debug data in seconds.
             </p>
           </div>
 

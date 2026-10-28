@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Wrench, ArrowRight } from "lucide-react";
+import { useToolPage } from "./ToolPageContext";
 
 interface RelatedToolItem {
   name: string;
@@ -78,8 +79,8 @@ const ALL_RELATED_TOOLS: Record<string, RelatedToolItem> = {
   "url-encoder-decoder": {
     name: "URL Encoder & Decoder",
     slug: "url-encoder-decoder",
-    actionText: "Try the URL Encoder",
-    description: "Encode query parameters into percent-encoded URL format.",
+    actionText: "Try URL Encoder & Decoder",
+    description: "Encode or decode URLs and query parameters using percent-encoding.",
   },
   "regex-tester": {
     name: "Regex Tester",
@@ -106,6 +107,13 @@ interface RelatedToolsProps {
 }
 
 export default function RelatedTools({ currentSlug }: RelatedToolsProps) {
+  const { inToolPageLayout } = useToolPage();
+
+  // If already rendered inside ToolPageLayout, suppress duplicate related tools (rendered by ToolSeoSection)
+  if (inToolPageLayout) {
+    return null;
+  }
+
   const targetSlugs = TOOL_RELATIONS[currentSlug] || [
     "json-formatter",
     "json-validator",

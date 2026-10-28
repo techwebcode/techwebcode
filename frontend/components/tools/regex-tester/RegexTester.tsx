@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import ToolHeader from "@/components/tool/ToolHeader";
 import ToolExplanation from "@/components/tool/ToolExplanation";
 import RelatedTools from "@/components/tool/RelatedTools";
@@ -155,8 +156,11 @@ export default function RegexTester({ tool }: Props) {
   const [plainEnglish, setPlainEnglish] = useState("");
   const [diagnostic, setDiagnostic] = useState<DiagnosticResult>({ hasMatch: true });
 
-  const evaluateRegex = () => {
-    if (!pattern.trim() || !testText) {
+  const debouncedPattern = useDebounce(pattern, 200);
+  const debouncedTestText = useDebounce(testText, 200);
+
+  const evaluateRegex = (pat: string = debouncedPattern, text: string = debouncedTestText) => {
+    if (!pat.trim() || !text) {
       setMatches([]);
       setErrorMsg("");
       setTokens([]);
@@ -174,13 +178,13 @@ export default function RegexTester({ tool }: Props) {
         (flags.u ? "u" : "") +
         (flags.y ? "y" : "");
 
-      const regex = new RegExp(pattern, flagStr);
+      const regex = new RegExp(pat, flagStr);
       const list: MatchItem[] = [];
 
       if (flags.g) {
         let match: RegExpExecArray | null;
         let count = 0;
-        while ((match = regex.exec(testText)) !== null) {
+        while ((match = regex.exec(text)) !== null) {
           const named: Record<string, string> = {};
           if (match.groups) {
             Object.assign(named, match.groups);
@@ -201,7 +205,7 @@ export default function RegexTester({ tool }: Props) {
           }
         }
       } else {
-        const match = regex.exec(testText);
+        const match = regex.exec(text);
         if (match) {
           const named: Record<string, string> = {};
           if (match.groups) {
@@ -221,13 +225,13 @@ export default function RegexTester({ tool }: Props) {
       setErrorMsg("");
 
       // Generate Tokens & Plain-English explanation
-      const parsedTokens = parseRegexTokens(pattern);
+      const parsedTokens = parseRegexTokens(pat);
       setTokens(parsedTokens);
-      setPlainEnglish(generatePlainEnglish(pattern));
+      setPlainEnglish(generatePlainEnglish(pat));
 
       // Diagnostic check if 0 matches
       if (list.length === 0) {
-        const diag = diagnoseNoMatch(pattern, flagStr, testText);
+        const diag = diagnoseNoMatch(pat, flagStr, text);
         setDiagnostic(diag);
       } else {
         setDiagnostic({ hasMatch: true });
@@ -246,8 +250,8 @@ export default function RegexTester({ tool }: Props) {
   };
 
   useEffect(() => {
-    evaluateRegex();
-  }, [pattern, flags, testText]);
+    evaluateRegex(debouncedPattern, debouncedTestText);
+  }, [debouncedPattern, flags, debouncedTestText]);
 
   const handleCopyPattern = () => {
     if (!pattern) return;

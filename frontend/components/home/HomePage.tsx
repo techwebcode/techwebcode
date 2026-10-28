@@ -3,44 +3,50 @@ import PlaygroundPromotionalSection from "@/components/home/PlaygroundPromotiona
 import DeveloperToolsSection from "@/components/home/DeveloperToolsSection";
 import BrowseCategoriesSection from "@/components/home/BrowseCategoriesSection";
 import DeveloperPlatformSpecs from "@/components/home/DeveloperPlatformSpecs";
-import FeaturedArticles from "@/components/home/FeaturedArticles";
 import HelpFeedbackSection from "@/components/home/HelpFeedbackSection";
 
 export default function HomePage() {
-  // WebSite JSON-LD Schema with SearchAction for Developer Tools Search
-  const websiteSchema = {
+  // Schema.org Structured Data: WebSite with Sitelinks Searchbox & Organization
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "TechWebCode",
-    url: "https://techwebcode.in",
-    description: "Free online developer tools and WebAssembly code compilers. Fast, practical, privacy-first tools for formatting, validating, encoding, debugging, and running modern code.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://techwebcode.in/tools?search={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
-  // Organization JSON-LD Schema for TechWebCode Identity
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "TechWebCode",
-    url: "https://techwebcode.in",
-    logo: "https://techwebcode.in/icon.png",
-    description: "Free developer tools and multi-language online WebAssembly code compilers.",
-    email: "contact@techwebcode.in",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://techwebcode.in/#website",
+        url: "https://techwebcode.in",
+        name: "TechWebCode",
+        description:
+          "Fast, free online developer tools and code compilers. Format JSON, decode JWT, test Regex, convert timestamps, and run code in 10+ languages with browser-based execution.",
+        publisher: {
+          "@id": "https://techwebcode.in/#organization",
+        },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: "https://techwebcode.in/search?q={search_term_string}",
+          },
+          "query-input": "required name=search_term_string",
+        },
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://techwebcode.in/#organization",
+        name: "TechWebCode",
+        url: "https://techwebcode.in",
+        logo: "https://techwebcode.in/icon.png",
+        description:
+          "Fast, free online developer tools and multi-language online code compilers.",
+        email: "contact@techwebcode.in",
+      },
+    ],
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
       <div className="flex flex-col min-h-screen">

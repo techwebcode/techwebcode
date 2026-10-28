@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Tool } from "@/types/tools";
 import ToolWorkspaceShell from "@/components/tool/workspace/ToolWorkspaceShell";
 import K8sSecretDetectionPanel from "./K8sSecretDetectionPanel";
@@ -30,36 +31,38 @@ export default function KubernetesSecretWorkspace({ tool }: KubernetesSecretWork
   const [mode, setMode] = useState<K8sOperationMode>("decode");
   const [isMasked, setIsMasked] = useState<boolean>(false);
 
+  const debouncedYaml = useDebounce(originalYaml, 250);
+
   // 1. Detect Secret Info
   const secretInfo = useMemo(() => {
-    return detectKubernetesSecret(originalYaml);
-  }, [originalYaml]);
+    return detectKubernetesSecret(debouncedYaml);
+  }, [debouncedYaml]);
 
   // 2. Validate Secret
   const validationResult = useMemo(() => {
-    return validateKubernetesSecret(originalYaml);
-  }, [originalYaml]);
+    return validateKubernetesSecret(debouncedYaml);
+  }, [debouncedYaml]);
 
   // 3. Transformation Breakdown Details
   const transformationSummary = useMemo(() => {
-    return getSecretTransformationDetails(originalYaml, mode);
-  }, [originalYaml, mode]);
+    return getSecretTransformationDetails(debouncedYaml, mode);
+  }, [debouncedYaml, mode]);
 
   // 4. Process Manifest Result (Pure Client-Side AST preservation)
   const processedYaml = useMemo(() => {
-    if (!originalYaml || !originalYaml.trim()) return "";
+    if (!debouncedYaml || !debouncedYaml.trim()) return "";
 
     if (activeTab === "general" || mode === "format") {
       try {
-        const parsed = YAML.parse(originalYaml);
+        const parsed = YAML.parse(debouncedYaml);
         return YAML.stringify(parsed, { indent: 2 });
       } catch {
-        return originalYaml;
+        return debouncedYaml;
       }
     }
 
-    return transformKubernetesSecret(originalYaml, mode);
-  }, [originalYaml, mode, activeTab]);
+    return transformKubernetesSecret(debouncedYaml, mode);
+  }, [debouncedYaml, mode, activeTab]);
 
   // Handlers
   const handleLoadSample = () => {

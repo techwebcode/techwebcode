@@ -13,10 +13,10 @@ export default function DeveloperPlatformSpecs() {
                 <span>Developer Platform Architecture</span>
               </div>
               <h2 className="mt-1.5 text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-                Designed for Speed, Security &amp; Developer Privacy
+                Designed for Speed, Security &amp; Developer Utility
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                TechWebCode tools execute 100% client-side in your browser. Your sensitive code snippets, API keys, JSON tokens, and database queries are never uploaded or recorded on external servers.
+                TechWebCode developer utilities process your input data directly within your browser. Tool inputs—such as JSON strings, JWT tokens, regex expressions, and database queries—are parsed locally in memory without being stored on our servers.
               </p>
             </div>
 
@@ -27,17 +27,17 @@ export default function DeveloperPlatformSpecs() {
                   <span>Instant Execution</span>
                 </div>
                 <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                  Zero network roundtrips. Instant local parsing.
+                  Zero network latency for local formatting and parsing.
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/60">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-slate-100">
                   <Lock className="h-4 w-4 text-purple-500 shrink-0" />
-                  <span>Zero Server Logs</span>
+                  <span>In-Browser Processing</span>
                 </div>
                 <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                  Your payload data stays strictly in local browser RAM.
+                  Tool data is processed in local browser memory without server-side payload logging.
                 </p>
               </div>
 

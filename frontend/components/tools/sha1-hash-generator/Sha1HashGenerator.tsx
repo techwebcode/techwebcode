@@ -303,11 +303,7 @@ export default function Sha1HashGenerator({ tool }: Props) {
   return (
     <div className="space-y-6">
       {/* Tool Header */}
-      <ToolHeader
-        tool={tool}
-        title="SHA-1 Hash Generator"
-        description="Generate SHA-1 hashes from text instantly in your browser. Fast, free, and client-side with no data sent to TechWebCode servers."
-      />
+      <ToolHeader tool={tool} />
 
       {/* Main Workspace */}
       {renderWorkspaceContent()}

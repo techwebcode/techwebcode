@@ -48,6 +48,22 @@ export default function PlaygroundEngine({
     []
   );
 
+  // Debounced persistence ref
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Helper to persist code without blocking the main thread
+  const persistCode = useCallback(
+    (slug: string, state: typeof codeState) => {
+      try {
+        localStorage.setItem(getStorageKey(slug), JSON.stringify(state));
+      } catch {
+        // Fallback for storage limits or private mode
+      }
+    },
+    [getStorageKey]
+  );
+
   // Load code from LocalStorage or default templates when language changes
   useEffect(() => {
     try {
@@ -61,35 +77,68 @@ export default function PlaygroundEngine({
     } catch {
       setCodeState(languageConfig.defaultCode);
     }
-  }, [languageConfig, getStorageKey]);
+  }, [languageConfig.slug, getStorageKey]);
 
-  // Persist code changes to LocalStorage
-  const handleCodeChange = (
-    key: "html" | "css" | "js" | "code",
-    value: string
-  ) => {
-    setCodeState((prev) => {
-      const updated = { ...prev, [key]: value };
-      try {
-        localStorage.setItem(
-          getStorageKey(languageConfig.slug),
-          JSON.stringify(updated)
-        );
-      } catch {
-        // Fallback
+  // Flush any pending save on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
       }
-      return updated;
-    });
-  };
+    };
+  }, []);
 
   // Ref to always have latest code without triggering re-runs on every keystroke
   const codeStateRef = useRef(codeState);
   codeStateRef.current = codeState;
 
+  // Persist code changes with debouncing to keep typing 100% fluid
+  const handleCodeChange = useCallback(
+    (key: "html" | "css" | "js" | "code", value: string) => {
+      setCodeState((prev) => {
+        const updated = { ...prev, [key]: value };
+        codeStateRef.current = updated;
+
+        // Debounce storage writes (800ms) to prevent disk I/O on every keystroke
+        if (saveTimeoutRef.current) {
+          clearTimeout(saveTimeoutRef.current);
+        }
+        saveTimeoutRef.current = setTimeout(() => {
+          persistCode(languageConfig.slug, updated);
+        }, 800);
+
+        return updated;
+      });
+    },
+    [languageConfig.slug, persistCode]
+  );
+
+  // Stop / Cancel Execution
+  const handleStop = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsRunning(false);
+    setLogs((prev) => [
+      ...prev.slice(-99),
+      {
+        id: Math.random().toString(36).substring(2, 9),
+        type: "warn",
+        message: "⏹ Execution cancelled by user.",
+        timestamp: new Date().toLocaleTimeString(),
+      },
+    ]);
+    toast.info("Execution stopped");
+  }, []);
+
   // Run Code Execution
   const handleRun = useCallback(async () => {
     if (isRunning) return;
     setIsRunning(true);
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     try {
       const res = await PlaygroundExecutionService.executeCode(
@@ -97,7 +146,8 @@ export default function PlaygroundEngine({
         codeStateRef.current,
         (statusLog) => {
           setLogs((prev) => [...prev.slice(-99), statusLog]);
-        }
+        },
+        controller.signal
       );
 
       if (res.srcDoc) {
@@ -110,9 +160,23 @@ export default function PlaygroundEngine({
         setLogs((prev) => [...prev.slice(-99), ...res.logs]);
       }
     } catch (err: any) {
-      toast.error(`Execution error: ${err?.message || "Unknown error"}`);
+      if (err?.message?.includes("cancelled")) {
+        // User cancelled intentionally
+      } else {
+        toast.error(`Execution error: ${err?.message || "Unknown error"}`);
+        setLogs((prev) => [
+          ...prev.slice(-99),
+          {
+            id: Math.random().toString(36).substring(2, 9),
+            type: "error",
+            message: `Error: ${err?.message || "Execution failed"}`,
+            timestamp: new Date().toLocaleTimeString(),
+          },
+        ]);
+      }
     } finally {
       setIsRunning(false);
+      abortControllerRef.current = null;
     }
   }, [languageConfig, isRunning]);
 
@@ -145,9 +209,13 @@ export default function PlaygroundEngine({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [languageConfig.slug]);
 
-  // Language Switcher Handler
+  // Language Switcher Handler (Safely flushes unsaved edits before navigating)
   const handleSelectLanguage = (newSlug: string) => {
     if (newSlug === languageConfig.slug) return;
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    persistCode(languageConfig.slug, codeStateRef.current);
     router.push(`/playground/${newSlug}`, { scroll: false });
     toast.info(`Switched to ${newSlug.toUpperCase()} Playground`);
   };
@@ -228,6 +296,7 @@ export default function PlaygroundEngine({
         currentLanguage={languageConfig}
         onSelectLanguage={handleSelectLanguage}
         onRun={handleRun}
+        onStop={handleStop}
         isRunning={isRunning}
         onReset={handleReset}
         onCopy={handleCopy}
